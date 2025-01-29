@@ -1,5 +1,8 @@
 DOMAIN-SUFFIX,online-metrix.net
 DOMAIN-SUFFIX,cdn.forter.com
+DOMAIN-SUFFIX,onfido.com
+DOMAIN-SUFFIX,app.mona.co
+DOMAIN-SUFFIX,appsflyersdk.com
 
 DOMAIN-SUFFIX,logs.browser-intake-datadoghq.com
 DOMAIN-SUFFIX,cloudflare-dns.com
