@@ -6,8 +6,14 @@ DOMAIN-SUFFIX,appsflyersdk.com
 DOMAIN-SUFFIX,srv.moonshot.money
 DOMAIN-SUFFIX,nexus-websocket-a.intercom.io
 DOMAIN-KEYWORD,moonshot
-
-
+DOMAIN-KEYWORD,trustwallet
+DOMAIN-SUFFIX,us.posthog.com
+DOMAIN-SUFFIX,midgard.ninerealms.com
+DOMAIN-SUFFIX,api.bnbchain.org
+DOMAIN-SUFFIX,query.thegraph.kiln.fi
+DOMAIN-SUFFIX,us.i.posthog.com
+DOMAIN-SUFFIX,pulse.walletconnect.com
+DOMAIN-SUFFIX,bsc.twnodes.com
 DOMAIN-SUFFIX,logs.browser-intake-datadoghq.com
 DOMAIN-SUFFIX,cloudflare-dns.com
 DOMAIN-SUFFIX,static.coinall.ltd
