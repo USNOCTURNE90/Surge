@@ -52,6 +52,9 @@ DOMAIN-SUFFIX,api3.siftscience.com
 IP-CIDR,104.18.0.0/16
 IP-CIDR,104.22.0.0/16
 IP-CIDR,172.64.0.0/13
+DOMAIN,cdn.usefathom.com
+DOMAIN-SUFFIX,anthropic.com
+DOMAIN-SUFFIX,claude.ai
 
 # Verizon
 DOMAIN-SUFFIX,verizon.com
