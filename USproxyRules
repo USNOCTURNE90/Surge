@@ -55,6 +55,7 @@ IP-CIDR,172.64.0.0/13
 DOMAIN,cdn.usefathom.com
 DOMAIN-SUFFIX,anthropic.com
 DOMAIN-SUFFIX,claude.ai
+DOMAIN-SUFFIX,o1158394.ingest.us.sentry.io
 
 # Verizon
 DOMAIN-SUFFIX,verizon.com
