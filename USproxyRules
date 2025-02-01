@@ -45,6 +45,10 @@ DOMAIN-SUFFIX,anthropic.ai
 DOMAIN,api.anthropic.com
 DOMAIN,claude-api.anthropic.com
 DOMAIN-KEYWORD,anthropic
+DOMAIN-SUFFIX,prodregistryv2.org
+DOMAIN-SUFFIX,a-cdn.anthropic.com
+DOMAIN-SUFFIX,tags.tiqcdn.com
+DOMAIN-SUFFIX,api3.siftscience.com
 IP-CIDR,104.18.0.0/16
 IP-CIDR,104.22.0.0/16
 IP-CIDR,172.64.0.0/13
