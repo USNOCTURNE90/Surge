@@ -1,20 +1,9 @@
-IP-CIDR,190.92.198.30/24
-IP-CIDR,110.238.104.159/24
-IP-CIDR,119.13.110.238/24
+# > Bybit
 IP-CIDR,54.150.106.1/24
 IP-CIDR,52.68.117.1/24
-# > Crypto Exchange
-DOMAIN-SUFFIX,aex.com
-DOMAIN-SUFFIX,bibox.com
-DOMAIN-KEYWORD,binance
-DOMAIN-SUFFIX,bnbstatic.com
-DOMAIN-KEYWORD,bnbstatic
-DOMAIN-SUFFIX,bitfinex.com
-DOMAIN-SUFFIX,bithumb.com
-DOMAIN-SUFFIX,bitmex.com
-DOMAIN-SUFFIX,bitstamp.net
-DOMAIN-SUFFIX,bittrex.com
-# Bybit
+IP-CIDR,190.92.198.30/32
+IP-CIDR,110.238.104.159/32
+IP-CIDR,119.13.110.238/32
 DOMAIN-SUFFIX,bybit.cloud
 DOMAIN-SUFFIX,bybit.com
 DOMAIN-SUFFIX,bybit.biz
@@ -39,6 +28,29 @@ DOMAIN-SUFFIX,ws2.bybit.biz
 DOMAIN-SUFFIX,api3.byd3c3.com
 DOMAIN-SUFFIX,monitor-frontend-collector.a.bybit-aws.com
 DOMAIN-SUFFIX,bybit-help-center-prod-ac4de1465648.herokuapp.com
+
+# > Binance
+DOMAIN-KEYWORD,binance
+DOMAIN-SUFFIX,bnbstatic.com
+DOMAIN-KEYWORD,bnbstatic
+
+# > OKX
+DOMAIN-KEYWORD,okx
+DOMAIN-KEYWORD,okex.com
+DOMAIN-KEYWORD,oklink.com
+
+# > Huobi
+DOMAIN-KEYWORD,huobi
+DOMAIN-SUFFIX,huobi.com
+
+# > Other Exchanges
+DOMAIN-SUFFIX,aex.com
+DOMAIN-SUFFIX,bibox.com
+DOMAIN-SUFFIX,bitfinex.com
+DOMAIN-SUFFIX,bithumb.com
+DOMAIN-SUFFIX,bitmex.com
+DOMAIN-SUFFIX,bitstamp.net
+DOMAIN-SUFFIX,bittrex.com
 DOMAIN-SUFFIX,coinbase.com
 DOMAIN-SUFFIX,coincheck.com
 DOMAIN-SUFFIX,coinone.co.kr
@@ -46,15 +58,10 @@ DOMAIN-SUFFIX,ftx.com
 DOMAIN-SUFFIX,gate.ac
 DOMAIN-SUFFIX,gate.io
 DOMAIN-SUFFIX,gemini.com
-DOMAIN-KEYWORD,huobi
-DOMAIN-SUFFIX,huobi.com
 DOMAIN-SUFFIX,korbit.co.kr
 DOMAIN-SUFFIX,kraken.com
 DOMAIN-SUFFIX,kucoin.com
 DOMAIN-SUFFIX,liquid.com
-DOMAIN-KEYWORD,okx
-DOMAIN-KEYWORD,okex.com
-DOMAIN-KEYWORD,oklink.com
 DOMAIN-SUFFIX,poloniex.com
 DOMAIN-KEYWORD,saasexch
 DOMAIN-SUFFIX,zb.app
@@ -62,11 +69,31 @@ DOMAIN-SUFFIX,zb.com
 DOMAIN-SUFFIX,zb.io
 DOMAIN-SUFFIX,zb.live
 
-# > DeFi Protocols
-DOMAIN-SUFFIX,1inch.io
-DOMAIN-SUFFIX,app.1inch.io
+# > Wallet Infrastructure
+DOMAIN-KEYWORD,trustwallet
+DOMAIN-SUFFIX,trustwallet.com
+DOMAIN-SUFFIX,pulse.walletconnect.org
+
+# > DeFi - Uniswap
+DOMAIN-SUFFIX,uniswap.org
+DOMAIN-SUFFIX,app.uniswap.org
+
+# > DeFi - PancakeSwap
+DOMAIN-SUFFIX,pancakeswap.com
+DOMAIN-SUFFIX,pancakeswap.finance
+DOMAIN-SUFFIX,app.pancakeswap.finance
+
+# > DeFi - Curve
+DOMAIN-SUFFIX,curve.fi
+DOMAIN-SUFFIX,app.curve.fi
+
+# > DeFi - Aave
 DOMAIN-SUFFIX,aave.com
 DOMAIN-SUFFIX,app.aave.com
+
+# > DeFi - Others
+DOMAIN-SUFFIX,1inch.io
+DOMAIN-SUFFIX,app.1inch.io
 DOMAIN-SUFFIX,balancer.fi
 DOMAIN-SUFFIX,app.balancer.fi
 DOMAIN-SUFFIX,beefy.finance
@@ -78,8 +105,6 @@ DOMAIN-SUFFIX,compound.finance
 DOMAIN-SUFFIX,app.compound.finance
 DOMAIN-SUFFIX,convexfinance.com
 DOMAIN-SUFFIX,app.convexfinance.finance
-DOMAIN-SUFFIX,curve.fi
-DOMAIN-SUFFIX,app.curve.fi
 DOMAIN-SUFFIX,dydx.exchange
 DOMAIN-SUFFIX,app.dydx.exchange
 DOMAIN-SUFFIX,gmx.io
@@ -95,9 +120,6 @@ DOMAIN-SUFFIX,app.matcha.xyz
 DOMAIN-SUFFIX,opensea.io
 DOMAIN-SUFFIX,osmosis.zone
 DOMAIN-SUFFIX,app.osmosis.zone
-DOMAIN-SUFFIX,pancakeswap.com
-DOMAIN-SUFFIX,pancakeswap.finance
-DOMAIN-SUFFIX,app.pancakeswap.finance
 DOMAIN-SUFFIX,paraswap.io
 DOMAIN-SUFFIX,app.paraswap.io
 DOMAIN-SUFFIX,quickswap.exchange
@@ -126,8 +148,6 @@ DOMAIN-SUFFIX,synthetix.io
 DOMAIN-SUFFIX,snx.io
 DOMAIN-SUFFIX,thorchain.org
 DOMAIN-SUFFIX,app.thorchain.org
-DOMAIN-SUFFIX,uniswap.org
-DOMAIN-SUFFIX,app.uniswap.org
 DOMAIN-SUFFIX,velodrome.finance
 DOMAIN-SUFFIX,app.velodrome.finance
 DOMAIN-SUFFIX,vesper.finance
@@ -139,9 +159,8 @@ DOMAIN-SUFFIX,app.wootrade.com
 DOMAIN-SUFFIX,x2y2.io
 DOMAIN-SUFFIX,yearn.finance
 DOMAIN-SUFFIX,yfi.finance
-DOMAIN-SUFFIX,amazonaws.com:
 
-# > Info & Tools
+# > Info & Analytics Services
 DOMAIN-SUFFIX,bitcointalk.org
 DOMAIN-SUFFIX,coingecko.com
 DOMAIN-SUFFIX,coinmarketcap.com
@@ -151,12 +170,9 @@ DOMAIN-SUFFIX,etherscan.io
 DOMAIN-SUFFIX,zapper.fi
 DOMAIN-SUFFIX,zerion.io
 
-# > Infrastructure
+# > Blockchain Infrastructure
 DOMAIN-SUFFIX,eth-mainnet.nodereal.io
 DOMAIN-SUFFIX,infura.io
-DOMAIN-SUFFIX,pulse.walletconnect.org
-DOMAIN-KEYWORD,trustwallet
-DOMAIN-SUFFIX,trustwallet.com
 
 # > Analytics & Tracking
 DOMAIN-SUFFIX,app-analytics-services.com
