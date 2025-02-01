@@ -110,27 +110,7 @@ DOMAIN-SUFFIX,yimg.com, YahooFinanceProxy
 DOMAIN-SUFFIX,yahooapis.com, YahooFinanceProxy
 DOMAIN-KEYWORD,finance, YahooFinanceProxy
 DOMAIN-KEYWORD,yahoo, YahooFinanceProxy
-#binance
-DOMAIN-SUFFIX,public.nftstatic.com
-DOMAIN-SUFFIX,api.saasexch.co
-DOMAIN-SUFFIX,www.mokexweb.me
-IP-CIDR,35.77.148.188/32
-DOMAIN-SUFFIX,zftksc-launches.appsflyersdk.com
-DOMAIN-SUFFIX,530c098a-e3fa-4ee4-9a09-b6bd98656c4a-addfd325e6e3.cdn.forter.com
-DOMAIN-SUFFIX,www.binance.info
-DOMAIN-SUFFIX,appsflayer.com
-DOMAIN-SUFFIX,binance.cloud
-DOMAIN-SUFFIX,binance.com
-DOMAIN-SUFFIX,binance.me
-DOMAIN-SUFFIX,binancecnt.com
-DOMAIN-SUFFIX,binancefuture.com
-DOMAIN-SUFFIX,bnappzh.co
-DOMAIN-SUFFIX,bnbstatic.com
-DOMAIN-SUFFIX,bnbzh.ac
-DOMAIN-SUFFIX,bntrace.com
-DOMAIN-SUFFIX,saasexch.cc
-DOMAIN-SUFFIX,api.saasexch.io
-DOMAIN-SUFFIX,saasexch.com
+
 #HSBC
 DOMAIN-SUFFIX,hsbc.com
 DOMAIN-SUFFIX,hsbc.co.uk
