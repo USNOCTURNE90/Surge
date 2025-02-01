@@ -139,6 +139,7 @@ DOMAIN-SUFFIX,app.wootrade.com
 DOMAIN-SUFFIX,x2y2.io
 DOMAIN-SUFFIX,yearn.finance
 DOMAIN-SUFFIX,yfi.finance
+DOMAIN-SUFFIX,amazonaws.com:
 
 # > Info & Tools
 DOMAIN-SUFFIX,bitcointalk.org
