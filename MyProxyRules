@@ -12,6 +12,9 @@ DOMAIN-KEYWORD,cdnbc-logs.hsbc.com
 DOMAIN-KEYWORD,d0r7clfv2slbaskjrbpfrgqzn4qtocrktla5akcjc611196246f6d3c6sac.d.aa.online-metrix.net
 DOMAIN-KEYWORD,nssurge.com
 # > SUFFIX
+
+DOMAIN-SUFFIX,adtidy.org
+DOMAIN-SUFFIX,sb.adtidy.org
 DOMAIN-SUFFIX,api.revenuecat.com
 DOMAIN-SUFFIX,whatshub.top
 DOMAIN-SUFFIX,freedidi.com
