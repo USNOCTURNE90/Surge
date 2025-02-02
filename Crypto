@@ -13,16 +13,12 @@ DOMAIN-SUFFIX,js-na1.hs-scripts.com
 DOMAIN-SUFFIX,js.hsleadflows.net
 DOMAIN-SUFFIX,js.usemessages.com
 DOMAIN-SUFFIX,js.hs-banner.com
-
-
-
 DOMAIN-SUFFIX,appsflyersdk.com
 DOMAIN-SUFFIX,amazonaws.com
 IP-CIDR,35.77.148.188/24
 DOMAIN-SUFFIX,query.thegraph.kiln.fi
 DOMAIN-SUFFIX,twnodes.com
 DOMAIN-SUFFIX,static.cx.metamask.io
-
 #Bybit
 IP-CIDR,54.150.106.1/24
 IP-CIDR,52.68.117.1/24
