@@ -1,3 +1,6 @@
+DOMAIN-SUFFIX,appsflyersdk.com
+DOMAIN-SUFFIX,amazonaws.com
+IP-CIDR,35.77.148.188/24
 DOMAIN-SUFFIX,query.thegraph.kiln.fi
 DOMAIN-SUFFIX,twnodes.com
 #Bybit
