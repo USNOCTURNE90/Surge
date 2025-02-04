@@ -9,4 +9,7 @@ DOMAIN-SUFFIX,cdn.honey.io
 DOMAIN-SUFFIX,api.sprig.com
 DOMAIN-SUFFIX,i.honey-images.com
 DOMAIN-SUFFIX,app.adjust.com
-193.182.111.142
+IP-CIDR,193.182.111.142/24
+IP-CIDR,84.16.67.12/24
+IP-CIDR,119.28.183.184/24
+DOMAIN-SUFFIX,browser-intake-us5-datadoghq.com
