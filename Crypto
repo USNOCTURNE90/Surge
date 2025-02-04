@@ -1,3 +1,9 @@
+DOMAIN-SUFFIX,m.api.forter.com
+DOMAIN-SUFFIX,ingest.sentry.io
+DOMAIN-SUFFIX,geolocation.onetrust.com
+DOMAIN-SUFFIX,log.bntrace.com
+DOMAIN-SUFFIX,public.nftstatic.com
+
 DOMAIN-SUFFIX,moonshot.money
 DOMAIN-SUFFIX,flia4w7b-ios.mobile-messenger.intercom.com
 DOMAIN-SUFFIX,realtime.ably.io
