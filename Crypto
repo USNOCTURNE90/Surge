@@ -216,8 +216,6 @@ DOMAIN-SUFFIX,onfido.com
 DOMAIN-SUFFIX,us.posthog.com
 DOMAIN-SUFFIX,us.i.posthog.com
 DOMAIN-SUFFIX,logs.browser-intake-datadoghq.com
-DOMAIN-SUFFIX,inapps.appsflyer.com
-DOMAIN-SUFFIX,launches.appsflyer.com
 DOMAIN-SUFFIX,sc-datasink.ffe390afd658c19dcbf707e0597b846d.de
 DOMAIN-SUFFIX,sc-abtest.ffe390afd658c19dcbf707e0597b846d.de
 DOMAIN-SUFFIX,api.ffbbbdc6d3c353211fe2ba39c9f744cd.com
