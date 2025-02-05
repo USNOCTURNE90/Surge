@@ -1,3 +1,13 @@
+#za bank
+DOMAIN-SUFFIX,appmon-prd.zajourney.com
+DOMAIN-SUFFIX,cdn.zaticdn.com
+DOMAIN-SUFFIX,bankappgw.za.group
+DOMAIN-SUFFIX,aim-abtesting-sdk.za.group
+DOMAIN-SUFFIX,bankappgw.za.group
+DOMAIN-SUFFIX,bank-sbsmarket.zafinsvc.com
+DOMAIN-SUFFIX,launches.appsflyer.com
+DOMAIN-SUFFIX,appguard.za.group
+
 #Optionstart
 DOMAIN-SUFFIX,optionstrat.com
 #OSL
