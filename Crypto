@@ -12,7 +12,7 @@ DOMAIN-SUFFIX,api-app-slow.chainnear.com
 DOMAIN-SUFFIX,api-app-slow.ljhsnzpc.com
 DOMAIN-SUFFIX,api-app-slow.bitkeep.asia
 DOMAIN-SUFFIX,api-app-slow.bitkeep.fun
-
+DOMAIN-SUFFIX,bitget-2.ada.support
 DOMAIN-SUFFIX,api-app-slow.lymryy.com
 DOMAIN-SUFFIX,conf.packcard.com
 DOMAIN-SUFFIX,sis.push.theengagelab.com
@@ -45,7 +45,9 @@ DOMAIN-SUFFIX,log.bntrace.com
 DOMAIN-SUFFIX,public.nftstatic.com
 DOMAIN-SUFFIX,o4507686279512064.ingest.us.sentry.io
 DOMAIN-SUFFIX,midgard.ninerealms.com
-
+DOMAIN-KEYWORD,bitget
+DOMAIN-SUFFIX,rollout.ada.support
+DOMAIN-SUFFIX,static.ada.support
 DOMAIN-SUFFIX,moonshot.money
 DOMAIN-SUFFIX,flia4w7b-ios.mobile-messenger.intercom.com
 DOMAIN-SUFFIX,realtime.ably.io
