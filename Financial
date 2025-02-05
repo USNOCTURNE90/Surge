@@ -1,4 +1,6 @@
 #za bank
+DOMAIN-SUFFIX,integrate-appgw.zajourney.com
+DOMAIN-SUFFIX,testcdn.zaticdn.com
 DOMAIN-SUFFIX,appmon-prd.zajourney.com
 DOMAIN-SUFFIX,cdn.zaticdn.com
 DOMAIN-SUFFIX,bankappgw.za.group
