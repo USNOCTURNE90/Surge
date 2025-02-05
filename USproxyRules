@@ -27,6 +27,18 @@ IP-CIDR,104.26.0.0/20
 IP-CIDR,172.67.0.0/16
 
 # TextNow Surge Rules
+DOMAIN-SUFFIX,analytics.adjust.com
+DOMAIN-SUFFIX,logs.ads.vungle.com
+DOMAIN-SUFFIX,sdk-files.smaato.net
+DOMAIN-SUFFIX,rt.applovin.com
+DOMAIN-SUFFIX,d.applovin.com
+DOMAIN-SUFFIX,cdn2.inner-active.mobi
+DOMAIN-SUFFIX,collector-pxk56wkc4o.perimeterx.net
+DOMAIN-SUFFIX,sdk-tracking.iad-07.braze.com
+DOMAIN-SUFFIX,config.emb-api.com
+DOMAIN-SUFFIX,c.amazon-adsystem.com
+DOMAIN-SUFFIX,data.emb-api.com
+
 DOMAIN-SUFFIX,textnow.com
 DOMAIN-SUFFIX,textnow.me
 DOMAIN,api.textnow.me
