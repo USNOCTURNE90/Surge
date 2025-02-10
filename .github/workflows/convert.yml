@@ -1,34 +1,35 @@
 name: Convert Surge to Clash
 
 on:
-  push:
-    paths:
-      - 'surge/**'
-    branches:
-      - main
+ push:
+   paths:
+     - 'surge/**'
+   branches:
+     - main
+ workflow_dispatch:
 
 permissions:
-  contents: write
+ contents: write
 
 jobs:
-  convert:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-          
-      - name: Convert Rules
-        run: |
-          python .github/scripts/convert.py
-          
-      - name: Commit and Push
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add clash-auto/
-          git commit -m "Auto convert: Surge to Clash rules" || exit 0
-          git push
+ convert:
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v2
+     
+     - name: Set up Python
+       uses: actions/setup-python@v2
+       with:
+         python-version: '3.x'
+         
+     - name: Convert Rules
+       run: |
+         python .github/scripts/convert.py
+         
+     - name: Commit and Push
+       run: |
+         git config --local user.email "action@github.com"
+         git config --local user.name "GitHub Action"
+         git add clash-auto/
+         git commit -m "Auto convert: Surge to Clash rules" || exit 0
+         git push
