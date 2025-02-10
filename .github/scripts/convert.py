@@ -70,7 +70,7 @@ def process_files(surge_path, clash_path=None, output_path='output.yaml'):
 
 def main():
     surge_dir = 'surge'
-    clash_dir = 'clash'
+    clash_dir = 'clash-auto'
     
     for root, _, files in os.walk(surge_dir):
         for file in files:
