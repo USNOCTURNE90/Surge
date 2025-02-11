@@ -2,8 +2,8 @@ name: Convert and Push to Clash Repo
 
 on:
   push:
-    paths:
-      - 'surge/**'
+    paths-ignore:
+      - '.github/**'
   workflow_dispatch:
 
 jobs:
@@ -14,14 +14,13 @@ jobs:
       - name: Checkout source repository
         uses: actions/checkout@v4
         with:
-          path: surge-repo
-          fetch-depth: 0
+          path: source-repo
 
       - name: Checkout target repository
         uses: actions/checkout@v4
         with:
           repository: usnocturne90/clash-auto  # 替换为你的目标仓库
-          token: ${{ secrets.PAT_TOKEN }}  # 需要设置个人访问令牌
+          token: ${{ secrets.PAT_TOKEN }}
           path: clash-repo
 
       - name: Set up Python
@@ -31,9 +30,9 @@ jobs:
       
       - name: Convert Rules
         run: |
-          python surge-repo/.github/scripts/convert.py
+          python source-repo/.github/scripts/convert.py
         env:
-          SOURCE_DIR: surge-repo/surge
+          SOURCE_DIR: source-repo
           TARGET_DIR: clash-repo
 
       - name: Commit and Push Changes
