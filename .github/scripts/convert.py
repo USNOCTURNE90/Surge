@@ -46,6 +46,13 @@ def main():
     source_dir = os.getenv('SOURCE_DIR', 'surge')
     target_dir = os.getenv('TARGET_DIR', 'clash-repo')
     
+    print(f"Source directory: {source_dir}")
+    print(f"Target directory: {target_dir}")
+    
+    # List contents of source directory
+    print("\nSource directory contents:")
+    os.system(f"ls -la {source_dir}")
+    
     # Process all files in surge directory
     for root, _, files in os.walk(source_dir):
         for file in files:
@@ -55,8 +62,13 @@ def main():
                 surge_path = os.path.join(root, file)
                 clash_path = os.path.join(target_dir, rel_path)
                 
+                print(f"\nProcessing file: {surge_path} -> {clash_path}")
                 # Convert the file
                 process_file(surge_path, clash_path)
+    
+    # List contents of target directory
+    print("\nTarget directory contents after conversion:")
+    os.system(f"ls -la {target_dir}")
 
 if __name__ == '__main__':
     main()
