@@ -9,8 +9,6 @@ on:
 jobs:
   convert:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     
     steps:
       - name: Checkout source repository
@@ -19,12 +17,8 @@ jobs:
           path: source-repo
 
       - name: Checkout target repository
-        uses: actions/checkout@v4
-        with:
-          repository: usnocturne90/clash-auto
-          token: ${{ secrets.PAT_TOKEN }}
-          ref: main
-          path: clash-repo
+        run: |
+          git clone https://oauth2:${{ secrets.PAT_TOKEN }}@github.com/usnocturne90/clash-auto.git clash-repo
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -42,21 +36,15 @@ jobs:
         env:
           TARGET_DIR: clash-repo
 
-      - name: Clean and Initialize Git
+      - name: Configure Git
         run: |
           cd clash-repo
-          rm -rf .git
-          git init
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           
       - name: Commit and Push Changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           cd clash-repo
           git add .
           git commit -m "chore: update clash rules"
-          git branch -M main
-          git remote add origin https://oauth2:${GITHUB_TOKEN}@github.com/usnocturne90/clash-auto.git
-          git push -f origin main
+          git push
