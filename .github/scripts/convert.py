@@ -1,29 +1,35 @@
 import os
-import re
+import requests
+
+def get_repo_files(owner, repo, branch='main'):
+    """Get all files from GitHub repository."""
+    url = f"https://api.github.com/repos/{owner}/{repo}/git/trees/{branch}?recursive=1"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return [item['path'] for item in response.json()['tree'] 
+                if item['type'] == 'blob' and 
+                not item['path'].startswith('.')]
+    return []
+
+def get_raw_content(owner, repo, branch, file_path):
+    """Get content from GitHub raw URL."""
+    url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{file_path}"
+    print(f"Fetching content from: {url}")
+    response = requests.get(url)
+    return response.text
 
 def convert_line(line):
     """Convert a single line from Surge to Clash format."""
-    # Skip empty lines
     if not line.strip():
         return line
         
-    # Handle comments
     if line.strip().startswith('#'):
         return line.strip() + '\n'
         
-    # Skip lines that don't need conversion
-    if not line.strip():
-        return line
-        
-    # Convert Surge rule format to Clash format
-    # The actual conversion logic remains the same as most formats are compatible
     return line
 
-def process_file(input_path, output_path):
-    """Process a single rule file."""
-    with open(input_path, 'r', encoding='utf-8') as f:
-        content = f.read()
-    
+def process_raw_content(content, output_path):
+    """Process raw content and save to file."""
     # Convert line by line
     converted_lines = []
     for line in content.splitlines(True):
@@ -40,35 +46,25 @@ def process_file(input_path, output_path):
     # Write converted content
     with open(output_path, 'w', encoding='utf-8') as f:
         f.writelines(converted_lines)
+    print(f"Saved to: {output_path}")
 
 def main():
     """Main function to handle the conversion process."""
-    source_dir = os.getenv('SOURCE_DIR', 'surge')
+    owner = "USNOCTURNE"
+    repo = "Surge"
+    branch = "main"
     target_dir = os.getenv('TARGET_DIR', 'clash-repo')
     
-    print(f"Source directory: {source_dir}")
-    print(f"Target directory: {target_dir}")
+    print(f"Getting files from {owner}/{repo}")
+    files = get_repo_files(owner, repo, branch)
+    print(f"Found files: {files}")
     
-    # List contents of source directory
-    print("\nSource directory contents:")
-    os.system(f"ls -la {source_dir}")
-    
-    # Process all files in surge directory
-    for root, _, files in os.walk(source_dir):
-        for file in files:
-            if file.endswith(('.list', '.conf')):  # Add other extensions if needed
-                # Calculate relative path and create corresponding path in clash directory
-                rel_path = os.path.relpath(os.path.join(root, file), source_dir)
-                surge_path = os.path.join(root, file)
-                clash_path = os.path.join(target_dir, rel_path)
-                
-                print(f"\nProcessing file: {surge_path} -> {clash_path}")
-                # Convert the file
-                process_file(surge_path, clash_path)
-    
-    # List contents of target directory
-    print("\nTarget directory contents after conversion:")
-    os.system(f"ls -la {target_dir}")
+    # Process each file
+    for file_path in files:
+        print(f"\nProcessing file: {file_path}")
+        content = get_raw_content(owner, repo, branch, file_path)
+        output_path = os.path.join(target_dir, file_path)
+        process_raw_content(content, output_path)
 
 if __name__ == '__main__':
     main()
