@@ -16,9 +16,14 @@ jobs:
         with:
           path: source-repo
 
-      - name: Checkout target repository
+      - name: Create and prepare target directory
         run: |
-          git clone https://oauth2:${{ secrets.PAT_TOKEN }}@github.com/usnocturne90/clash-auto.git clash-repo
+          mkdir -p clash-repo
+          cd clash-repo
+          git init
+          git remote add origin https://oauth2:${{ secrets.PAT_TOKEN }}@github.com/usnocturne90/clash-auto.git
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -35,16 +40,11 @@ jobs:
           python source-repo/.github/scripts/convert.py
         env:
           TARGET_DIR: clash-repo
-
-      - name: Configure Git
-        run: |
-          cd clash-repo
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           
       - name: Commit and Push Changes
         run: |
           cd clash-repo
           git add .
           git commit -m "chore: update clash rules"
-          git push
+          git branch -M main
+          git push -f origin main
