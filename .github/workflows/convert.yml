@@ -16,14 +16,22 @@ jobs:
         with:
           path: source-repo
 
-      - name: Create and prepare target directory
+      - name: Prepare target repository
         run: |
           mkdir -p clash-repo
           cd clash-repo
-          git init
-          git remote add origin https://oauth2:${{ secrets.PAT_TOKEN }}@github.com/usnocturne90/clash-auto.git
+          git init .
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add origin "https://${{ secrets.PAT_TOKEN }}@github.com/usnocturne90/clash-auto.git"
+          git fetch origin
+          if git ls-remote --heads origin main | grep main; then
+            git pull origin main
+          else
+            echo "# Clash Rules" > README.md
+            git add README.md
+            git commit -m "Initial commit"
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -45,6 +53,9 @@ jobs:
         run: |
           cd clash-repo
           git add .
-          git commit -m "chore: update clash rules"
-          git branch -M main
-          git push -f origin main
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update clash rules"
+            git push -u origin HEAD:main
+          fi
