@@ -35,23 +35,18 @@ jobs:
 
       - name: Convert Rules
         run: |
-          echo "=== Environment Info ==="
-          python --version
-          pip list
-          echo "\n=== Directory Structure ==="
-          ls -la
-          ls -la source-repo/
-          ls -la clash-repo/
-          echo "\n=== Running Conversion ==="
           python source-repo/.github/scripts/convert.py
         env:
           TARGET_DIR: clash-repo
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit and Push Changes
         run: |
           cd clash-repo
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git init
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
           git add .
-          git diff --staged --quiet || (git commit -m "chore: update clash rules" && git push)
+          git commit -m "chore: update clash rules"
+          git branch -M main
+          git remote add origin https://${{ secrets.PAT_TOKEN }}@github.com/usnocturne90/clash-auto.git
+          git push -f origin main
