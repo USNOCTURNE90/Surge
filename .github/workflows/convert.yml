@@ -19,7 +19,7 @@ jobs:
       - name: Checkout target repository
         uses: actions/checkout@v4
         with:
-          repository: usnocturne90/clash-auto  # 替换为你的目标仓库
+          repository: usnocturne90/clash-auto
           token: ${{ secrets.PAT_TOKEN }}
           path: clash-repo
 
@@ -28,12 +28,25 @@ jobs:
         with:
           python-version: '3.x'
       
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
       - name: Convert Rules
         run: |
+          echo "=== Environment Info ==="
+          python --version
+          pip list
+          echo "\n=== Directory Structure ==="
+          ls -la
+          ls -la source-repo/
+          ls -la clash-repo/
+          echo "\n=== Running Conversion ==="
           python source-repo/.github/scripts/convert.py
         env:
-          SOURCE_DIR: source-repo
           TARGET_DIR: clash-repo
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit and Push Changes
         run: |
