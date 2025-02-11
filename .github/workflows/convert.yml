@@ -1,35 +1,45 @@
-name: Convert Surge to Clash
+name: Convert and Push to Clash Repo
 
 on:
- push:
-   paths:
-     - 'surge/**'
-   branches:
-     - main
- workflow_dispatch:
-
-permissions:
- contents: write
+  push:
+    paths:
+      - 'surge/**'
+  workflow_dispatch:
 
 jobs:
- convert:
-   runs-on: ubuntu-latest
-   steps:
-     - uses: actions/checkout@v2
-     
-     - name: Set up Python
-       uses: actions/setup-python@v2
-       with:
-         python-version: '3.x'
-         
-     - name: Convert Rules
-       run: |
-         python .github/scripts/convert.py
-         
-     - name: Commit and Push
-       run: |
-         git config --local user.email "action@github.com"
-         git config --local user.name "GitHub Action"
-         git add clash-auto/
-         git commit -m "Auto convert: Surge to Clash rules" || exit 0
-         git push
+  convert:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+        with:
+          path: surge-repo
+          fetch-depth: 0
+
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          repository: your-username/clash-rules-repo  # 替换为你的目标仓库
+          token: ${{ secrets.PAT_TOKEN }}  # 需要设置个人访问令牌
+          path: clash-repo
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      
+      - name: Convert Rules
+        run: |
+          python surge-repo/.github/scripts/convert.py
+        env:
+          SOURCE_DIR: surge-repo/surge
+          TARGET_DIR: clash-repo
+
+      - name: Commit and Push Changes
+        run: |
+          cd clash-repo
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git diff --staged --quiet || (git commit -m "chore: update clash rules" && git push)
