@@ -20,7 +20,7 @@ jobs:
       - name: Checkout target repository
         uses: actions/checkout@v4
         with:
-          repository: your-username/clash-rules-repo  # 替换为你的目标仓库
+          repository: usnocturne90/clash-auto  # 替换为你的目标仓库
           token: ${{ secrets.PAT_TOKEN }}  # 需要设置个人访问令牌
           path: clash-repo
 
