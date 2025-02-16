@@ -1,3 +1,4 @@
+IP-CIDR,192.100.108.23/32
 DOMAIN,api.imem.app
 DOMAIN,api.swiftgram.app
 DOMAIN-SUFFIX,cdn-telegram.org
