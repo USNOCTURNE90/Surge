@@ -1,3 +1,4 @@
+IP-CIDR,120.68.0.0/14
 IP-CIDR,47.96.0.0/12
 DOMAIN-SUFFIX,myqcloud.com
 DOMAIN-SUFFIX,o529943.ingest.sentry.io
