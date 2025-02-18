@@ -612,7 +612,6 @@ DOMAIN-SUFFIX,www.msftncsi.com
 DOMAIN-SUFFIX,xbox.com
 DOMAIN-SUFFIX,xboxlive.com
 DOMAIN-SUFFIX,xsts.auth.xboxlive.com
-DOMAIN-SUFFIX,zftksc-launches.appsflyersdk.com
 IP-CIDR,120.133.33.222/32
 IP-CIDR,140.205.1.0/24
 IP-CIDR,162.14.0.0/18
