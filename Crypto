@@ -1,3 +1,4 @@
+DOMAIN-SUFFIX,appsflyer.com
 DOMAIN-SUFFIX,appsflyersdk.com
 IP-CIDR,120.24.0.0/14
 IP-CIDR,35.77.148.188/32
@@ -34,7 +35,6 @@ DOMAIN-SUFFIX,dev-yzlqn.quill.run
 DOMAIN-SUFFIX,img.daylight.xyz
 DOMAIN-SUFFIX,coinbasecdn.net
 DOMAIN-SUFFIX,mokexapp.io
-DOMAIN-SUFFIX,inapps.appsflyer.com
 DOMAIN-SUFFIX,mokexapp.me
 IP-CIDR,8.210.73.205/24
 DOMAIN-SUFFIX,bnappweb.biz
