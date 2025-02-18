@@ -108,8 +108,8 @@ DOMAIN-SUFFIX,out.viber.com
 DOMAIN-SUFFIX,api.usr.viber.com
 DOMAIN-SUFFIX,api.aws.viber.com
 DOMAIN-SUFFIX,*.viber.com
-IP-CIDR,52.0.0.0/14,no-resolve
-IP-CIDR,69.0.0.0/16,no-resolve
-IP-CIDR,103.0.0.0/16,no-resolve
+IP-CIDR,52.0.0.0/14
+IP-CIDR,69.0.0.0/16
+IP-CIDR,103.0.0.0/16
 DOMAIN-KEYWORD,viber-aws
 DOMAIN-KEYWORD,viber-akamai
