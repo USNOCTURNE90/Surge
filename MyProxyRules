@@ -16,7 +16,7 @@ DOMAIN-SUFFIX,images.cdn.prd.api.discomax.com
 DOMAIN-SUFFIX,events.prd.api.discomax.com
 DOMAIN-SUFFIX,default.beam-apac.prd.api.discomax.com
 IP-CIDR,35.215.189.119/24
-
+DOMAIN-SUFFIX,statsigapi.net
 DOMAIN-SUFFIX,d0r7clfv2slbaskjrbpfrgqzn4qtocrktla5akcjc611196246f6d3c6sac.d.aa.online-metrix.net
 DOMAIN,http-inputs-notion.splunkcloud.com
 DOMAIN-SUFFIX,notion-static.com
