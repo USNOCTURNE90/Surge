@@ -69,7 +69,6 @@ DOMAIN-SUFFIX,wa.onelink.me
 DOMAIN-SUFFIX,wa.appsflyer.com
 DOMAIN-SUFFIX,static-web.jjdsn.vip
 DOMAIN-SUFFIX,cdn.bitkeep.vip
-
 DOMAIN-SUFFIX,pushstat.api.engagelab.cc
 DOMAIN-SUFFIX,mc.yandex.ru
 DOMAIN-SUFFIX,img.gurenla.com
@@ -103,8 +102,6 @@ DOMAIN-SUFFIX,api.jup.ag
 DOMAIN-SUFFIX,jupiter-fe.helius-rpc.com
 DOMAIN-SUFFIX,worker.jup.ag
 DOMAIN-SUFFIX,tiplink.io
-
-
 DOMAIN-SUFFIX,qrc.bgstatic.com
 DOMAIN-SUFFIX,appapi.bgportable.com 
 DOMAIN-SUFFIX,bitgetimg.com
