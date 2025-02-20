@@ -74,8 +74,8 @@ def main():
         for file in files:
             if not file.startswith('.'):
                 input_path = os.path.join(root, file)
-                relative_path = os.path.relpath(input_path, 'rules')
-                output_path = os.path.join('clash-auto/rules', relative_path)
+                # 把文件直接输出到 clash-auto 根目录
+                output_path = os.path.join('clash-auto', os.path.basename(input_path))
                 process_file(input_path, output_path)
 
 if __name__ == '__main__':
