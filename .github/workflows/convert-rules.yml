@@ -4,7 +4,12 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'rules/**/*'
+      - 'AI/**/*'
+      - 'AppleDirect/**/*'
+      - 'AppleProxyRules/**/*'
+      - 'Crypto/**/*'
+      - 'Facebook/**/*'
+      - 'Financial/**/*'
 
 jobs:
   convert:
@@ -27,12 +32,10 @@ jobs:
 
       - name: Debug Info Before
         run: |
-          echo "当前目录:"
-          pwd
-          echo "\nSurge 仓库内容:"
-          ls -R
-          echo "\nClash-auto 仓库内容:"
-          ls -R clash-auto
+          echo "当前目录内容:"
+          ls -la
+          echo "\n各规则目录内容:"
+          ls -R AI AppleDirect AppleProxyRules Crypto Facebook Financial || true
 
       - name: Convert Rules
         run: |
@@ -40,8 +43,8 @@ jobs:
 
       - name: Debug Info After
         run: |
-          echo "转换后的 Clash-auto 仓库内容:"
-          ls -R clash-auto
+          echo "转换后的文件:"
+          ls -R clash-auto/
 
       - name: Commit and push changes
         run: |
@@ -49,6 +52,7 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add .
+          echo "Git status:"
           git status
           git commit -m "chore: sync rules from surge repository" || echo "No changes to commit"
           git push origin main
