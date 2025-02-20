@@ -1,0 +1,143 @@
+name: Surge to Clash Ruleset Converter
+
+on:
+  push:
+    branches: [ main ]  # 当 push 到 main 分支时触发
+  schedule:
+    - cron: '0 0 * * *'  # 每天 UTC 0点（北京时间早上8点）运行一次
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  convert-and-sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 检出 Surge 规则仓库
+      - name: Checkout Surge Repository
+        uses: actions/checkout@v4
+        
+      # 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      # 安装必要的依赖
+      - name: Install Dependencies
+        run: |
+          npm install js-yaml
+          
+      # 转换规则并同步
+      - name: Convert Surge to Clash and Sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_REPO: https://github.com/USNOCTURNE90/Clash-auto  # 替换为你的 clash-auto 仓库地址
+        run: |
+          # 创建临时目录
+          mkdir -p converted-rules
+          
+          # 创建转换脚本
+          cat << 'EOF' > convert.js
+          const fs = require('fs');
+          const yaml = require('js-yaml');
+          
+          // 支持的 Surge 规则类型
+          const supportedRules = [
+            'DOMAIN', 'DOMAIN-SUFFIX', 'DOMAIN-KEYWORD',
+            'IP-CIDR', 'IP-CIDR6', 'GEOIP'
+          ];
+          
+          // 读取 Surge 规则文件并转换
+          function convertRuleset(inputDir, outputDir) {
+            fs.readdirSync(inputDir).forEach(file => {
+              if (file.endsWith('.txt')) {
+                const content = fs.readFileSync(`${inputDir}/${file}`, 'utf8');
+                const lines = content.split('\n');
+                const clashRules = [];
+                const unsupportedRules = [];
+                
+                lines.forEach(line => {
+                  const trimmed = line.trim();
+                  if (!trimmed || trimmed.startsWith('#')) return;
+                  
+                  const [ruleType, ...rest] = trimmed.split(',');
+                  const policy = rest.pop();
+                  const value = rest.join(',').trim();
+                  
+                  if (supportedRules.includes(ruleType)) {
+                    // 转换为 Clash 格式
+                    let clashRule = '';
+                    switch(ruleType) {
+                      case 'DOMAIN':
+                        clashRule = `DOMAIN,${value}`;
+                        break;
+                      case 'DOMAIN-SUFFIX':
+                        clashRule = `DOMAIN-SUFFIX,${value}`;
+                        break;
+                      case 'DOMAIN-KEYWORD':
+                        clashRule = `DOMAIN-KEYWORD,${value}`;
+                        break;
+                      case 'IP-CIDR':
+                        clashRule = `IP-CIDR,${value}`;
+                        break;
+                      case 'IP-CIDR6':
+                        clashRule = `IP-CIDR6,${value}`;
+                        break;
+                      case 'GEOIP':
+                        clashRule = `GEOIP,${value}`;
+                        break;
+                    }
+                    clashRules.push(`${clashRule},${policy}`);
+                  } else {
+                    unsupportedRules.push(trimmed);
+                  }
+                });
+                
+                // 生成 Clash 规则文件
+                if (clashRules.length > 0) {
+                  fs.writeFileSync(
+                    `${outputDir}/${file.replace('.txt', '.yaml')}`,
+                    yaml.dump({ rules: clashRules })
+                  );
+                }
+                
+                // 记录不适用的规则
+                if (unsupportedRules.length > 0) {
+                  fs.writeFileSync(
+                    `${outputDir}/${file.replace('.txt', '_unsupported.txt')}`,
+                    `# Unsupported rules from ${file}\n` + unsupportedRules.join('\n')
+                  );
+                }
+              }
+            });
+          }
+          
+          // 执行转换
+          convertRuleset('./rules', './converted-rules');
+          EOF
+          
+          # 执行转换脚本
+          node convert.js
+          
+          # 配置 Git
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          
+          # 克隆目标仓库
+          git clone "https://$GITHUB_TOKEN@github.com/$TARGET_REPO.git" target-repo
+          
+          # 复制转换后的文件
+          cp -r converted-rules/* target-repo/
+          
+          # 提交到目标仓库
+          cd target-repo
+          git add .
+          git commit -m "Sync converted Surge rules to Clash format - $(date '+%Y-%m-%d %H:%M:%S')"
+          git push
+          
+      # 处理失败情况
+      - name: Handle Failure
+        if: failure()
+        run: |
+          echo "Conversion or sync failed!"
+          exit 1
