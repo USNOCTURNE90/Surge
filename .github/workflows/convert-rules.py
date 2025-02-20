@@ -2,11 +2,13 @@ name: Convert Surge Rules to Clash
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'rules/**/*'  # 匹配所有规则文件，不限制后缀
 
 jobs:
   convert:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout Surge repository
         uses: actions/checkout@v3
@@ -16,10 +18,16 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Create script
+      - name: Checkout Clash repository
+        uses: actions/checkout@v3
+        with:
+          repository: USNOCTURNE90/Clash-auto
+          token: ${{ secrets.PAT }}
+          path: clash-auto
+
+      - name: Create converter script
         run: |
-          mkdir -p scripts
-          cat > scripts/convert-rules.py << 'EOF'
+          cat > convert.py << 'EOF'
 import os
 import re
 from pathlib import Path
@@ -68,6 +76,10 @@ def process_file(input_path, output_path):
                 else:
                     skipped_rules.append(line.strip())
                     
+    # 添加 .list 后缀到输出文件
+    if not output_path.endswith('.list'):
+        output_path += '.list'
+                    
     with open(output_path, 'w', encoding='utf-8') as outfile:
         outfile.write("# 由Surge规则转换而来\n")
         outfile.write(f"# 原始文件: {input_path}\n")
@@ -83,54 +95,37 @@ def main():
     print("Current directory:", os.getcwd())
     print("Directory contents:", os.listdir())
     
-    surge_path = Path('rules')
-    clash_path = Path('clash-auto/rules')
-    
-    if not surge_path.exists():
-        print(f"Error: {surge_path} does not exist!")
+    # 检查 rules 目录是否存在
+    if not os.path.exists('rules'):
+        print("Error: rules directory not found!")
+        print("Current directory contents:", os.listdir())
         return
-        
-    print(f"Found rules directory: {surge_path}")
-    print("Rules directory contents:", list(surge_path.glob('**/*.list')))
-        
-    for file in surge_path.rglob('*.list'):
-        relative_path = file.relative_to(surge_path)
-        output_file = clash_path / relative_path
-        process_file(str(file), str(output_file))
+    
+    # 处理所有规则文件
+    for root, dirs, files in os.walk('rules'):
+        for file in files:
+            # 忽略隐藏文件和目录
+            if not file.startswith('.'):
+                input_path = os.path.join(root, file)
+                relative_path = os.path.relpath(input_path, 'rules')
+                output_path = os.path.join('clash-auto/rules', relative_path)
+                process_file(input_path, output_path)
 
 if __name__ == '__main__':
     main()
 EOF
 
-      - name: List directory contents
+      - name: List directories
         run: |
-          echo "Current directory:"
-          pwd
-          echo "\nAll contents:"
-          ls -R
-          echo "\nScript contents:"
-          cat scripts/convert-rules.py
-
-      - name: Checkout Clash repository
-        uses: actions/checkout@v3
-        with:
-          repository: USNOCTURNE90/Clash-auto
-          token: ${{ secrets.PAT }}
-          path: clash-auto
+          echo "Current directory contents:"
+          ls -la
+          echo "\nRules directory contents:"
+          ls -R rules || echo "No rules directory found"
 
       - name: Convert Rules
-        run: |
-          ls -la scripts/
-          cd scripts
-          python convert-rules.py
-
-      - name: List converted files
-        run: |
-          echo "Checking clash-auto/rules directory:"
-          ls -la clash-auto/rules || echo "Rules directory not found"
+        run: python convert.py
 
       - name: Commit and push changes
-        if: success()
         run: |
           cd clash-auto
           git config user.name "GitHub Actions Bot"
