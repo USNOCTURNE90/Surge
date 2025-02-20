@@ -2,15 +2,15 @@ name: Surge to Clash Ruleset Converter
 
 on:
   push:
-    branches: [ main ]  # 每次推送到 main 分支时立即触发
-  workflow_dispatch:  # 允许手动触发
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   convert-and-sync:
     runs-on: ubuntu-latest
     
     steps:
-      # 检出 Surge 规则仓库
+      # 检出 Surge 仓库
       - name: Checkout Surge Repository
         uses: actions/checkout@v4
         
@@ -20,23 +20,24 @@ jobs:
         with:
           node-version: '18'
           
-      # 安装必要的依赖
+      # 安装必要的依赖（包括 axios 用于 HTTP 请求）
       - name: Install Dependencies
         run: |
-          npm install js-yaml
+          npm install js-yaml axios
           
-      # 转换规则并同步
+      # 转换规则并同步（直接从 URL 处理）
       - name: Convert Surge to Clash and Sync
         env:
-          TOKEN: ${{ secrets.TOKEN }}  # 推荐使用默认的 GITHUB_TOKEN 或自定义 PAT
-          TARGET_REPO: USNOCTURNE90/clash-auto  # 替换为你的 clash-auto 仓库地址
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_REPO: USNOCTURNE90/clash-auto
+          RULE_URL: https://example.com/surge-rules.txt  # 替换为实际 Surge 规则 URL
         run: |
           # 创建临时目录
           mkdir -p converted-rules
           
           # 创建转换脚本
           cat << 'EOF' > convert.js
-          const fs = require('fs');
+          const axios = require('axios');
           const yaml = require('js-yaml');
           
           // 支持的 Surge 规则类型
@@ -45,80 +46,81 @@ jobs:
             'IP-CIDR', 'IP-CIDR6', 'GEOIP'
           ];
           
-          // 读取 Surge 规则文件并转换
-          function convertRuleset(inputDir, outputDir) {
-            fs.readdirSync(inputDir).forEach(file => {
-              // 匹配所有文本文件，包括没有后缀的或 .txt 后缀的文件
-              if (fs.statSync(`${inputDir}/${file}`).isFile() && 
-                  (file.endsWith('.txt') || !file.includes('.'))) {
-                const content = fs.readFileSync(`${inputDir}/${file}`, 'utf8');
-                const lines = content.split('\n');
-                const clashRules = [];
-                const unsupportedRules = [];
+          // 从 URL 读取并转换规则
+          async function convertRuleset(ruleUrl) {
+            try {
+              const response = await axios.get(ruleUrl);
+              const content = response.data;
+              const lines = content.split('\n');
+              const clashRules = [];
+              const unsupportedRules = [];
+              
+              lines.forEach(line => {
+                const trimmed = line.trim();
+                if (!trimmed || trimmed.startsWith('#')) return;
                 
-                lines.forEach(line => {
-                  const trimmed = line.trim();
-                  if (!trimmed || trimmed.startsWith('#')) return;
-                  
-                  const [ruleType, ...rest] = trimmed.split(',');
-                  const policy = rest.pop();
-                  const value = rest.join(',').trim();
-                  
-                  if (supportedRules.includes(ruleType)) {
-                    // 转换为 Clash 格式
-                    let clashRule = '';
-                    switch(ruleType) {
-                      case 'DOMAIN':
-                        clashRule = `DOMAIN,${value}`;
-                        break;
-                      case 'DOMAIN-SUFFIX':
-                        clashRule = `DOMAIN-SUFFIX,${value}`;
-                        break;
-                      case 'DOMAIN-KEYWORD':
-                        clashRule = `DOMAIN-KEYWORD,${value}`;
-                        break;
-                      case 'IP-CIDR':
-                        clashRule = `IP-CIDR,${value}`;
-                        break;
-                      case 'IP-CIDR6':
-                        clashRule = `IP-CIDR6,${value}`;
-                        break;
-                      case 'GEOIP':
-                        clashRule = `GEOIP,${value}`;
-                        break;
-                    }
-                    clashRules.push(`${clashRule},${policy}`);
-                  } else {
-                    unsupportedRules.push(trimmed);
+                const [ruleType, ...rest] = trimmed.split(',');
+                const policy = rest.pop();
+                const value = rest.join(',').trim();
+                
+                if (supportedRules.includes(ruleType)) {
+                  let clashRule = '';
+                  switch(ruleType) {
+                    case 'DOMAIN':
+                      clashRule = `DOMAIN,${value}`;
+                      break;
+                    case 'DOMAIN-SUFFIX':
+                      clashRule = `DOMAIN-SUFFIX,${value}`;
+                      break;
+                    case 'DOMAIN-KEYWORD':
+                      clashRule = `DOMAIN-KEYWORD,${value}`;
+                      break;
+                    case 'IP-CIDR':
+                      clashRule = `IP-CIDR,${value}`;
+                      break;
+                    case 'IP-CIDR6':
+                      clashRule = `IP-CIDR6,${value}`;
+                      break;
+                    case 'GEOIP':
+                      clashRule = `GEOIP,${value}`;
+                      break;
                   }
-                });
-                
-                // 生成 Clash 规则文件（使用原始文件名去掉扩展名，如果有）
-                const baseName = file.replace('.txt', '');
-                if (clashRules.length > 0) {
-                  fs.writeFileSync(
-                    `${outputDir}/${baseName}.yaml`,
-                    yaml.dump({ rules: clashRules })
-                  );
+                  clashRules.push(`${clashRule},${policy}`);
+                } else {
+                  unsupportedRules.push(trimmed);
                 }
-                
-                // 记录不适用的规则
-                if (unsupportedRules.length > 0) {
-                  fs.writeFileSync(
-                    `${outputDir}/${baseName}_unsupported.txt`,
-                    `# Unsupported rules from ${file}\n` + unsupportedRules.join('\n')
-                  );
-                }
+              });
+              
+              // 生成 Clash 规则文件（使用默认文件名 rules.yaml）
+              if (clashRules.length > 0) {
+                fs.writeFileSync(
+                  'converted-rules/rules.yaml',
+                  yaml.dump({ rules: clashRules })
+                );
               }
-            });
+              
+              // 记录不适用的规则
+              if (unsupportedRules.length > 0) {
+                fs.writeFileSync(
+                  'converted-rules/unsupported.txt',
+                  `# Unsupported rules from ${ruleUrl}\n` + unsupportedRules.join('\n')
+                );
+              }
+            } catch (error) {
+              console.error('Error fetching or processing rules:', error);
+              throw error;
+            }
           }
           
-          // 执行转换（从根目录读取）
-          convertRuleset('.', './converted-rules');
+          // 执行转换（从环境变量中的 RULE_URL 读取）
+          convertRuleset(process.env.RULE_URL);
           EOF
           
           # 执行转换脚本
-          node convert.js
+          node convert.js || exit 1
+          
+          # 创建目标目录（如果不存在）
+          mkdir -p converted-rules
           
           # 配置 Git
           git config --global user.name "GitHub Action"
@@ -144,9 +146,9 @@ jobs:
           git commit -m "Auto-sync: Convert Surge rules to Clash format"
           git push origin main
           
-      # 可选：上传未支持规则作为 artifact 以便检查
+      # 上传未支持规则作为 artifact
       - name: Upload Unsupported Rules
         uses: actions/upload-artifact@v3
         with:
           name: unsupported-rules
-          path: converted-rules/*_unsupported.txt
+          path: converted-rules/unsupported.txt
