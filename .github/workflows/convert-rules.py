@@ -1,33 +1,3 @@
-name: Convert Surge Rules to Clash
-
-on:
-  workflow_dispatch:
-  push:
-    paths:
-      - 'rules/**/*'  # 匹配所有规则文件，不限制后缀
-
-jobs:
-  convert:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Surge repository
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Checkout Clash repository
-        uses: actions/checkout@v3
-        with:
-          repository: USNOCTURNE90/Clash-auto
-          token: ${{ secrets.PAT }}
-          path: clash-auto
-
-      - name: Create converter script
-        run: |
-          cat > convert.py << 'EOF'
 import os
 import re
 from pathlib import Path
@@ -95,16 +65,13 @@ def main():
     print("Current directory:", os.getcwd())
     print("Directory contents:", os.listdir())
     
-    # 检查 rules 目录是否存在
     if not os.path.exists('rules'):
         print("Error: rules directory not found!")
         print("Current directory contents:", os.listdir())
         return
     
-    # 处理所有规则文件
     for root, dirs, files in os.walk('rules'):
         for file in files:
-            # 忽略隐藏文件和目录
             if not file.startswith('.'):
                 input_path = os.path.join(root, file)
                 relative_path = os.path.relpath(input_path, 'rules')
@@ -113,23 +80,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-EOF
-
-      - name: List directories
-        run: |
-          echo "Current directory contents:"
-          ls -la
-          echo "\nRules directory contents:"
-          ls -R rules || echo "No rules directory found"
-
-      - name: Convert Rules
-        run: python convert.py
-
-      - name: Commit and push changes
-        run: |
-          cd clash-auto
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-          git add rules/
-          git commit -m "chore: sync rules from surge repository" || echo "No changes to commit"
-          git push origin main
