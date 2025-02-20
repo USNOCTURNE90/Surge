@@ -28,8 +28,8 @@ jobs:
       # 转换规则并同步
       - name: Convert Surge to Clash and Sync
         env:
-          TOKEN: ${{ secrets.TOKEN }}  # 使用你的 TOKEN Secret
-          TARGET_REPO: username/clash-auto  # 替换为你的 clash-auto 仓库地址
+          TOKEN: ${{ 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 }}  # 使用你的 TOKEN Secret
+          TARGET_REPO: USNOCTURNE90/clash-auto  # 替换为你的 clash-auto 仓库地址
         run: |
           # 创建临时目录
           mkdir -p converted-rules
@@ -48,7 +48,9 @@ jobs:
           // 读取 Surge 规则文件并转换
           function convertRuleset(inputDir, outputDir) {
             fs.readdirSync(inputDir).forEach(file => {
-              if (file.endsWith('.txt')) {
+              // 匹配所有文本文件，包括没有后缀的或 .txt 后缀的文件
+              if (fs.statSync(`${inputDir}/${file}`).isFile() && 
+                  (file.endsWith('.txt') || !file.includes('.'))) {
                 const content = fs.readFileSync(`${inputDir}/${file}`, 'utf8');
                 const lines = content.split('\n');
                 const clashRules = [];
@@ -91,10 +93,11 @@ jobs:
                   }
                 });
                 
-                // 生成 Clash 规则文件
+                // 生成 Clash 规则文件（使用原始文件名去掉扩展名，如果有）
+                const baseName = file.replace('.txt', '');
                 if (clashRules.length > 0) {
                   fs.writeFileSync(
-                    `${outputDir}/${file.replace('.txt', '.yaml')}`,
+                    `${outputDir}/${baseName}.yaml`,
                     yaml.dump({ rules: clashRules })
                   );
                 }
@@ -102,7 +105,7 @@ jobs:
                 // 记录不适用的规则
                 if (unsupportedRules.length > 0) {
                   fs.writeFileSync(
-                    `${outputDir}/${file.replace('.txt', '_unsupported.txt')}`,
+                    `${outputDir}/${baseName}_unsupported.txt`,
                     `# Unsupported rules from ${file}\n` + unsupportedRules.join('\n')
                   );
                 }
@@ -110,8 +113,8 @@ jobs:
             });
           }
           
-          // 执行转换
-          convertRuleset('./rules', './converted-rules');
+          // 执行转换（从根目录读取）
+          convertRuleset('.', './converted-rules');
           EOF
           
           # 执行转换脚本
@@ -124,18 +127,4 @@ jobs:
           # 克隆目标仓库，使用 TOKEN 认证
           git clone "https://x-access-token:$TOKEN@github.com/$TARGET_REPO.git" target-repo
           
-          # 复制转换后的文件
-          cp -r converted-rules/* target-repo/
-          
-          # 提交到目标仓库
-          cd target-repo
-          git add .
-          git commit -m "Sync converted Surge rules to Clash format - $(date '+%Y-%m-%d %H:%M:%S')"
-          git push "https://x-access-token:$TOKEN@github.com/$TARGET_REPO.git" HEAD:main
-          
-      # 处理失败情况
-      - name: Handle Failure
-        if: failure()
-        run: |
-          echo "Conversion or sync failed!"
-          exit 1
+          # 复制
