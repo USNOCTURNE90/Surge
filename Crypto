@@ -1,6 +1,6 @@
 DOMAIN-SUFFIX,jpush.bntrace.com
 DOMAIN-SUFFIX,appsflyer.com
-DOMAIN,o529943.ingest.sentry.io
+DOMAIN,sentry.io
 DOMAIN-SUFFIX,appsflyersdk.com
 IP-CIDR,120.24.0.0/14
 IP-CIDR,35.77.148.188/32
