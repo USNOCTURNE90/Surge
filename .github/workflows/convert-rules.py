@@ -32,13 +32,8 @@ def convert_rule(line):
     return f"{rule_types[rule_type]},{parts[1]}", True
 
 def process_file(input_path, output_path):
-    print(f"开始处理文件: {input_path} -> {output_path}")
+    print(f"处理文件: {input_path} -> {output_path}")
     
-    # 检查输入文件是否存在
-    if not os.path.exists(input_path):
-        print(f"错误: 输入文件不存在: {input_path}")
-        return False
-        
     try:
         with open(input_path, 'r', encoding='utf-8') as infile:
             rules = []
@@ -50,8 +45,6 @@ def process_file(input_path, output_path):
                         rules.append(converted_rule)
                     else:
                         skipped_rules.append(line.strip())
-        
-        print(f"转换完成: 成功转换 {len(rules)} 条规则，跳过 {len(skipped_rules)} 条规则")
                     
         # 添加 .list 后缀到输出文件
         if not output_path.endswith('.list'):
@@ -69,49 +62,38 @@ def process_file(input_path, output_path):
                     outfile.write(f"# {rule}\n")
             outfile.write("\n")
             outfile.write("\n".join(rules))
-            
-        print(f"文件已保存: {output_path}")
+            print(f"成功写入文件: {output_path}")
         return True
-        
     except Exception as e:
-        print(f"处理文件时出错: {e}")
+        print(f"处理文件时出错: {str(e)}")
         return False
 
 def main():
-    print("=== 开始规则转换 ===")
-    print("当前工作目录:", os.getcwd())
-    print("目录内容:", os.listdir())
+    print("=== 开始转换规则 ===")
+    print("当前目录:", os.getcwd())
     
-    # 检查 rules 目录
-    if not os.path.exists('rules'):
-        print("错误: rules 目录不存在!")
-        print("当前目录内容:", os.listdir())
-        return
+    # 要处理的目录列表
+    directories = [
+        'AI', 'AppleDirect', 'AppleProxyRules', 'Crypto',
+        'Facebook', 'Financial'
+    ]
     
-    print("Found rules directory:", os.listdir('rules'))
+    converted_count = 0
+    for directory in directories:
+        if os.path.exists(directory):
+            print(f"\n处理目录: {directory}")
+            for root, dirs, files in os.walk(directory):
+                for file in files:
+                    if not file.startswith('.'):  # 跳过隐藏文件
+                        input_path = os.path.join(root, file)
+                        # 保持相同的目录结构
+                        rel_path = os.path.relpath(input_path)
+                        output_path = os.path.join('clash-auto', rel_path)
+                        if process_file(input_path, output_path):
+                            converted_count += 1
     
-    # 检查 clash-auto 目录
-    if not os.path.exists('clash-auto'):
-        print("错误: clash-auto 目录不存在!")
-        return
-        
-    print("Found clash-auto directory:", os.listdir('clash-auto'))
-    
-    # 处理所有规则文件
-    processed_files = 0
-    for root, dirs, files in os.walk('rules'):
-        for file in files:
-            if not file.startswith('.'):
-                input_path = os.path.join(root, file)
-                # 保持目录结构
-                rel_path = os.path.relpath(input_path, 'rules')
-                output_path = os.path.join('clash-auto', rel_path)
-                
-                if process_file(input_path, output_path):
-                    processed_files += 1
-    
-    print(f"=== 转换完成 ===")
-    print(f"共处理 {processed_files} 个文件")
+    print(f"\n=== 转换完成 ===")
+    print(f"共转换 {converted_count} 个文件")
 
 if __name__ == '__main__':
     main()
