@@ -16,10 +16,8 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Create directories and script
+      - name: Create script
         run: |
-          pwd
-          echo "Creating script..."
           mkdir -p scripts
           cat > scripts/convert-rules.py << 'EOF'
 import os
@@ -92,6 +90,9 @@ def main():
         print(f"Error: {surge_path} does not exist!")
         return
         
+    print(f"Found rules directory: {surge_path}")
+    print("Rules directory contents:", list(surge_path.glob('**/*.list')))
+        
     for file in surge_path.rglob('*.list'):
         relative_path = file.relative_to(surge_path)
         output_file = clash_path / relative_path
@@ -100,8 +101,15 @@ def main():
 if __name__ == '__main__':
     main()
 EOF
-          ls -la scripts/
-          echo "Script created."
+
+      - name: List directory contents
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "\nAll contents:"
+          ls -R
+          echo "\nScript contents:"
+          cat scripts/convert-rules.py
 
       - name: Checkout Clash repository
         uses: actions/checkout@v3
@@ -110,20 +118,19 @@ EOF
           token: ${{ secrets.PAT }}
           path: clash-auto
 
-      - name: Directory Structure
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "\nDirectory contents:"
-          ls -la
-          echo "\nRules directory (if exists):"
-          ls -la rules || echo "Rules directory not found"
-
       - name: Convert Rules
         run: |
-          python scripts/convert-rules.py
+          ls -la scripts/
+          cd scripts
+          python convert-rules.py
+
+      - name: List converted files
+        run: |
+          echo "Checking clash-auto/rules directory:"
+          ls -la clash-auto/rules || echo "Rules directory not found"
 
       - name: Commit and push changes
+        if: success()
         run: |
           cd clash-auto
           git config user.name "GitHub Actions Bot"
