@@ -2,9 +2,7 @@ name: Surge to Clash Ruleset Converter
 
 on:
   push:
-    branches: [ main ]  # 当 push 到 main 分支时触发
-  schedule:
-    - cron: '0 0 * * *'  # 每天 UTC 0点（北京时间早上8点）运行一次
+    branches: [ main ]  # 每次推送到 main 分支时立即触发
   workflow_dispatch:  # 允许手动触发
 
 jobs:
@@ -30,8 +28,8 @@ jobs:
       # 转换规则并同步
       - name: Convert Surge to Clash and Sync
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TARGET_REPO: https://github.com/USNOCTURNE90/Clash-auto  # 替换为你的 clash-auto 仓库地址
+          TOKEN: ${{ secrets.TOKEN }}  # 使用你的 TOKEN Secret
+          TARGET_REPO: username/clash-auto  # 替换为你的 clash-auto 仓库地址
         run: |
           # 创建临时目录
           mkdir -p converted-rules
@@ -123,8 +121,8 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           
-          # 克隆目标仓库
-          git clone "https://$GITHUB_TOKEN@github.com/$TARGET_REPO.git" target-repo
+          # 克隆目标仓库，使用 TOKEN 认证
+          git clone "https://x-access-token:$TOKEN@github.com/$TARGET_REPO.git" target-repo
           
           # 复制转换后的文件
           cp -r converted-rules/* target-repo/
@@ -133,7 +131,7 @@ jobs:
           cd target-repo
           git add .
           git commit -m "Sync converted Surge rules to Clash format - $(date '+%Y-%m-%d %H:%M:%S')"
-          git push
+          git push "https://x-access-token:$TOKEN@github.com/$TARGET_REPO.git" HEAD:main
           
       # 处理失败情况
       - name: Handle Failure
