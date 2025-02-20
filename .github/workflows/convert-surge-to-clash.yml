@@ -28,7 +28,7 @@ jobs:
       # 转换规则并同步
       - name: Convert Surge to Clash and Sync
         env:
-          TOKEN: ${{ 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 }}  # 使用你的 TOKEN Secret
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 推荐使用默认的 GITHUB_TOKEN 或自定义 PAT
           TARGET_REPO: USNOCTURNE90/clash-auto  # 替换为你的 clash-auto 仓库地址
         run: |
           # 创建临时目录
@@ -127,4 +127,26 @@ jobs:
           # 克隆目标仓库，使用 TOKEN 认证
           git clone "https://x-access-token:$TOKEN@github.com/$TARGET_REPO.git" target-repo
           
-          # 复制
+          # 复制转换后的文件到目标仓库
+          cp -r converted-rules/* target-repo/
+          
+          # 切换到目标仓库目录
+          cd target-repo
+          
+          # 检查是否有更改
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          
+          # 提交更改并推送
+          git commit -m "Auto-sync: Convert Surge rules to Clash format"
+          git push origin main
+          
+      # 可选：上传未支持规则作为 artifact 以便检查
+      - name: Upload Unsupported Rules
+        uses: actions/upload-artifact@v3
+        with:
+          name: unsupported-rules
+          path: converted-rules/*_unsupported.txt
