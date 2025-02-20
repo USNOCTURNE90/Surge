@@ -23,6 +23,20 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: List Directories Before
+        run: |
+          echo "当前目录内容:"
+          pwd
+          ls -la
+          
+          echo "\n规则目录内容:"
+          for dir in AI AppleDirect AppleProxyRules Crypto Facebook Financial; do
+            if [ -d "$dir" ]; then
+              echo "\n=== $dir 目录内容 ==="
+              ls -la "$dir"
+            fi
+          done
+
       - name: Checkout Clash repository
         uses: actions/checkout@v3
         with:
@@ -30,21 +44,16 @@ jobs:
           token: ${{ secrets.PAT }}
           path: clash-auto
 
-      - name: Debug Info Before
-        run: |
-          echo "当前目录内容:"
-          ls -la
-          echo "\n各规则目录内容:"
-          ls -R AI AppleDirect AppleProxyRules Crypto Facebook Financial || true
-
       - name: Convert Rules
         run: |
           python .github/workflows/convert-rules.py
 
-      - name: Debug Info After
+      - name: Check Results
         run: |
-          echo "转换后的文件:"
+          echo "转换后的文件内容:"
           ls -R clash-auto/
+          echo "\nclash-auto 目录大小:"
+          du -sh clash-auto/
 
       - name: Commit and push changes
         run: |
@@ -52,7 +61,7 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add .
-          echo "Git status:"
+          echo "\nGit status:"
           git status
           git commit -m "chore: sync rules from surge repository" || echo "No changes to commit"
           git push origin main
