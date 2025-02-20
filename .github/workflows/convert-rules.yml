@@ -3,8 +3,8 @@ name: Convert Surge Rules to Clash
 on:
   push:
     paths:
-      - 'rules/**/*.list'  # 触发条件：规则文件发生变化
-  workflow_dispatch:  # 允许手动触发
+      - 'rules/**/*.list'
+  workflow_dispatch:
 
 jobs:
   convert:
@@ -19,8 +19,8 @@ jobs:
       - name: Checkout Clash repository
         uses: actions/checkout@v3
         with:
-          repository: USNOCTURNE90/clash-auto  # 替换成你的Clash仓库
-          token: ${{ secrets.PAT }}  # 需要设置Personal Access Token
+          repository: USNOCTURNE90/Clash-auto
+          token: ${{ secrets.PAT }}
           path: clash-repo
 
       - name: Set up Python
@@ -28,12 +28,24 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Debug Info
+        run: |
+          pwd
+          ls -la
+          echo "Current directory contents:"
+          ls -R
+
       - name: Convert Rules
         run: |
           python convert-rules.py
         env:
           SURGE_RULES_PATH: surge-repo/rules
           CLASH_RULES_PATH: clash-repo/rules
+
+      - name: List converted files
+        run: |
+          echo "Converted files in clash-repo:"
+          ls -R clash-repo/rules || echo "Rules directory not found"
 
       - name: Commit and push changes
         run: |
