@@ -34,6 +34,6 @@ jobs:
           cd clash-auto
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add rules/
+          git add .
           git commit -m "chore: sync rules from surge repository" || echo "No changes to commit"
           git push origin main
