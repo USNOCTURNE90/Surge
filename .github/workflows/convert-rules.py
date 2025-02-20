@@ -13,43 +13,38 @@ jobs:
     steps:
       - name: Checkout Surge repository
         uses: actions/checkout@v3
-        with:
-          path: surge-repo
 
       - name: Checkout Clash repository
         uses: actions/checkout@v3
         with:
           repository: USNOCTURNE90/Clash-auto
           token: ${{ secrets.PAT }}
-          path: clash-repo
+          path: clash-auto
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Debug working directory
+      - name: Debug Info
         run: |
+          echo "Current directory:"
           pwd
-          ls -la surge-repo
+          echo "Directory contents:"
           ls -la
+          echo "GitHub workspace:"
+          echo $GITHUB_WORKSPACE
 
       - name: Convert Rules
         run: |
-          cd surge-repo
-          python convert-rules.py
+          python .github/workflows/convert-rules.py
         env:
           SURGE_RULES_PATH: rules
-          CLASH_RULES_PATH: ../clash-repo/rules
-
-      - name: List converted files
-        run: |
-          echo "Converted files in clash-repo:"
-          ls -R clash-repo/rules || echo "Rules directory not found"
+          CLASH_RULES_PATH: clash-auto/rules
 
       - name: Commit and push changes
         run: |
-          cd clash-repo
+          cd clash-auto
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add rules/
