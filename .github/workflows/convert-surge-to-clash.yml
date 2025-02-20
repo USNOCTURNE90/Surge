@@ -28,7 +28,7 @@ jobs:
       # 转换规则并同步
       - name: Convert Surge to Clash and Sync
         env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 推荐使用默认的 GITHUB_TOKEN 或自定义 PAT
+          TOKEN: ${{ secrets.TOKEN }}  # 推荐使用默认的 GITHUB_TOKEN 或自定义 PAT
           TARGET_REPO: USNOCTURNE90/clash-auto  # 替换为你的 clash-auto 仓库地址
         run: |
           # 创建临时目录
