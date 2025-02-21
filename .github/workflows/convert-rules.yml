@@ -1,67 +1,37 @@
-name: Convert Surge Rules to Clash
+name: Convert Rules
 
 on:
-  workflow_dispatch:
   push:
-    paths:
-      - 'AI/**/*'
-      - 'AppleDirect/**/*'
-      - 'AppleProxyRules/**/*'
-      - 'Crypto/**/*'
-      - 'Facebook/**/*'
-      - 'Financial/**/*'
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   convert:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout Surge repository
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: List Directories Before
-        run: |
-          echo "当前目录内容:"
-          pwd
-          ls -la
-          
-          echo "\n规则目录内容:"
-          for dir in AI AppleDirect AppleProxyRules Crypto Facebook Financial; do
-            if [ -d "$dir" ]; then
-              echo "\n=== $dir 目录内容 ==="
-              ls -la "$dir"
-            fi
-          done
-
-      - name: Checkout Clash repository
-        uses: actions/checkout@v3
-        with:
-          repository: USNOCTURNE90/Clash-auto
-          token: ${{ secrets.PAT }}
-          path: clash-auto
-
-      - name: Convert Rules
-        run: |
-          python .github/workflows/convert-rules.py
-
-      - name: Check Results
-        run: |
-          echo "转换后的文件内容:"
-          ls -R clash-auto/
-          echo "\nclash-auto 目录大小:"
-          du -sh clash-auto/
-
-      - name: Commit and push changes
-        run: |
-          cd clash-auto
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-          git add .
-          echo "\nGit status:"
-          git status
-          git commit -m "chore: sync rules from surge repository" || echo "No changes to commit"
-          git push origin main
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        
+    - name: Create output directory
+      run: mkdir -p clash-auto
+      
+    - name: Run conversion script
+      run: python convert_script.py
+      
+    - name: Commit changes
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add clash-auto/
+        git commit -m "Update converted rules" || echo "No changes to commit"
+        git push
