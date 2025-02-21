@@ -32,25 +32,26 @@ def convert_rule(line):
     return f"{rule_types[rule_type]},{parts[1]}", True
 
 def get_ruleset_name(file_path):
-    """从文件内容中获取规则集名称"""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             first_line = f.readline().strip()
             if first_line.startswith('#'):
-                # 移除 # 和空格
                 return first_line.lstrip('#').strip()
     except:
         pass
-    # 如果没有找到名称，使用文件名
     return os.path.basename(file_path)
 
 def process_file(input_path, output_path):
     ruleset_name = get_ruleset_name(input_path)
-    print(f"\n=== 正在处理规则集: {ruleset_name} ===")
-    print(f"输入文件: {input_path}")
-    print(f"输出文件: {output_path}")
+    print(f"\n=== Processing ruleset: {ruleset_name} ===")
+    print(f"Input file: {input_path}")
+    print(f"Output file: {output_path}")
     
     try:
+        if not os.path.exists(input_path):
+            print(f"Input file not found: {input_path}")
+            return False
+            
         with open(input_path, 'r', encoding='utf-8') as infile:
             rules = []
             skipped_rules = []
@@ -62,54 +63,52 @@ def process_file(input_path, output_path):
                     else:
                         skipped_rules.append(line.strip())
                     
-        # 确保输出目录存在
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
                     
         with open(output_path, 'w', encoding='utf-8') as outfile:
-            outfile.write("# 由Surge规则转换而来\n")
-            outfile.write(f"# 规则集: {ruleset_name}\n")
-            outfile.write(f"# 原始文件: {input_path}\n")
+            outfile.write("# Converted from Surge rules\n")
+            outfile.write(f"# Ruleset: {ruleset_name}\n")
+            outfile.write(f"# Original file: {input_path}\n")
             if skipped_rules:
-                outfile.write("\n# 以下规则在转换时被跳过（不兼容）:\n")
+                outfile.write("\n# Skipped incompatible rules:\n")
                 for rule in skipped_rules:
                     outfile.write(f"# {rule}\n")
             outfile.write("\n")
             outfile.write("\n".join(rules))
             
-        print(f"规则集 {ruleset_name} 处理完成")
-        print(f"- 转换规则数: {len(rules)}")
-        print(f"- 跳过规则数: {len(skipped_rules)}")
+        print(f"Ruleset {ruleset_name} processed successfully")
+        print(f"- Converted rules: {len(rules)}")
+        print(f"- Skipped rules: {len(skipped_rules)}")
         return True
     except Exception as e:
-        print(f"处理规则集 {ruleset_name} 时出错: {str(e)}")
+        print(f"Error processing ruleset {ruleset_name}: {str(e)}")
         return False
 
 def main():
-    print("\n=== 开始转换规则 ===")
-    print(f"当前工作目录: {os.getcwd()}")
+    print("\n=== Starting rule conversion ===")
+    print(f"Current working directory: {os.getcwd()}")
     
     processed_count = 0
+    input_dir = os.getenv('INPUT_DIR', '.')  # 可以设置为环境变量
+    output_base_dir = os.getenv('OUTPUT_DIR', 'clash-auto')
     
-    # 遍历所有目录
-    for item in os.listdir():
-        if item.startswith('.') or item == 'clash-auto':
-            continue
+    # 创建输出目录
+    os.makedirs(output_base_dir, exist_ok=True)
+    
+    for root, dirs, files in os.walk(input_dir):
+        for file in files:
+            if file.startswith('.') or 'clash-auto' in root:
+                continue
+                
+            input_path = os.path.join(root, file)
+            rel_path = os.path.relpath(input_path, input_dir)
+            output_path = os.path.join(output_base_dir, rel_path)
             
-        item_path = os.path.join(os.getcwd(), item)
-        if os.path.isdir(item_path):
-            # 遍历目录中的所有文件
-            for root, dirs, files in os.walk(item_path):
-                for file in files:
-                    if not file.startswith('.'):
-                        input_path = os.path.join(root, file)
-                        rel_path = os.path.relpath(input_path, os.getcwd())
-                        output_path = os.path.join('clash-auto', rel_path)
-                        
-                        if process_file(input_path, output_path):
-                            processed_count += 1
+            if process_file(input_path, output_path):
+                processed_count += 1
     
-    print(f"\n=== 转换完成 ===")
-    print(f"总共处理规则集数量: {processed_count}")
+    print(f"\n=== Conversion completed ===")
+    print(f"Total processed rulesets: {processed_count}")
 
 if __name__ == '__main__':
     main()
