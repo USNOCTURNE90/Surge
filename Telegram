@@ -1,5 +1,4 @@
 #Telegram
-IP-CIDR,95.161.76.100/31,REJECT
 IP-CIDR,192.100.108.23/32
 DOMAIN,api.imem.app
 DOMAIN,api.swiftgram.app
