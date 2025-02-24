@@ -149,4 +149,20 @@ DOMAIN-SUFFIX,match.adsrvr.org
 DOMAIN-SUFFIX,logx.optimizely.com
 DOMAIN-SUFFIX,cdn.optimizely.com
 DOMAIN-SUFFIX,akamai.tiqcdn.com
+DOMAIN-SUFFIX,d0r7clfv2slbaskjrbpfrgqzn4qtocrktla5akcjc611196246f6d3c6sac.d.aa.online-metrix.net
+DOMAIN-SUFFIX,finance,YahooFinanceProxy
+DOMAIN-SUFFIX,market,YahooFinanceProxy
+DOMAIN-SUFFIX,quote,YahooFinanceProxy
+DOMAIN-SUFFIX,stocks,YahooFinanceProxy
+DOMAIN-SUFFIX,YahooFinanceProxy
+DOMAIN-SUFFIX,6bt0.com
+DOMAIN-SUFFIX,cdn-fastly.obsproject.com
+DOMAIN-SUFFIX,finance.yahoo.com,YahooFinanceProxy
+DOMAIN-SUFFIX,ingest.contribute.live-video.net
+DOMAIN-SUFFIX,o.ss2.us
+DOMAIN-SUFFIX,obsproject.com
+DOMAIN-SUFFIX,store.steampowered.com
+DOMAIN-SUFFIX,yahoo.com,YahooFinanceProxy
+DOMAIN-SUFFIX,yahooapis.com,YahooFinanceProxy
+DOMAIN-SUFFIX,yimg.com,YahooFinanceProxy
 
