@@ -54,6 +54,7 @@ IP-CIDR,35.186.0.0/17
 IP-CIDR,35.192.0.0/14
 
 # Anthropic Claude API Surge Rules
+DOMAIN-SUFFIX,claudeusercontent.com
 DOMAIN-SUFFIX,anthropic.com
 DOMAIN-SUFFIX,anthropic.ai
 DOMAIN,api.anthropic.com
