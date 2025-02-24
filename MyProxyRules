@@ -1,115 +1,114 @@
-# > KEYWORD
-DOMAIN-KEYWORD,6bt0.com
-DOMAIN-KEYWORD,www.coze.com
-DOMAIN-KEYWORD,docker
-DOMAIN-KEYWORD,mastodon
-DOMAIN-KEYWORD,techhub.social
-DOMAIN-KEYWORD,macked
-DOMAIN-KEYWORD,mobile.eum-appdynamics.com
-DOMAIN-KEYWORD,aa.online-metrix.net
-DOMAIN-KEYWORD,cdntm.hsbc.com.hk
-DOMAIN-KEYWORD,cdnbc-logs.hsbc.com
-DOMAIN-KEYWORD,nssurge.com
-# > SUFFIx
-DOMAIN-SUFFIX,telegraph.prd.api.discomax.com
-DOMAIN-SUFFIX,images.cdn.prd.api.discomax.com
-DOMAIN-SUFFIX,events.prd.api.discomax.com
-DOMAIN-SUFFIX,default.beam-apac.prd.api.discomax.com
-IP-CIDR,35.215.189.119/24
-DOMAIN-SUFFIX,statsigapi.net
-DOMAIN-SUFFIX,d0r7clfv2slbaskjrbpfrgqzn4qtocrktla5akcjc611196246f6d3c6sac.d.aa.online-metrix.net
-DOMAIN,http-inputs-notion.splunkcloud.com
-DOMAIN-SUFFIX,notion-static.com
-DOMAIN-SUFFIX,notion.com
-DOMAIN-SUFFIX,notion.new
-DOMAIN-SUFFIX,notion.site
-DOMAIN-SUFFIX,notion.so
-DOMAIN-SUFFIX,adtidy.org
-DOMAIN-SUFFIX,sb.adtidy.org
-DOMAIN-SUFFIX,api.revenuecat.com
-DOMAIN-SUFFIX,whatshub.top
-DOMAIN-SUFFIX,freedidi.com
-DOMAIN-SUFFIX,onlyfans.com
-DOMAIN-SUFFIX,duyaoss.com
-DOMAIN-SUFFIX,sub.nexconvert.com
-DOMAIN-SUFFIX,v3.paddleapi.com
-DOMAIN-SUFFIX,software.charliemonroe.net
-DOMAIN-SUFFIX,software.charliemonroe.net
-DOMAIN-SUFFIX,checkout.paddle.com
-DOMAIN-SUFFIX,downiestatistics.com
-DOMAIN-SUFFIX,ocsp.digicert.com
-DOMAIN-SUFFIX,c.go-mpulse.net
-DOMAIN-SUFFIX,blackmagicdesign.com
-DOMAIN-SUFFIX,blackmagiccloud.com
-DOMAIN-SUFFIX,resolve.blackmagicdesign.com
-DOMAIN-KEYWORD,davinciresolve
-DOMAIN-SUFFIX,bmdstatic.com
-DOMAIN-SUFFIX,bmd-support.com
-DOMAIN-SUFFIX,bmdinfo.com
-DOMAIN-SUFFIX,bmdsoftware.com
-DOMAIN-SUFFIX,bmdreseller.com
-DOMAIN-SUFFIX,bmdcloud.com
-DOMAIN-SUFFIX,blackmagicraw.com
-DOMAIN-SUFFIX,blackmagicforum.com
-DOMAIN-SUFFIX,blackmagiccamera.com
-DOMAIN-SUFFIX,onion
-DOMAIN-SUFFIX,5beresim-file.oss-cn-hongkong.aliyuncs.com
-DOMAIN-SUFFIX,cloudflare.com
-DOMAIN-SUFFIX,vercel.app
-DOMAIN-SUFFIX,airhorn.solutions
-DOMAIN-SUFFIX,airhornbot.com
-DOMAIN-SUFFIX,bigbeans.solutions
-DOMAIN-SUFFIX,dis.gd
-DOMAIN-SUFFIX,discord-activities.com
-DOMAIN-SUFFIX,discord.co
-DOMAIN-SUFFIX,discord.com
-DOMAIN-SUFFIX,discord.design
-DOMAIN-SUFFIX,discord.dev
-DOMAIN-SUFFIX,discord.gg
-DOMAIN-SUFFIX,discord.gift
-DOMAIN-SUFFIX,discord.gifts
-DOMAIN-SUFFIX,discord.media
-DOMAIN-SUFFIX,discord.new
-DOMAIN-SUFFIX,discord.store
-DOMAIN-SUFFIX,discord.tools
-DOMAIN-SUFFIX,discordactivities.com
-DOMAIN-SUFFIX,discordapp.com
-DOMAIN-SUFFIX,discordapp.io
-DOMAIN-SUFFIX,discordapp.net
-DOMAIN-SUFFIX,discordapp.page.link
-DOMAIN-SUFFIX,discordcdn.com
-DOMAIN-SUFFIX,discordmerch.com
-DOMAIN-SUFFIX,discordpartygames.com
-DOMAIN-SUFFIX,discordsays.com
-DOMAIN-SUFFIX,discordstatus.com
-DOMAIN-SUFFIX,hammerandchisel.ssl.zendesk.com
-DOMAIN-SUFFIX,watchanimeattheoffice.com
-
-
-# Viber Rules
-DOMAIN-SUFFIX,viber.com
-DOMAIN-SUFFIX,cdn.viber.com
-DOMAIN-SUFFIX,www.viber.com
-DOMAIN-SUFFIX,account.viber.com
-DOMAIN-SUFFIX,api.viber.com
-DOMAIN-SUFFIX,share.viber.com
-DOMAIN-SUFFIX,stickers.viber.com
-DOMAIN-SUFFIX,media.viber.com
-DOMAIN-SUFFIX,mediaserver.viber.com
-DOMAIN-SUFFIX,calls.viber.com
-DOMAIN-SUFFIX,msg.viber.com
-DOMAIN-SUFFIX,msgsrv.viber.com
-DOMAIN-SUFFIX,groups.viber.com
-DOMAIN-SUFFIX,ads.viber.com
-DOMAIN-SUFFIX,analytics.viber.com
-DOMAIN-SUFFIX,dl-media.viber.com
-DOMAIN-SUFFIX,dl-content.viber.com
-DOMAIN-SUFFIX,out.viber.com
-DOMAIN-SUFFIX,api.usr.viber.com
-DOMAIN-SUFFIX,api.aws.viber.com
-DOMAIN-SUFFIX,*.viber.com
-IP-CIDR,52.0.0.0/14
-IP-CIDR,69.0.0.0/16
-IP-CIDR,103.0.0.0/16
-DOMAIN-KEYWORD,viber-aws
-DOMAIN-KEYWORD,viber-akamai
+rules:
+  # > KEYWORD
+  - DOMAIN-KEYWORD,6bt0.com
+  - DOMAIN-KEYWORD,www.coze.com
+  - DOMAIN-KEYWORD,docker
+  - DOMAIN-KEYWORD,mastodon
+  - DOMAIN-KEYWORD,techhub.social
+  - DOMAIN-KEYWORD,macked
+  - DOMAIN-KEYWORD,mobile.eum-appdynamics.com
+  - DOMAIN-KEYWORD,aa.online-metrix.net
+  - DOMAIN-KEYWORD,cdntm.hsbc.com.hk
+  - DOMAIN-KEYWORD,cdnbc-logs.hsbc.com
+  - DOMAIN-KEYWORD,nssurge.com
+  # > SUFFIx
+  - DOMAIN-SUFFIX,telegraph.prd.api.discomax.com
+  - DOMAIN-SUFFIX,images.cdn.prd.api.discomax.com
+  - DOMAIN-SUFFIX,events.prd.api.discomax.com
+  - DOMAIN-SUFFIX,default.beam-apac.prd.api.discomax.com
+  - IP-CIDR,35.215.189.119/24
+  - DOMAIN-SUFFIX,statsigapi.net
+  - DOMAIN-SUFFIX,d0r7clfv2slbaskjrbpfrgqzn4qtocrktla5akcjc611196246f6d3c6sac.d.aa.online-metrix.net
+  - DOMAIN,http-inputs-notion.splunkcloud.com
+  - DOMAIN-SUFFIX,notion-static.com
+  - DOMAIN-SUFFIX,notion.com
+  - DOMAIN-SUFFIX,notion.new
+  - DOMAIN-SUFFIX,notion.site
+  - DOMAIN-SUFFIX,notion.so
+  - DOMAIN-SUFFIX,adtidy.org
+  - DOMAIN-SUFFIX,sb.adtidy.org
+  - DOMAIN-SUFFIX,api.revenuecat.com
+  - DOMAIN-SUFFIX,whatshub.top
+  - DOMAIN-SUFFIX,freedidi.com
+  - DOMAIN-SUFFIX,onlyfans.com
+  - DOMAIN-SUFFIX,duyaoss.com
+  - DOMAIN-SUFFIX,sub.nexconvert.com
+  - DOMAIN-SUFFIX,v3.paddleapi.com
+  - DOMAIN-SUFFIX,software.charliemonroe.net
+  - DOMAIN-SUFFIX,software.charliemonroe.net
+  - DOMAIN-SUFFIX,checkout.paddle.com
+  - DOMAIN-SUFFIX,downiestatistics.com
+  - DOMAIN-SUFFIX,ocsp.digicert.com
+  - DOMAIN-SUFFIX,c.go-mpulse.net
+  - DOMAIN-SUFFIX,blackmagicdesign.com
+  - DOMAIN-SUFFIX,blackmagiccloud.com
+  - DOMAIN-SUFFIX,resolve.blackmagicdesign.com
+  - DOMAIN-KEYWORD,davinciresolve
+  - DOMAIN-SUFFIX,bmdstatic.com
+  - DOMAIN-SUFFIX,bmd-support.com
+  - DOMAIN-SUFFIX,bmdinfo.com
+  - DOMAIN-SUFFIX,bmdsoftware.com
+  - DOMAIN-SUFFIX,bmdreseller.com
+  - DOMAIN-SUFFIX,bmdcloud.com
+  - DOMAIN-SUFFIX,blackmagicraw.com
+  - DOMAIN-SUFFIX,blackmagicforum.com
+  - DOMAIN-SUFFIX,blackmagiccamera.com
+  - DOMAIN-SUFFIX,onion
+  - DOMAIN-SUFFIX,5beresim-file.oss-cn-hongkong.aliyuncs.com
+  - DOMAIN-SUFFIX,cloudflare.com
+  - DOMAIN-SUFFIX,vercel.app
+  - DOMAIN-SUFFIX,airhorn.solutions
+  - DOMAIN-SUFFIX,airhornbot.com
+  - DOMAIN-SUFFIX,bigbeans.solutions
+  - DOMAIN-SUFFIX,dis.gd
+  - DOMAIN-SUFFIX,discord-activities.com
+  - DOMAIN-SUFFIX,discord.co
+  - DOMAIN-SUFFIX,discord.com
+  - DOMAIN-SUFFIX,discord.design
+  - DOMAIN-SUFFIX,discord.dev
+  - DOMAIN-SUFFIX,discord.gg
+  - DOMAIN-SUFFIX,discord.gift
+  - DOMAIN-SUFFIX,discord.gifts
+  - DOMAIN-SUFFIX,discord.media
+  - DOMAIN-SUFFIX,discord.new
+  - DOMAIN-SUFFIX,discord.store
+  - DOMAIN-SUFFIX,discord.tools
+  - DOMAIN-SUFFIX,discordactivities.com
+  - DOMAIN-SUFFIX,discordapp.com
+  - DOMAIN-SUFFIX,discordapp.io
+  - DOMAIN-SUFFIX,discordapp.net
+  - DOMAIN-SUFFIX,discordapp.page.link
+  - DOMAIN-SUFFIX,discordcdn.com
+  - DOMAIN-SUFFIX,discordmerch.com
+  - DOMAIN-SUFFIX,discordpartygames.com
+  - DOMAIN-SUFFIX,discordsays.com
+  - DOMAIN-SUFFIX,discordstatus.com
+  - DOMAIN-SUFFIX,hammerandchisel.ssl.zendesk.com
+  - DOMAIN-SUFFIX,watchanimeattheoffice.com
+  # Viber Rules
+  - DOMAIN-SUFFIX,viber.com
+  - DOMAIN-SUFFIX,cdn.viber.com
+  - DOMAIN-SUFFIX,www.viber.com
+  - DOMAIN-SUFFIX,account.viber.com
+  - DOMAIN-SUFFIX,api.viber.com
+  - DOMAIN-SUFFIX,share.viber.com
+  - DOMAIN-SUFFIX,stickers.viber.com
+  - DOMAIN-SUFFIX,media.viber.com
+  - DOMAIN-SUFFIX,mediaserver.viber.com
+  - DOMAIN-SUFFIX,calls.viber.com
+  - DOMAIN-SUFFIX,msg.viber.com
+  - DOMAIN-SUFFIX,msgsrv.viber.com
+  - DOMAIN-SUFFIX,groups.viber.com
+  - DOMAIN-SUFFIX,ads.viber.com
+  - DOMAIN-SUFFIX,analytics.viber.com
+  - DOMAIN-SUFFIX,dl-media.viber.com
+  - DOMAIN-SUFFIX,dl-content.viber.com
+  - DOMAIN-SUFFIX,out.viber.com
+  - DOMAIN-SUFFIX,api.usr.viber.com
+  - DOMAIN-SUFFIX,api.aws.viber.com
+  - DOMAIN-SUFFIX,*.viber.com
+  - IP-CIDR,52.0.0.0/14
+  - IP-CIDR,69.0.0.0/16
+  - IP-CIDR,103.0.0.0/16
+  - DOMAIN-KEYWORD,viber-aws
+  - DOMAIN-KEYWORD,viber-akamai
