@@ -4,6 +4,9 @@ DOMAIN-SUFFIX,image.tmdb.org
 DOMAIN-SUFFIX,api.7littlemen.com
 DOMAIN-SUFFIX,immersivetranslate.com
 #Steam
+DOMAIN-SUFFIX,lbkrs.com
+DOMAIN-SUFFIX,open.bigmodel.cn
+DOMAIN-SUFFIX,wbrks.com
 DOMAIN-SUFFIX,ocsp.comodoca.com
 DOMAIN-SUFFIX,ocsp.usertrust.com
 DOMAIN-SUFFIX,ocsp.sectigo.com
