@@ -10,14 +10,6 @@ DOMAIN-KEYWORD,aa.online-metrix.net
 DOMAIN-KEYWORD,cdntm.hsbc.com.hk
 DOMAIN-KEYWORD,cdnbc-logs.hsbc.com
 DOMAIN-KEYWORD,nssurge.com
-
-DOMAIN-SUFFIX,files.pythonhosted.org
-DOMAIN-SUFFIX,pypi.org
-DOMAIN-SUFFIX,download.pytorch.org
-DOMAIN-SUFFIX,i.vimeocdn.com
-DOMAIN-SUFFIX,comfy.org
-DOMAIN-SUFFIX,api.mixpanel.com
-DOMAIN-SUFFIX,download.pytorch.org
 # > SUFFIx
 DOMAIN-SUFFIX,telegraph.prd.api.discomax.com
 DOMAIN-SUFFIX,images.cdn.prd.api.discomax.com
