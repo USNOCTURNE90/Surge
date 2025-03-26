@@ -40,9 +40,11 @@ jobs:
           echo "Directory contents:"
           ls -la
           
-      - name: Run sync script
+      - name: Create and run sync script
         run: |
-          python -c '
+          cat > sync_rules.py << 'EOF'
+          #!/usr/bin/env python3
+
           import os
           import re
           import time
@@ -152,6 +154,9 @@ jobs:
               print(f"Error: {str(e)}")
               traceback.print_exc()
               exit(1)
-          '
+          EOF
+          
+          chmod +x sync_rules.py
+          python sync_rules.py
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
