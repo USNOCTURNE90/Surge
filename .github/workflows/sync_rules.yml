@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - master
+      - Surge  # 添加可能的分支名称
     paths:
       - '**'
   workflow_dispatch:
@@ -12,7 +14,8 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
           token: ${{ secrets.PAT }}
           
@@ -30,7 +33,16 @@ jobs:
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
           
-      - name: Run sync script
+      - name: Debug environment
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Directory contents:"
+          ls -la
+          echo "Python version:"
+          python --version
+          
+      - name: Run sync script with verbose output
         run: python sync_rules.py
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
