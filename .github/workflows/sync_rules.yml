@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'Surge/**'
+      - '**'
   workflow_dispatch:
 
 jobs:
@@ -33,4 +33,4 @@ jobs:
       - name: Run sync script
         run: python sync_rules.py
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }} 
+          GITHUB_TOKEN: ${{ secrets.PAT }}
