@@ -1,8 +1,16 @@
-PROCESS-NAME,/Applications/Cursor.app/Contents/MacOS/Cursor
-PROCESS-NAME,/Applications/Cursor.app/Contents/Frameworks/Cursor Helper (Plugin).app/Contents/MacOS/Cursor Helper (Plugin)
-PROCESS-NAME,/Applications/Cursor.app/Contents/Frameworks/Cursor Helper.app/Contents/MacOS/Cursor Helper
-#KEYWORD
-DOMAIN-KEYWORD,6bt0.com
+# 最后更新时间: 2025-03-26 14:20:21
+# 从Clash自动同步 - 2025-03-26 14:20:21
+# 原始文件: MyProxyRules
+DOMAIN-SUFFIX,store.steampowered.com
+DOMAIN-SUFFIX,yahoo.com,YahooFinanceProxy
+DOMAIN-SUFFIX,finance.yahoo.com,YahooFinanceProxy
+DOMAIN-SUFFIX,yimg.com,YahooFinanceProxy
+DOMAIN-SUFFIX,yahooapis.com,YahooFinanceProxy
+DOMAIN-KEYWORD,finance,YahooFinanceProxy
+DOMAIN-KEYWORD,yahoo,YahooFinanceProxy
+DOMAIN-KEYWORD,quote,YahooFinanceProxy
+DOMAIN-KEYWORD,stocks,YahooFinanceProxy
+DOMAIN-KEYWORD,market,YahooFinanceProxy
 DOMAIN-KEYWORD,www.coze.com
 DOMAIN-KEYWORD,docker
 DOMAIN-KEYWORD,mastodon
@@ -12,36 +20,24 @@ DOMAIN-KEYWORD,mobile.eum-appdynamics.com
 DOMAIN-KEYWORD,aa.online-metrix.net
 DOMAIN-KEYWORD,cdntm.hsbc.com.hk
 DOMAIN-KEYWORD,cdnbc-logs.hsbc.com
+DOMAIN-KEYWORD,d0r7clfv2slbaskjrbpfrgqzn4qtocrktla5akcjc611196246f6d3c6sac.d.aa.online-metrix.net
 DOMAIN-KEYWORD,nssurge.com
-#SUFFIx
 DOMAIN-SUFFIX,holdemresources.net
-DOMAIN-SUFFIX,adguard.org
 DOMAIN-SUFFIX,telegraph.prd.api.discomax.com
-DOMAIN-SUFFIX,images.cdn.prd.api.discomax.com
-DOMAIN-SUFFIX,events.prd.api.discomax.com
-DOMAIN-SUFFIX,default.beam-apac.prd.api.discomax.com
-IP-CIDR,35.215.189.119/24
-DOMAIN-SUFFIX,statsigapi.net
-DOMAIN-SUFFIX,d0r7clfv2slbaskjrbpfrgqzn4qtocrktla5akcjc611196246f6d3c6sac.d.aa.online-metrix.net
-DOMAIN,http-inputs-notion.splunkcloud.com
-DOMAIN-SUFFIX,notion-static.com
-DOMAIN-SUFFIX,notion.com
-DOMAIN-SUFFIX,notion.new
-DOMAIN-SUFFIX,notion.site
-DOMAIN-SUFFIX,notion.so
-DOMAIN-SUFFIX,adtidy.org
-DOMAIN-SUFFIX,sb.adtidy.org
-DOMAIN-SUFFIX,whatshub.top
 DOMAIN-SUFFIX,freedidi.com
 DOMAIN-SUFFIX,onlyfans.com
 DOMAIN-SUFFIX,duyaoss.com
-DOMAIN-SUFFIX,sub.nexconvert.com
+DOMAIN-SUFFIX,o.ss2.us
+DOMAIN-SUFFIX,ingest.contribute.live-video.net
+DOMAIN-SUFFIX,obsproject.com
+DOMAIN-SUFFIX,cdn-fastly.obsproject.com
 DOMAIN-SUFFIX,v3.paddleapi.com
 DOMAIN-SUFFIX,software.charliemonroe.net
 DOMAIN-SUFFIX,checkout.paddle.com
 DOMAIN-SUFFIX,downiestatistics.com
 DOMAIN-SUFFIX,ocsp.digicert.com
 DOMAIN-SUFFIX,c.go-mpulse.net
+DOMAIN-SUFFIX,6bt0.com
 DOMAIN-SUFFIX,blackmagicdesign.com
 DOMAIN-SUFFIX,blackmagiccloud.com
 DOMAIN-SUFFIX,resolve.blackmagicdesign.com
@@ -87,11 +83,30 @@ DOMAIN-SUFFIX,discordsays.com
 DOMAIN-SUFFIX,discordstatus.com
 DOMAIN-SUFFIX,hammerandchisel.ssl.zendesk.com
 DOMAIN-SUFFIX,watchanimeattheoffice.com
-# Viber Rules
 DOMAIN-SUFFIX,viber.com
+DOMAIN-SUFFIX,cdn.viber.com
+DOMAIN-SUFFIX,www.viber.com
+DOMAIN-SUFFIX,account.viber.com
+DOMAIN-SUFFIX,api.viber.com
+DOMAIN-SUFFIX,share.viber.com
+DOMAIN-SUFFIX,stickers.viber.com
+DOMAIN-SUFFIX,media.viber.com
+DOMAIN-SUFFIX,mediaserver.viber.com
+DOMAIN-SUFFIX,calls.viber.com
+DOMAIN-SUFFIX,msg.viber.com
+DOMAIN-SUFFIX,msgsrv.viber.com
+DOMAIN-SUFFIX,groups.viber.com
+DOMAIN-SUFFIX,ads.viber.com
+DOMAIN-SUFFIX,analytics.viber.com
+DOMAIN-SUFFIX,dl-media.viber.com
+DOMAIN-SUFFIX,dl-content.viber.com
+DOMAIN-SUFFIX,out.viber.com
+DOMAIN-SUFFIX,api.usr.viber.com
+DOMAIN-SUFFIX,api.aws.viber.com
 DOMAIN-SUFFIX,*.viber.com
 IP-CIDR,52.0.0.0/14
 IP-CIDR,69.0.0.0/16
 IP-CIDR,103.0.0.0/16
 DOMAIN-KEYWORD,viber-aws
+PROCESS-NAME,obs64.exe
 DOMAIN-KEYWORD,viber-akamai

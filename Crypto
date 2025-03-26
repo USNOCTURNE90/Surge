@@ -1,6 +1,11 @@
+# 最后更新时间: 2025-03-26 14:20:21
+# 从Clash自动同步 - 2025-03-26 14:20:21
+# 原始文件: Crypto
 DOMAIN-SUFFIX,bntrace.com
 DOMAIN-SUFFIX,appsflyer.com
-DOMAIN,sentry.io
+DOMAIN-SUFFIX,DOMAIN,sentry.io
+DOMAIN-SUFFIX,o529943.ingest.sentry.io
+DOMAIN-SUFFIX,appsflyer.com
 DOMAIN-SUFFIX,appsflyersdk.com
 IP-CIDR,120.24.0.0/14
 IP-CIDR,35.77.148.188/32
@@ -104,7 +109,7 @@ DOMAIN-SUFFIX,jupiter-fe.helius-rpc.com
 DOMAIN-SUFFIX,worker.jup.ag
 DOMAIN-SUFFIX,tiplink.io
 DOMAIN-SUFFIX,qrc.bgstatic.com
-DOMAIN-SUFFIX,appapi.bgportable.com 
+DOMAIN-SUFFIX,appapi.bgportable.com
 DOMAIN-SUFFIX,bitgetimg.com
 DOMAIN-SUFFIX,www.bitgetapps.com
 DOMAIN-SUFFIX,bitgetapp.com
@@ -128,7 +133,6 @@ IP-CIDR,35.77.148.188/24
 DOMAIN-SUFFIX,query.thegraph.kiln.fi
 DOMAIN-SUFFIX,twnodes.com
 DOMAIN-SUFFIX,static.cx.metamask.io
-#Bybit
 IP-CIDR,8.212.49.105/24
 IP-CIDR,54.150.106.1/24
 IP-CIDR,52.68.117.1/24
@@ -159,18 +163,15 @@ DOMAIN-SUFFIX,ws2.bybit.biz
 DOMAIN-SUFFIX,api3.byd3c3.com
 DOMAIN-SUFFIX,monitor-frontend-collector.a.bybit-aws.com
 DOMAIN-SUFFIX,bybit-help-center-prod-ac4de1465648.herokuapp.com
-#Binance
+DOMAIN-SUFFIX,binance
 DOMAIN-KEYWORD,binance
 DOMAIN-SUFFIX,bnbstatic.com
 DOMAIN-KEYWORD,bnbstatic
-#OKX
 DOMAIN-KEYWORD,okx
 DOMAIN-KEYWORD,okex.com
 DOMAIN-KEYWORD,oklink.com
-#Huobi
 DOMAIN-KEYWORD,huobi
 DOMAIN-SUFFIX,huobi.com
-#Other Exchanges
 DOMAIN-SUFFIX,aex.com
 DOMAIN-SUFFIX,bibox.com
 DOMAIN-SUFFIX,bitfinex.com
@@ -196,24 +197,18 @@ DOMAIN-SUFFIX,zb.app
 DOMAIN-SUFFIX,zb.com
 DOMAIN-SUFFIX,zb.io
 DOMAIN-SUFFIX,zb.live
-#Wallet Infrastructure
 DOMAIN-KEYWORD,trustwallet
 DOMAIN-SUFFIX,trustwallet.com
 DOMAIN-SUFFIX,pulse.walletconnect.org
-#DeFi - Uniswap
 DOMAIN-SUFFIX,uniswap.org
 DOMAIN-SUFFIX,app.uniswap.org
-#DeFi - PancakeSwap
 DOMAIN-SUFFIX,pancakeswap.com
 DOMAIN-SUFFIX,pancakeswap.finance
 DOMAIN-SUFFIX,app.pancakeswap.finance
-#DeFi - Curve
 DOMAIN-SUFFIX,curve.fi
 DOMAIN-SUFFIX,app.curve.fi
-#DeFi - Aave
 DOMAIN-SUFFIX,aave.com
 DOMAIN-SUFFIX,app.aave.com
-#DeFi - Others
 DOMAIN-SUFFIX,1inch.io
 DOMAIN-SUFFIX,app.1inch.io
 DOMAIN-SUFFIX,balancer.fi
@@ -281,8 +276,6 @@ DOMAIN-SUFFIX,app.wootrade.com
 DOMAIN-SUFFIX,x2y2.io
 DOMAIN-SUFFIX,yearn.finance
 DOMAIN-SUFFIX,yfi.finance
-
-#Info & Analytics Services
 DOMAIN-SUFFIX,bitcointalk.org
 DOMAIN-SUFFIX,coingecko.com
 DOMAIN-SUFFIX,coinmarketcap.com
@@ -291,10 +284,8 @@ DOMAIN-SUFFIX,defillama.com
 DOMAIN-SUFFIX,etherscan.io
 DOMAIN-SUFFIX,zapper.fi
 DOMAIN-SUFFIX,zerion.io
-#Blockchain Infrastructure
 DOMAIN-SUFFIX,eth-mainnet.nodereal.io
 DOMAIN-SUFFIX,infura.io
-#Analytics & Tracking
 DOMAIN-SUFFIX,app-analytics-services.com
 DOMAIN-SUFFIX,online-metrix.net
 DOMAIN-SUFFIX,cdn.forter.com
@@ -305,7 +296,6 @@ DOMAIN-SUFFIX,logs.browser-intake-datadoghq.com
 DOMAIN-SUFFIX,sc-datasink.ffe390afd658c19dcbf707e0597b846d.de
 DOMAIN-SUFFIX,sc-abtest.ffe390afd658c19dcbf707e0597b846d.de
 DOMAIN-SUFFIX,api.ffbbbdc6d3c353211fe2ba39c9f744cd.com
-#Basic Services
 DOMAIN-SUFFIX,cdn.cookielaw.org
 DOMAIN-SUFFIX,cloudflare-dns.com
 DOMAIN-SUFFIX,cloudfront.net

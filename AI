@@ -1,4 +1,6 @@
-
+# 最后更新时间: 2025-03-26 14:20:21
+# 从Clash自动同步 - 2025-03-26 14:20:21
+# 原始文件: AI
 DOMAIN-SUFFIX,manus.im
 DOMAIN-SUFFIX,0.datadog.pool.ntp.org
 DOMAIN-SUFFIX,api.revenuecat.com
@@ -37,7 +39,6 @@ DOMAIN-KEYWORD,openai
 IP-CIDR,24.199.123.28/32
 IP-CIDR,64.23.132.171/32
 IP-ASN,20473
-# > SUFFIX 微软
 DOMAIN,officecdn-microsoft-com.akamaized.net
 DOMAIN-SUFFIX,1drv.com
 DOMAIN-SUFFIX,aadrm.com

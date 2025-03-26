@@ -1,11 +1,11 @@
+# 最后更新时间: 2025-03-26 14:20:21
+# 从Clash自动同步 - 2025-03-26 14:20:21
+# 原始文件: Github
 DOMAIN-SUFFIX,files.pythonhosted.org
-DOMAIN-SUFFIX,updater.comfy.org
-DOMAIN-SUFFIX,download.todesktop.com
 DOMAIN-SUFFIX,pypi.org
 DOMAIN-SUFFIX,download.pytorch.org
 DOMAIN-SUFFIX,i.vimeocdn.com
-DOMAIN-SUFFIX,api.comfy.org
-DOMAIN-SUFFIX,api.todesktop.com
+DOMAIN-SUFFIX,comfy.org
 DOMAIN-SUFFIX,api.mixpanel.com
 DOMAIN-SUFFIX,download.pytorch.org
 DOMAIN-SUFFIX,atom.io
@@ -40,6 +40,3 @@ DOMAIN-SUFFIX,thegithubshop.com
 DOMAIN-KEYWORD,github
 DOMAIN-SUFFIX,default.exp-tas.com
 DOMAIN-SUFFIX,cdn-lfs-us-1.hf.co
-DOMAIN-SUFFIX,todesktop.com
-
-

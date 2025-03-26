@@ -1,3 +1,6 @@
+# 最后更新时间: 2025-03-26 14:20:21
+# 从Clash自动同步 - 2025-03-26 14:20:21
+# 原始文件: Tiktok
 DOMAIN,lf16-effectcdn.byteeffecttos-g.com
 DOMAIN,lf16-pkgcdn.pitaya-clientai.com
 DOMAIN,p16-tiktokcdn-com.akamaized.net
@@ -25,5 +28,4 @@ DOMAIN-SUFFIX,tiktokv.us
 DOMAIN-KEYWORD,-tiktokcdn-com
 DOMAIN-KEYWORD,musical.ly
 DOMAIN-KEYWORD,tiktok
-USER-AGENT,TikTok*
 PROCESS-NAME,com.zhiliaoapp.musically
