@@ -91,25 +91,6 @@ DOMAIN-SUFFIX,hammerandchisel.ssl.zendesk.com
 DOMAIN-SUFFIX,watchanimeattheoffice.com
 # Viber Rules
 DOMAIN-SUFFIX,viber.com
-DOMAIN-SUFFIX,cdn.viber.com
-DOMAIN-SUFFIX,www.viber.com
-DOMAIN-SUFFIX,account.viber.com
-DOMAIN-SUFFIX,api.viber.com
-DOMAIN-SUFFIX,share.viber.com
-DOMAIN-SUFFIX,stickers.viber.com
-DOMAIN-SUFFIX,media.viber.com
-DOMAIN-SUFFIX,mediaserver.viber.com
-DOMAIN-SUFFIX,calls.viber.com
-DOMAIN-SUFFIX,msg.viber.com
-DOMAIN-SUFFIX,msgsrv.viber.com
-DOMAIN-SUFFIX,groups.viber.com
-DOMAIN-SUFFIX,ads.viber.com
-DOMAIN-SUFFIX,analytics.viber.com
-DOMAIN-SUFFIX,dl-media.viber.com
-DOMAIN-SUFFIX,dl-content.viber.com
-DOMAIN-SUFFIX,out.viber.com
-DOMAIN-SUFFIX,api.usr.viber.com
-DOMAIN-SUFFIX,api.aws.viber.com
 DOMAIN-SUFFIX,*.viber.com
 IP-CIDR,52.0.0.0/14
 IP-CIDR,69.0.0.0/16
