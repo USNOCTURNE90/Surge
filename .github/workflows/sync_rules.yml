@@ -18,22 +18,39 @@ jobs:
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.PAT }}
+          fetch-depth: 2
+          
+      - name: Check commit message
+        id: check_commit
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          if [[ $COMMIT_MSG == *"[AUTO_SYNC]"* ]]; then
+            echo "Skipping workflow as this is an automated sync commit"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "Proceeding with sync"
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
           
       - name: Set up Python
+        if: steps.check_commit.outputs.skip == 'false'
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
           
       - name: Install dependencies
+        if: steps.check_commit.outputs.skip == 'false'
         run: |
           python -m pip install --upgrade pip
           
       - name: Configure Git
+        if: steps.check_commit.outputs.skip == 'false'
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
           
       - name: Debug environment
+        if: steps.check_commit.outputs.skip == 'false'
         run: |
           echo "Current directory:"
           pwd
@@ -41,6 +58,7 @@ jobs:
           ls -la
           
       - name: Create and run sync script
+        if: steps.check_commit.outputs.skip == 'false'
         run: |
           cat > sync_rules.py << 'EOF'
           #!/usr/bin/env python3
@@ -71,7 +89,7 @@ jobs:
               
               # 获取GitHub令牌
               github_token = os.environ.get("GITHUB_TOKEN", "")
-              clash_repo = f"https://{github_token}@github.com/USNOCTURNE90/Clash-auto.git"
+              clash_repo = f"https://{github_token}@github.com/USNOCTURNE90/Clash.git"
               
               # 清理并克隆Clash仓库
               if clash_dir.exists():
@@ -106,9 +124,32 @@ jobs:
                   with open(surge_file, "r", encoding="utf-8") as f:
                       surge_content = f.read()
                   
+                  # 添加最后更新时间标记到文件内容
+                  current_time = time.strftime('%Y-%m-%d %H:%M:%S')
+                  surge_lines = surge_content.splitlines()
+                  updated_surge_lines = []
+                  
+                  # 更新或添加最后更新时间注释
+                  time_comment_found = False
+                  for line in surge_lines:
+                      if line.startswith("# 最后更新时间:"):
+                          updated_surge_lines.append(f"# 最后更新时间: {current_time}")
+                          time_comment_found = True
+                      else:
+                          updated_surge_lines.append(line)
+                  
+                  if not time_comment_found:
+                      # 在文件开头添加更新时间
+                      updated_surge_lines.insert(0, f"# 最后更新时间: {current_time}")
+                  
+                  # 更新Surge文件内容
+                  updated_surge_content = "\n".join(updated_surge_lines)
+                  with open(surge_file, "w", encoding="utf-8") as f:
+                      f.write(updated_surge_content)
+                  
                   # 转换为Clash格式
                   clash_rules = ["rules:"]
-                  for line in surge_content.split("\n"):
+                  for line in updated_surge_content.split("\n"):
                       line = line.strip()
                       if not line or line.startswith("#"):
                           continue
@@ -116,7 +157,8 @@ jobs:
                       if any(line.startswith(prefix) for prefix in ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]):
                           clash_rules.append(f"  - {line}")
                   
-                  clash_content = "\n".join(clash_rules)
+                  # 添加注释
+                  clash_content = f"# 从Surge自动同步 - {current_time}\n# 原始文件: {surge_file.name}\n" + "\n".join(clash_rules)
                   
                   # 写入Clash规则文件
                   clash_file = clash_dir / surge_file.name
@@ -138,7 +180,7 @@ jobs:
               
               if result.stdout.strip():
                   print("Changes found, committing...")
-                  commit_message = f"自动同步规则集 - {time.strftime('%Y-%m-%d %H:%M:%S')}"
+                  commit_message = f"[AUTO_SYNC] 从Surge自动同步规则集 - {time.strftime('%Y-%m-%d %H:%M:%S')}"
                   subprocess.run(
                       ["git", "-C", "Clash", "commit", "-m", commit_message],
                       check=True
@@ -146,7 +188,7 @@ jobs:
                   
                   print("Pushing changes...")
                   subprocess.run(["git", "-C", "Clash", "push"], check=True)
-                  print("Successfully synced rules to Clash-auto repo")
+                  print("Successfully synced rules to Clash repo")
               else:
                   print("No changes to commit")
           
