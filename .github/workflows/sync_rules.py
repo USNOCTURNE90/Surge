@@ -7,6 +7,7 @@ import time
 import subprocess
 from pathlib import Path
 import logging
+import traceback
 from typing import List, Dict, Tuple
 
 # 配置日志
@@ -24,8 +25,10 @@ class RuleConverter:
         # 使用带认证的 URL 进行 Git 操作
         github_token = os.environ.get("GITHUB_TOKEN", "")
         if github_token:
+            logger.info("使用 GITHUB_TOKEN 进行认证")
             self.clash_repo = f"https://{github_token}@github.com/USNOCTURNE90/Clash-auto.git"
         else:
+            logger.warning("未找到 GITHUB_TOKEN 环境变量，将使用匿名克隆")
             self.clash_repo = "https://github.com/USNOCTURNE90/Clash-auto.git"
         
     def convert_surge_to_clash(self, surge_content: str) -> str:
@@ -116,51 +119,101 @@ class RuleConverter:
     def sync_rules(self):
         """同步规则集到 Clash 仓库"""
         try:
+            # 打印当前工作目录和文件列表
+            logger.info(f"当前工作目录: {os.getcwd()}")
+            logger.info(f"目录内容: {list(Path('.').glob('*'))}")
+            
             # 清理 Clash 目录（如果存在）
             if self.clash_dir.exists():
                 import shutil
+                logger.info(f"清理已存在的 Clash 目录: {self.clash_dir}")
                 shutil.rmtree(self.clash_dir)
             
             # 克隆 Clash 仓库
-            logger.info(f"正在克隆 Clash 仓库...")
-            subprocess.run(['git', 'clone', self.clash_repo, 'Clash'], check=True)
+            logger.info(f"正在克隆 Clash 仓库: {self.clash_repo}")
+            result = subprocess.run(['git', 'clone', self.clash_repo, 'Clash'], 
+                                   capture_output=True, text=True)
+            if result.returncode != 0:
+                logger.error(f"克隆失败: {result.stderr}")
+                # 尝试不使用令牌克隆
+                logger.info("尝试使用公开URL克隆...")
+                result = subprocess.run(['git', 'clone', "https://github.com/USNOCTURNE90/Clash-auto.git", 'Clash'], 
+                                      capture_output=True, text=True)
+                if result.returncode != 0:
+                    logger.error(f"公开URL克隆也失败: {result.stderr}")
+                    return
             
-            # 遍历目录下的所有规则文件（过滤掉目录和隐藏文件）
+            # 寻找规则文件
+            rule_files = []
             for surge_file in self.surge_dir.glob('*'):
                 if not surge_file.is_file() or surge_file.name.startswith('.') or surge_file.name == 'sync_rules.py':
                     continue
-                    
-                # 读取 Surge 规则
-                with open(surge_file, 'r', encoding='utf-8') as f:
-                    surge_content = f.read()
+                if any(keyword in surge_file.name.lower() for keyword in ['direct', 'proxy', 'rule', 'ai', 'apple', 'telegram']):
+                    rule_files.append(surge_file)
+            
+            if not rule_files:
+                logger.warning("未找到规则文件！检查当前目录。")
+                logger.info(f"当前目录中的所有文件: {list(Path('.').glob('*'))}")
+                return
                 
-                # 转换为 Clash 格式
-                clash_content = self.convert_surge_to_clash(surge_content)
-                
-                # 写入 Clash 规则文件
-                clash_file = self.clash_dir / surge_file.name
-                with open(clash_file, 'w', encoding='utf-8') as f:
-                    f.write(clash_content)
+            logger.info(f"找到 {len(rule_files)} 个规则文件: {[f.name for f in rule_files]}")
+            
+            # 遍历规则文件
+            for surge_file in rule_files:
+                try:
+                    # 读取 Surge 规则
+                    with open(surge_file, 'r', encoding='utf-8') as f:
+                        surge_content = f.read()
                     
-                logger.info(f"已同步规则集: {surge_file.name}")
+                    # 转换为 Clash 格式
+                    clash_content = self.convert_surge_to_clash(surge_content)
+                    
+                    # 写入 Clash 规则文件
+                    clash_file = self.clash_dir / surge_file.name
+                    with open(clash_file, 'w', encoding='utf-8') as f:
+                        f.write(clash_content)
+                        
+                    logger.info(f"已同步规则集: {surge_file.name}")
+                except Exception as e:
+                    logger.error(f"处理文件 {surge_file.name} 时出错: {str(e)}")
+                    traceback.print_exc()
             
             # 提交更改到 Clash 仓库
-            subprocess.run(['git', '-C', 'Clash', 'add', '.'], check=True)
+            logger.info("添加更改到Git暂存区...")
+            result = subprocess.run(['git', '-C', 'Clash', 'add', '.'], 
+                                  capture_output=True, text=True)
+            if result.returncode != 0:
+                logger.error(f"添加文件失败: {result.stderr}")
+                return
             
             # 检查是否有更改
+            logger.info("检查是否有更改...")
             result = subprocess.run(['git', '-C', 'Clash', 'status', '--porcelain'], 
-                                    capture_output=True, text=True, check=True)
+                                  capture_output=True, text=True)
             
             if result.stdout.strip():
+                logger.info("发现更改，准备提交...")
                 commit_message = f"自动同步规则集 - {time.strftime('%Y-%m-%d %H:%M:%S')}"
-                subprocess.run(['git', '-C', 'Clash', 'commit', '-m', commit_message], check=True)
-                subprocess.run(['git', '-C', 'Clash', 'push'], check=True)
-                logger.info("已提交更改到 Clash 仓库")
+                result = subprocess.run(['git', '-C', 'Clash', 'commit', '-m', commit_message], 
+                                      capture_output=True, text=True)
+                if result.returncode != 0:
+                    logger.error(f"提交更改失败: {result.stderr}")
+                    return
+                
+                logger.info("推送更改到远程仓库...")
+                result = subprocess.run(['git', '-C', 'Clash', 'push'], 
+                                      capture_output=True, text=True)
+                if result.returncode != 0:
+                    logger.error(f"推送更改失败: {result.stderr}")
+                    return
+                
+                logger.info("已成功提交更改到 Clash 仓库")
             else:
                 logger.info("没有需要提交的更改")
                 
         except Exception as e:
             logger.error(f"同步规则集时出错: {str(e)}")
+            traceback.print_exc()
 
     def git_commit(self):
         """提交更改到 Git"""
@@ -181,10 +234,14 @@ class RuleConverter:
             logger.error(f"Git 操作失败: {str(e)}")
 
 def main():
-    converter = RuleConverter()
-    converter.sync_rules()
-    # 不需要提交Surge目录的更改
-    # converter.git_commit()
+    logger.info("开始执行同步脚本...")
+    try:
+        converter = RuleConverter()
+        converter.sync_rules()
+        logger.info("同步脚本执行完成")
+    except Exception as e:
+        logger.error(f"执行脚本时出错: {str(e)}")
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main() 
