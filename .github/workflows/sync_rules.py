@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 class RuleConverter:
     def __init__(self):
-        self.surge_dir = Path("Surge")
+        self.surge_dir = Path(".")  # 直接使用仓库根目录
         self.clash_dir = Path("Clash")
         
         # 使用带认证的 URL 进行 Git 操作
@@ -125,9 +125,9 @@ class RuleConverter:
             logger.info(f"正在克隆 Clash 仓库...")
             subprocess.run(['git', 'clone', self.clash_repo, 'Clash'], check=True)
             
-            # 遍历 Surge 目录下的所有规则文件
+            # 遍历目录下的所有规则文件（过滤掉目录和隐藏文件）
             for surge_file in self.surge_dir.glob('*'):
-                if not surge_file.is_file() or surge_file.name.startswith('.'):
+                if not surge_file.is_file() or surge_file.name.startswith('.') or surge_file.name == 'sync_rules.py':
                     continue
                     
                 # 读取 Surge 规则
@@ -183,7 +183,8 @@ class RuleConverter:
 def main():
     converter = RuleConverter()
     converter.sync_rules()
-    converter.git_commit()
+    # 不需要提交Surge目录的更改
+    # converter.git_commit()
 
 if __name__ == "__main__":
     main() 
