@@ -1,6 +1,8 @@
 # 最后更新时间: 2025-03-28 23:32:52 (北京时间)
 # 从Clash自动同步 - 2025-03-28 23:32:52 (北京时间)
 # 原始文件: MyDirectRules
+DOMAIN-KEYWORD,120399
+DOMAIN-KEYWORD,95598
 DOMAIN-SUFFIX,skan.singular.net
 DOMAIN-SUFFIX,deepseek.com
 DOMAIN-SUFFIX,vh.api.okaapps.com
