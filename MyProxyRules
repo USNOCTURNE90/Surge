@@ -165,10 +165,6 @@ DOMAIN-SUFFIX,whatbrowser.org
 DOMAIN-SUFFIX,widevine.com
 DOMAIN-SUFFIX,x.company
 DOMAIN-SUFFIX,xn--ngstr-lra8j.com
-DOMAIN-SUFFIX,youtu.be
-DOMAIN-SUFFIX,youtube.com
-DOMAIN-SUFFIX,yt.be
-DOMAIN-SUFFIX,ytimg.com
 DOMAIN-SUFFIX,dns.google
 DOMAIN-SUFFIX,run.app
 DOMAIN-SUFFIX,cloudflare-dns.com
@@ -492,7 +488,6 @@ DOMAIN-SUFFIX,redditstatic.com
 DOMAIN-SUFFIX,redtube.com
 DOMAIN-SUFFIX,redtubepremium.com
 DOMAIN-SUFFIX,render.com
-DOMAIN-SUFFIX,returnyoutubedislikeapi.com
 DOMAIN-SUFFIX,reuters.com
 DOMAIN-SUFFIX,rfa.org
 DOMAIN-SUFFIX,rule34.xxx
