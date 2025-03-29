@@ -1,6 +1,9 @@
 # 最后更新时间: 2025-03-29 11:20:38 (北京时间)
 # 从Clash自动同步 - 2025-03-29 11:20:38 (北京时间)
 # 原始文件: MyProxyRules
+DOMAIN-SUFFIX,cybertrucksim.com
+DOMAIN-SUFFIX,adguard.org
+DOMAIN-SUFFIX,ghostfam.com
 DOMAIN-SUFFIX,nexconvert.com
 DOMAIN-SUFFIX,store.steampowered.com
 DOMAIN-SUFFIX,yahoo.com,YahooFinanceProxy
