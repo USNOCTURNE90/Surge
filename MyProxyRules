@@ -79,7 +79,6 @@ DOMAIN-SUFFIX,discordsays.com
 DOMAIN-SUFFIX,discordstatus.com
 DOMAIN-SUFFIX,hammerandchisel.ssl.zendesk.com
 DOMAIN-SUFFIX,watchanimeattheoffice.com
-DOMAIN-SUFFIX,viber.com
 IP-CIDR,52.0.0.0/14
 IP-CIDR,69.0.0.0/16
 IP-CIDR,103.0.0.0/16
@@ -372,7 +371,6 @@ DOMAIN-SUFFIX,hinet.net
 DOMAIN-SUFFIX,homedepot.com
 DOMAIN-SUFFIX,hostloc.com
 DOMAIN-SUFFIX,huggingface.co
-DOMAIN-SUFFIX,huobi.com
 DOMAIN-SUFFIX,ibb.co
 DOMAIN-SUFFIX,imgur.com
 DOMAIN-SUFFIX,intel.com
