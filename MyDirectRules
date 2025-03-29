@@ -1,6 +1,7 @@
 # 最后更新时间: 2025-03-29 11:20:38 (北京时间)
 # 从Clash自动同步 - 2025-03-29 11:20:38 (北京时间)
 # 原始文件: MyDirectRules
+DOMAIN-SUFFIX,aliyuncs.com
 DOMAIN-SUFFIX,b5ff55d150411557fb7fb31292c8f49e0.asuscomm.com
 DOMAIN-SUFFIX,aae-sgweb001-1.asuscomm.com
 DOMAIN-SUFFIX,api.wsgw-rewrite.com
