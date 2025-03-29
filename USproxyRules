@@ -1,25 +1,17 @@
-# 最后更新时间: 2025-03-28 23:32:52 (北京时间)
-# 从Clash自动同步 - 2025-03-28 23:32:52 (北京时间)
+# 最后更新时间: 2025-03-29 11:04:00 (北京时间)
+# 从Clash自动同步 - 2025-03-29 11:04:00 (北京时间)
 # 原始文件: USproxyRules
+# 美国代理规则 - 简化版
 DOMAIN-SUFFIX,ugoearn.com
-DOMAIN,shop.ugoearn.com
-DOMAIN,api.ugoearn.com
-DOMAIN,cdn.ugoearn.com
-DOMAIN,img.ugoearn.com
 DOMAIN-KEYWORD,ugoearn
 IP-CIDR,104.21.0.0/20
 IP-CIDR,172.67.0.0/16
 DOMAIN-SUFFIX,tello.com
 DOMAIN-SUFFIX,tellocdn.com
 DOMAIN-SUFFIX,tellocustomercare.com
-DOMAIN,api.tello.com
 IP-CIDR,104.16.0.0/12
 DOMAIN-SUFFIX,redpocket.com
 DOMAIN-SUFFIX,goredpocket.com
-DOMAIN,my.redpocket.com
-DOMAIN,shop.redpocket.com
-DOMAIN,support.redpocket.com
-DOMAIN,activate.redpocket.com
 DOMAIN-KEYWORD,redpocket
 IP-CIDR,104.26.0.0/20
 IP-CIDR,172.67.0.0/16
@@ -38,19 +30,12 @@ DOMAIN-SUFFIX,data.emb-api.com
 DOMAIN-SUFFIX,jotfor.ms
 DOMAIN-SUFFIX,textnow.com
 DOMAIN-SUFFIX,textnow.me
-DOMAIN,api.textnow.me
-DOMAIN,cdn.textnow.com
-DOMAIN,cdn.textnow.me
-DOMAIN,logging.textnow.me
-DOMAIN,messaging.textnow.com
-DOMAIN,static.textnow.com
 DOMAIN-KEYWORD,textnow
 IP-CIDR,35.186.0.0/17
 IP-CIDR,35.192.0.0/14
 DOMAIN-SUFFIX,anthropic.com
 DOMAIN-SUFFIX,anthropic.ai
-DOMAIN,api.anthropic.com
-DOMAIN,claude-api.anthropic.com
+DOMAIN-SUFFIX,claude.ai
 DOMAIN-KEYWORD,anthropic
 DOMAIN-SUFFIX,prodregistryv2.org
 DOMAIN-SUFFIX,a-cdn.anthropic.com
@@ -60,8 +45,6 @@ IP-CIDR,104.18.0.0/16
 IP-CIDR,104.22.0.0/16
 IP-CIDR,172.64.0.0/13
 DOMAIN,cdn.usefathom.com
-DOMAIN-SUFFIX,anthropic.com
-DOMAIN-SUFFIX,claude.ai
 DOMAIN-SUFFIX,o1158394.ingest.us.sentry.io
 DOMAIN-SUFFIX,verizon.com
 DOMAIN-SUFFIX,vzw.com
@@ -93,8 +76,3 @@ DOMAIN-SUFFIX,visible.com
 IP-CIDR,199.0.0.0/8
 IP-CIDR,208.0.0.0/8
 DOMAIN-SUFFIX,ultramobile.com
-DOMAIN,my.ultramobile.com
-DOMAIN,www.ultramobile.com
-DOMAIN,api.ultramobile.com
-DOMAIN,account.ultramobile.com
-DOMAIN,paygo.ultramobile.com

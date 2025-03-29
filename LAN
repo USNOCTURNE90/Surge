@@ -1,5 +1,5 @@
-# 最后更新时间: 2025-03-28 23:32:52 (北京时间)
-# 从Clash自动同步 - 2025-03-28 23:32:52 (北京时间)
+# 最后更新时间: 2025-03-29 11:04:00 (北京时间)
+# 从Clash自动同步 - 2025-03-29 11:04:00 (北京时间)
 # 原始文件: LAN
 IP-CIDR,127.0.0.0/8,LAN
 IP-CIDR,10.0.0.0/8,LAN
@@ -41,4 +41,4 @@ DOMAIN,smp-device,LAN
 DOMAIN-SUFFIX,apple-mobileme.com,LAN
 DOMAIN-SUFFIX,icloud.com.cn,LAN
 PROCESS-NAME,trustd,LAN
-PROCESS-NAME,netbiosd,LAN 
+PROCESS-NAME,netbiosd,LAN
