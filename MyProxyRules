@@ -223,17 +223,6 @@ DOMAIN-SUFFIX,engadget.com
 DOMAIN-SUFFIX,ifixit.com
 DOMAIN-SUFFIX,terabox.com
 DOMAIN-SUFFIX,zaobao.com.sg
-DOMAIN-SUFFIX,github.com
-DOMAIN-SUFFIX,github.blog
-DOMAIN-SUFFIX,github.community
-DOMAIN-SUFFIX,githubstatus.com
-DOMAIN-SUFFIX,git.io
-DOMAIN-SUFFIX,githubapp.com
-DOMAIN-SUFFIX,githubusercontent.com
-DOMAIN-SUFFIX,github.io
-DOMAIN-SUFFIX,githubapp.com
-DOMAIN-SUFFIX,githubassets.com
-DOMAIN-SUFFIX,githubcopilot.com
 DOMAIN-SUFFIX,globo.com
 DOMAIN-SUFFIX,foxnews.com
 DOMAIN-SUFFIX,cnn.com
@@ -531,7 +520,6 @@ DOMAIN-SUFFIX,noip.com
 DOMAIN-SUFFIX,notion.so
 DOMAIN-SUFFIX,npm.im
 DOMAIN-SUFFIX,npm.io
-DOMAIN-SUFFIX,npmjs.com
 DOMAIN-SUFFIX,nyaa.si
 DOMAIN-SUFFIX,nypost.com
 DOMAIN-SUFFIX,nyt.com
@@ -563,7 +551,6 @@ DOMAIN-SUFFIX,proton.me
 DOMAIN-SUFFIX,phncdn.com
 DOMAIN-SUFFIX,quora.com
 DOMAIN-SUFFIX,quoracdn.net
-DOMAIN-SUFFIX,rawgit.com
 DOMAIN-SUFFIX,redd.it
 DOMAIN-SUFFIX,reddit.com
 DOMAIN-SUFFIX,redditmail.com
