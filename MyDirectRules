@@ -3,7 +3,7 @@
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,ipify.org
 DOMAIN-SUFFIX,caixin.cn
-DOMAIN-SUFFIX,caixin.com.*
+DOMAIN-SUFFIX,caixin.com
 DOMAIN-SUFFIX,hxkba.com
 DOMAIN-SUFFIX,ucweb.com
 DOMAIN-SUFFIX,xcr.tratao.com
