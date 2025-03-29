@@ -2,9 +2,8 @@
 # 从Clash自动同步 - 2025-03-29 22:38:45 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,vn.cloud.tesla.cn
-DOMAIN-SUFFIX,short.snspay.wechatpay.cn/mmtls/3244db72
-DOMAIN-SUFFIX,paydns.wechatpay.cn/mmtls/321900e5
-DOMAIN-SUFFIX,gtimg.wechatpay.cn
+DOMAIN-SUFFIX,wechatpay.cn/mmtls/*
+DOMAIN-SUFFIX,wechatpay.cn
 DOMAIN-SUFFIX,aliyuncs.com
 DOMAIN-SUFFIX,wanxiang.art
 DOMAIN-SUFFIX,effirst.com
