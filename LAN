@@ -14,7 +14,7 @@ IP-CIDR,fe80::/10
 IP-CIDR,fd00::/8
 DOMAIN-SUFFIX,local
 DOMAIN-SUFFIX,localhost
-DOMAIN-SUFFIX
+DOMAIN-SUFFIX,lan
 DOMAIN,router.asus.com
 DOMAIN,router.synology.com
 DOMAIN-SUFFIX,nip.io
