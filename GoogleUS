@@ -1,6 +1,7 @@
 # 最后更新时间: 2025-03-29 22:38:45 (北京时间)
 # 从Clash自动同步 - 2025-03-29 22:38:45 (北京时间)
 # 原始文件: GoogleUS
+DOMAIN-SUFFIX,fi.google.com
 DOMAIN,voice.telephony.goog
 DOMAIN-SUFFIX,0emm.com
 DOMAIN-SUFFIX,1e100.net
