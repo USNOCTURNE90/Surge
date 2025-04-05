@@ -18,9 +18,9 @@ DOMAIN-KEYWORD,docker
 DOMAIN-KEYWORD,mastodon
 DOMAIN-KEYWORD,techhub.social
 DOMAIN-KEYWORD,macked
-DOMAIN-KEYWORD,mobile.eum-appdynamics.com
-DOMAIN-KEYWORD,aa.online-metrix.net
-DOMAIN-KEYWORD,d0r7clfv2slbaskjrbpfrgqzn4qtocrktla5akcjc611196246f6d3c6sac.d.aa.online-metrix.net
+DOMAIN-SUFFIX,mobile.eum-appdynamics.com
+DOMAIN-SUFFIX,aa.online-metrix.net
+DOMAIN-SUFFIX,d.aa.online-metrix.net
 DOMAIN-SUFFIX,nssurge.com
 DOMAIN-SUFFIX,holdemresources.net
 DOMAIN-SUFFIX,telegraph.prd.api.discomax.com
@@ -51,7 +51,7 @@ DOMAIN-SUFFIX,bmdcloud.com
 DOMAIN-SUFFIX,blackmagicraw.com
 DOMAIN-SUFFIX,blackmagicforum.com
 DOMAIN-SUFFIX,blackmagiccamera.com
-DOMAIN-SUFFIX,onion
+DOMAIN-KEYWORD,onion
 DOMAIN-SUFFIX,5beresim-file.oss-cn-hongkong.aliyuncs.com
 DOMAIN-SUFFIX,cloudflare.com
 DOMAIN-SUFFIX,vercel.app
@@ -86,9 +86,9 @@ DOMAIN-SUFFIX,watchanimeattheoffice.com
 IP-CIDR,52.0.0.0/14
 IP-CIDR,69.0.0.0/16
 IP-CIDR,103.0.0.0/16
-DOMAIN-KEYWORD,viber-aws
+DOMAIN-SUFFIX,viber-aws
 PROCESS-NAME,obs64.exe
-DOMAIN-KEYWORD,viber-akamai
+DOMAIN-SUFFIX,viber-akamai
 DOMAIN-SUFFIX,ipleak.net
 DOMAIN,pki.goog
 DOMAIN,addons.mozilla.org
@@ -564,7 +564,6 @@ DOMAIN-SUFFIX,majsoul.union-game.com
 DOMAIN-SUFFIX,prowritingaid.com
 DOMAIN-SUFFIX,wordtune.com
 DOMAIN-SUFFIX,quillbot.com
-DOMAIN-KEYWORD,google
 DOMAIN-KEYWORD,blogspot
 DOMAIN-KEYWORD,discord
 DOMAIN-KEYWORD,sci-hub
