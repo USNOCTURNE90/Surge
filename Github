@@ -1,6 +1,7 @@
 # 最后更新时间: 2025-03-29 22:38:45 (北京时间)
 # 从Clash自动同步 - 2025-03-29 22:38:45 (北京时间)
 # 原始文件: Github
+DOMAIN-SUFFIX,api.ip.sb
 DOMAIN-SUFFIX,edge.sdk.awswaf.com
 DOMAIN-SUFFIX,stripe.network
 DOMAIN-SUFFIX,api.hf.space
