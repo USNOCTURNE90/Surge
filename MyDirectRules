@@ -1,5 +1,5 @@
-# 最后更新时间: 2025-04-08 23:33:01 (北京时间)
-# 从Clash自动同步 - 2025-04-08 23:33:01 (北京时间)
+# 最后更新时间: 2025-04-10 18:47:36 (北京时间)
+# 从Clash自动同步 - 2025-04-10 18:47:36 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,azure-api.net
 DOMAIN-SUFFIX,azurefd.net
@@ -65,7 +65,6 @@ DOMAIN-SUFFIX,deepseek.com
 DOMAIN-SUFFIX,vh.api.okaapps.com
 DOMAIN-SUFFIX,image.tmdb.org
 DOMAIN-SUFFIX,api.7littlemen.com
-DOMAIN-SUFFIX,immersivetranslate.com
 DOMAIN-SUFFIX,pbkrs.com
 DOMAIN-SUFFIX,lbkrs.com
 DOMAIN-SUFFIX,open.bigmodel.cn
