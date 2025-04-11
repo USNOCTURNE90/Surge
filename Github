@@ -1,6 +1,8 @@
 # 最后更新时间: 2025-04-10 19:26:20 (北京时间)
 # 从Clash自动同步 - 2025-04-10 19:26:20 (北京时间)
 # 原始文件: Github
+DOMAIN-SUFFIX,rust-lang.org
+DOMAIN-SUFFIX,rustup.rs
 DOMAIN-SUFFIX,api.ip.sb
 DOMAIN-SUFFIX,edge.sdk.awswaf.com
 DOMAIN-SUFFIX,stripe.network
