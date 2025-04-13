@@ -1,3 +1,6 @@
+# 最后更新时间: 2025-04-13 17:43:09 (北京时间)
+# 从Clash自动同步 - 2025-04-13 17:43:09 (北京时间)
+# 原始文件: MyDirectRules
 DOMAIN-SUFFIX,3bt0.com
 DOMAIN-SUFFIX,kkdzpt.com
 DOMAIN-SUFFIX,acg.tv
@@ -1162,8 +1165,6 @@ DOMAIN-SUFFIX,time.windows.com
 DOMAIN-SUFFIX,wustat.windows.com
 DOMAIN-SUFFIX,download.microsoft.windows.com
 DOMAIN-SUFFIX,skydrive.wns.windows.com
-
-# DOMAIN-KEYWORD 规则
 DOMAIN-KEYWORD,120399
 DOMAIN-KEYWORD,95598
 DOMAIN-KEYWORD,abcchina
@@ -1176,8 +1177,6 @@ DOMAIN-KEYWORD,tcdnos.com
 DOMAIN-KEYWORD,webank
 DOMAIN-KEYWORD,xiaojukeji
 DOMAIN-KEYWORD,zenithspace.net
-
-# IP-CIDR 规则
 IP-CIDR,1.1.8.0/24
 IP-CIDR,1.116.0.0/15
 IP-CIDR,1.119.0.0/17
@@ -4157,8 +4156,7 @@ IP-CIDR,87.254.207.0/24
 IP-CIDR,93.183.14.0/24
 IP-CIDR,93.183.18.0/24
 IP-CIDR,94.191.0.0/17
-
-# 其他规则
+PROCESS-NAME,PlatformWebBrowser.exe
 PROCESS-NAME,115
 PROCESS-NAME,企业微信
 PROCESS-NAME,企业微信Helper
