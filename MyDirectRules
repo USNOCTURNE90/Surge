@@ -1,6 +1,7 @@
 # 最后更新时间: 2025-04-13 17:43:09 (北京时间)
 # 从Clash自动同步 - 2025-04-13 17:43:09 (北京时间)
 # 原始文件: MyDirectRules
+DOMAIN-SUFFIX,crl3.digicert.com
 DOMAIN-SUFFIX,dxmpay.com
 DOMAIN-SUFFIX,datasink.dxmjinr.com
 DOMAIN-SUFFIX,3bt0.com
