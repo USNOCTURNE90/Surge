@@ -2,6 +2,8 @@
 # 从Clash自动同步 - 2025-04-13 17:43:09 (北京时间)
 # 原始文件: Artificial_Intelligence
 DOMAIN-SUFFIX,obsidian.md
+DOMAIN-SUFFIX,tavily.com
+
 DOMAIN-SUFFIX,unpkg.com
 DOMAIN-SUFFIX,partnerlinks.io
 DOMAIN-SUFFIX,grsm.io
