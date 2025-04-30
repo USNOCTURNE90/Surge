@@ -2,6 +2,9 @@
 # 从Clash自动同步 - 2025-04-13 17:43:09 (北京时间)
 # 原始文件: MyDirectRules
 
+DOMAIN-SUFFIX,media.wago.io
+DOMAIN-SUFFIX,xboxab.com
+DOMAIN-SUFFIX,images.blz-contentstack.com
 DOMAIN-SUFFIX,some.url
 DOMAIN-SUFFIX,xboxservices.com
 DOMAIN-SUFFIX,assets.immersivetranslate.cn
