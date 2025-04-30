@@ -1,7 +1,8 @@
 # 最后更新时间: 2025-04-13 17:43:09 (北京时间)
 # 从Clash自动同步 - 2025-04-13 17:43:09 (北京时间)
 # 原始文件: MyDirectRules
-
+DOMAIN-SUFFIX,steelseries.com
+DOMAIN-SUFFIX,updates.a-volute.com
 DOMAIN-SUFFIX,media.wago.io
 DOMAIN-SUFFIX,xboxab.com
 DOMAIN-SUFFIX,images.blz-contentstack.com
