@@ -1,6 +1,12 @@
-# 最后更新时间: 2025-05-05 23:57:23 (北京时间)
-# 从Clash自动同步 - 2025-05-05 23:57:23 (北京时间)
-
+# 最后更新时间: 2025-05-06 07:54:34 (北京时间)
+# 从Clash自动同步 - 2025-05-06 07:54:34 (北京时间)
+# 原始文件: MyDirectRules
+DOMAIN-SUFFIX,updates.a-volute.com
+DOMAIN-SUFFIX,steelseries.com
+DOMAIN-SUFFIX,sb.scorecardresearch.com
+DOMAIN-SUFFIX,logitech.io
+DOMAIN-SUFFIX,msftconnecttest.com
+DOMAIN-SUFFIX,microsoftapp.net
 DOMAIN-SUFFIX,mapbox.com
 DOMAIN-SUFFIX,api.lbctrl.com
 DOMAIN-SUFFIX,event-tracking.lbctrl.com
