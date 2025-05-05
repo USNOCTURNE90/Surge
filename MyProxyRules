@@ -1,6 +1,11 @@
-# 最后更新时间: 2025-05-05 23:33:34 (北京时间)
-# 从Clash自动同步 - 2025-05-05 23:33:34 (北京时间)
+# 最后更新时间: 2025-05-05 23:35:33 (北京时间)
+# 从Clash自动同步 - 2025-05-05 23:35:33 (北京时间)
 # 原始文件: MyProxyRules
+DOMAIN-SUFFIX,lencr.org
+DOMAIN-SUFFIX,nubia.cn
+DOMAIN-SUFFIX,nubia.com
+DOMAIN-SUFFIX,ubisoft.com
+DOMAIN-SUFFIX,ubi.com
 DOMAIN-SUFFIX,assets.gist.build
 DOMAIN-SUFFIX,img.notionusercontent.com
 DOMAIN-SUFFIX,cdn.sprig.com
