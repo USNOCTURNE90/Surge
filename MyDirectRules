@@ -1,5 +1,5 @@
-# 最后更新时间: 2025-05-05 23:38:23 (北京时间)
-# 从Clash自动同步 - 2025-05-05 23:38:23 (北京时间)
+# 最后更新时间: 2025-05-05 23:38:34 (北京时间)
+# 从Clash自动同步 - 2025-05-05 23:38:34 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,api.lbctrl.com
 DOMAIN-SUFFIX,event-tracking.lbctrl.com
@@ -34,3 +34,4 @@ DOMAIN-SUFFIX,msftauth.cn
 DOMAIN-SUFFIX,msftconnecttest.com
 DOMAIN-SUFFIX,msftncsi.com
 DOMAIN-SUFFIX,msn.cn
+DOMAIN-SUFFIX,storage.msn.com
