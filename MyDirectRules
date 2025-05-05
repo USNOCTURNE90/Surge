@@ -1,5 +1,5 @@
-# 最后更新时间: 2025-05-05 23:19:44 (北京时间)
-# 从Clash自动同步 - 2025-05-05 23:19:44 (北京时间)
+# 最后更新时间: 2025-05-05 23:33:34 (北京时间)
+# 从Clash自动同步 - 2025-05-05 23:33:34 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,api.lbctrl.com
 DOMAIN-SUFFIX,event-tracking.lbctrl.com
@@ -8,3 +8,24 @@ DOMAIN-SUFFIX,nvidia.com
 DOMAIN-SUFFIX,lb-hk-desktop.oss-cn-hongkong.aliyuncs.com
 DOMAIN-SUFFIX,catalog.gamepass.com
 DOMAIN-SUFFIX,x1.c.lencr.org
+DOMAIN-SUFFIX,micode.cn
+DOMAIN-SUFFIX,micode.net
+DOMAIN-SUFFIX,microsoft.com
+DOMAIN-SUFFIX,microsoft.net
+DOMAIN-SUFFIX,microsoftedge.com
+DOMAIN-SUFFIX,microsoftonline-p.cn
+DOMAIN-SUFFIX,microsoftonline.cn
+DOMAIN-SUFFIX,microsoftonline.com
+DOMAIN-SUFFIX,bingapis.com
+DOMAIN-SUFFIX,bing.com
+DOMAIN-SUFFIX,bingapis.cn
+DOMAIN-SUFFIX,bing.com.cn
+DOMAIN-SUFFIX,windows.com.cn
+DOMAIN-SUFFIX,xbox.com.cn
+DOMAIN-SUFFIX,xbox.com
+DOMAIN-SUFFIX,xboxlive.cn
+DOMAIN-SUFFIX,xboxlive.com
+DOMAIN-SUFFIX,api.wsgw-rewrite.com
+DOMAIN-SUFFIX,api.wsgw-rewrite.com/electricity/bill/all
+DOMAIN-SUFFIX,status-ipv6.jpush.cn
+DOMAIN-SUFFIX,xboxservices.com
