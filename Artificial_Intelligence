@@ -2,7 +2,6 @@
 DOMAIN,officecdn-microsoft-com.akamaized.net
 DOMAIN,browser-intake-datadoghq.com
 DOMAIN,static.cloudflareinsights.com
-
 # DOMAIN-SUFFIX 规则
 DOMAIN-SUFFIX,1drv.com
 DOMAIN-SUFFIX,aadrm.com
