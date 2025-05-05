@@ -1,7 +1,7 @@
 # 最后更新时间: 2025-05-05 23:57:23 (北京时间)
 # 从Clash自动同步 - 2025-05-05 23:57:23 (北京时间)
-# 原始文件: MyDirectRules
-DOMAIN-SUFFIX,api.mapbox.com
+
+DOMAIN-SUFFIX,mapbox.com
 DOMAIN-SUFFIX,api.lbctrl.com
 DOMAIN-SUFFIX,event-tracking.lbctrl.com
 DOMAIN-SUFFIX,lbkrs.com
