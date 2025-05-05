@@ -1,8 +1,10 @@
-# DOMAIN 规则
+# 最后更新时间: 2025-05-05 21:14:11 (北京时间)
+# 从Clash自动同步 - 2025-05-05 21:14:11 (北京时间)
+# 原始文件: Artificial_Intelligence
+DOMAIN,officecdn-microsoft-com.akamaized.net
 DOMAIN,officecdn-microsoft-com.akamaized.net
 DOMAIN,browser-intake-datadoghq.com
 DOMAIN,static.cloudflareinsights.com
-# DOMAIN-SUFFIX 规则
 DOMAIN-SUFFIX,1drv.com
 DOMAIN-SUFFIX,aadrm.com
 DOMAIN-SUFFIX,acompli.com
@@ -151,13 +153,7 @@ DOMAIN-SUFFIX,windowsupdate.com
 DOMAIN-SUFFIX,wunderlist.com
 DOMAIN-SUFFIX,yammer.com
 DOMAIN-SUFFIX,yammerusercontent.com
-
-# DOMAIN-KEYWORD 规则
 DOMAIN-KEYWORD,openai
-
-# IP-CIDR 规则
 IP-CIDR,24.199.123.28/32
 IP-CIDR,64.23.132.171/32
-
-# 其他规则
 IP-ASN,20473
