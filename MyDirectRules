@@ -2,6 +2,7 @@
 # 从Clash自动同步 - 2025-05-06 18:51:04 (北京时间)
 # 原始文件: MyDirectRules
 IP-CIDR,103.36.24.14/32
+xboxab.com
 DOMAIN-SUFFIX,tqos.gamesafe.wegamex.com.hk
 DOMAIN-SUFFIX,some.ur
 DOMAIN-SUFFIX,api.lolesports.com
