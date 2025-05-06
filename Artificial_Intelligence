@@ -1,10 +1,10 @@
-# 最后更新时间: 2025-05-07 00:01:21 (北京时间)
+# 最后更新时间: 2025-05-07 00:03:23 (北京时间)
 # 从Clash自动同步 - 2025-05-06 23:28:11 (北京时间)
 # 原始文件: Artificial_Intelligence
 DOMAIN-KEYWORD,openai
-chronosphere.io
-x.ai
-featureassets.org
+DOMAIN-SUFFIX,chronosphere.io
+DOMAIN-SUFFIX,x.ai
+DOMAIN-SUFFIX,featureassets.org
 
 DOMAIN-SUFFIX,api.appcenter.ms
 DOMAIN-SUFFIX,api.revenuecat.com
