@@ -2,6 +2,10 @@
 # 从Clash自动同步 - 2025-05-06 18:51:04 (北京时间)
 # 原始文件: MyDirectRules
 IP-CIDR,103.36.24.14/32
+tqos.gamesafe.wegamex.com.hk
+some.ur
+api.lolesports.com
+qtreport.qq.com
 DOMAIN-SUFFIX,wegame.com.cn
 DOMAIN-SUFFIX,report.url.cn
 DOMAIN-SUFFIX,crl3.digicert.com
