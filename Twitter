@@ -1,32 +1,18 @@
-# 最后更新时间: 2025-05-06 23:02:08 (北京时间)
-# 从Clash自动同步 - 2025-05-06 23:02:08 (北京时间)
+# 最后更新时间: 2025-05-06 23:04:22 (北京时间)
+# 从Clash自动同步 - 2025-05-06 23:04:22 (北京时间)
 # 原始文件: Twitter
-DOMAIN-SUFFIX,ads-twitter.com
-DOMAIN-SUFFIX,cms-twdigitalassets.com
-DOMAIN-SUFFIX,periscope.tv
-DOMAIN-SUFFIX,pscp.tv
+DOMAIN-KEYWORD,twitter
 DOMAIN-SUFFIX,t.co
-DOMAIN-SUFFIX,tellapart.com
-DOMAIN-SUFFIX,tweetdeck.com
-DOMAIN-SUFFIX,twimg.co
 DOMAIN-SUFFIX,twimg.com
+DOMAIN-SUFFIX,twimg.co
 DOMAIN-SUFFIX,twimg.org
-DOMAIN-SUFFIX,twitpic.com
-DOMAIN-SUFFIX,twitter.biz
-DOMAIN-SUFFIX,twitter.com
-DOMAIN-SUFFIX,twitter.jp
-DOMAIN-SUFFIX,twittercommunity.com
-DOMAIN-SUFFIX,twitterflightschool.com
-DOMAIN-SUFFIX,twitterinc.com
-DOMAIN-SUFFIX,twitteroauth.com
-DOMAIN-SUFFIX,twitterstat.us
-DOMAIN-SUFFIX,twtrdns.net
 DOMAIN-SUFFIX,twttr.com
 DOMAIN-SUFFIX,twttr.net
-DOMAIN-SUFFIX,twvid.com
+DOMAIN-SUFFIX,twitpic.com
 DOMAIN-SUFFIX,vine.co
+DOMAIN-SUFFIX,periscope.tv
+DOMAIN-SUFFIX,pscp.tv
 DOMAIN-SUFFIX,x.com
-DOMAIN-KEYWORD,twitter
 IP-CIDR,192.133.76.0/22
 IP-CIDR,199.59.148.0/22
 IP-CIDR,199.96.56.0/21
