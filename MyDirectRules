@@ -1,7 +1,9 @@
-# 最后更新时间: 2025-05-06 21:26:30 (北京时间)
-# 从Clash自动同步 - 2025-05-06 21:26:30 (北京时间)
+# 最后更新时间: 2025-05-06 21:36:24 (北京时间)
+# 从Clash自动同步 - 2025-05-06 21:36:24 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,dynamics.com
+DOMAIN-SUFFIX,fonts.ne
+DOMAIN-SUFFIX,bazaarvoice.com
 DOMAIN-SUFFIX,static-ecst.licdn.com
 DOMAIN-SUFFIX,s-microsoft.com
 DOMAIN-SUFFIX,battle.net
