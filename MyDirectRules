@@ -1,8 +1,8 @@
-# 最后更新时间: 2025-05-07 00:47:20 (北京时间)
+# 最后更新时间: 2025-05-07 07:55:21 (北京时间)
 # 从Clash自动同步 - 2025-05-06 23:28:11 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,doh.pub
-azure.com
+DOMAIN-SUFFIX,azure.com
 IP-CIDR,52.139.169.119/32
 DOMAIN-SUFFIX,s.rsg.sc
 DOMAIN-KEYWORD,office
