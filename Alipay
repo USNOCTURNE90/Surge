@@ -1,8 +1,6 @@
 # 最后更新时间: 2025-05-06 19:12:09 (北京时间)
 # 从Clash自动同步 - 2025-05-06 18:51:04 (北京时间)
 # 原始文件: Alipay
-PROCESS-NAME,alipay
-DOMAIN-SUFFIX,alipay
 DOMAIN-SUFFIX,alipay-corp.com
 DOMAIN-SUFFIX,alipay-eco.com
 DOMAIN-SUFFIX,alipay-inc.com
