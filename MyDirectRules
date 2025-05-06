@@ -1,11 +1,11 @@
-# 最后更新时间: 2025-05-06 19:12:48 (北京时间)
+# 最后更新时间: 2025-05-06 19:51:11 (北京时间)
 # 从Clash自动同步 - 2025-05-06 18:51:04 (北京时间)
 # 原始文件: MyDirectRules
-103.36.24.14
-crl3.digicert.com
-ocsp.sectigo.com
-akamaized.net
-ocsp.usertrust.com
+IP-CIDR,103.36.24.14/32
+DOMAIN-SUFFIX,crl3.digicert.com
+DOMAIN-SUFFIX,ocsp.sectigo.com
+DOMAIN-SUFFIX,akamaized.net
+DOMAIN-SUFFIX,ocsp.usertrust.com
 DOMAIN-SUFFIX,updates.a-volute.com
 DOMAIN-SUFFIX,steelseries.com
 DOMAIN-SUFFIX,sb.scorecardresearch.com
