@@ -1,7 +1,7 @@
-# 最后更新时间: 2025-05-06 22:50:01 (北京时间)
+# 最后更新时间: 2025-05-06 22:53:43 (北京时间)
 # 从Clash自动同步 - 2025-05-06 22:50:01 (北京时间)
 # 原始文件: MyProxyRules
-sub.nexconvert.com
+DOMAIN-SUFFIX,sub.nexconvert.com
 DOMAIN-KEYWORD,blogspot
 DOMAIN-KEYWORD,discord
 DOMAIN-KEYWORD,sci-hub
