@@ -1,11 +1,11 @@
-# 最后更新时间: 2025-05-07 00:03:23 (北京时间)
+# 最后更新时间: 2025-05-07 00:09:10 (北京时间)
 # 从Clash自动同步 - 2025-05-06 23:28:11 (北京时间)
 # 原始文件: Financial
 DOMAIN-SUFFIX,openbb.co
-scorecardresearch.com
-guce.oath.com
-mobile-gw.spot.im
-obi.aol.com
+DOMAIN-SUFFIX,scorecardresearch.com
+DOMAIN-SUFFIX,guce.oath.com
+DOMAIN-SUFFIX,mobile-gw.spot.im
+DOMAIN-SUFFIX,obi.aol.com
 DOMAIN-SUFFIX,zaip-aic.za.group
 DOMAIN-SUFFIX,integrate-appgw.zajourney.com
 DOMAIN-SUFFIX,testcdn.zaticdn.com
