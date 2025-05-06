@@ -310,6 +310,8 @@ jobs:
           import logging
           import traceback
           from datetime import datetime, timedelta
+          import ipaddress
+          import re
 
           # 配置日志
           logging.basicConfig(
@@ -326,25 +328,61 @@ jobs:
               china_time = utc_now + timedelta(hours=8)
               return china_time.strftime('%Y-%m-%d %H:%M:%S')
 
+          def process_rule_line(line):
+              """
+              自动为规则行添加合适前缀：
+              - 纯数字且带点（IP）：加 IP-CIDR, 并补 /32
+              - 带点的英文名（域名）：加 DOMAIN-SUFFIX,
+              - 无点纯英文：加 PROCESS-NAME,
+              - 已有前缀则保持不变
+
+              Args:
+                  line (str): 原始规则行
+              Returns:
+                  str: 带前缀的规则行
+              """
+              line = line.strip()
+              if not line or line.startswith("#"):
+                  return line
+              known_prefixes = ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]
+              if any(line.startswith(prefix) for prefix in known_prefixes):
+                  return line
+              # 判断是否为IP
+              if "." in line:
+                  parts = line.split('.')
+                  if all(part.isdigit() for part in parts):
+                      try:
+                          ipaddress.ip_address(line)
+                          return f"IP-CIDR,{line}/32"
+                      except Exception:
+                          pass
+                  # 判断是否为域名（带点且不是纯数字）
+                  if re.match(r"^[A-Za-z0-9.-]+$", line):
+                      return f"DOMAIN-SUFFIX,{line}"
+                  # 其他情况默认返回原文
+                  return line
+              else:
+                  # 无点且为纯英文
+                  if re.match(r"^[A-Za-z0-9_-]+$", line):
+                      return f"PROCESS-NAME,{line}"
+                  return line
+
           def convert_to_clash_format(surge_lines):
               """
-              将 Surge 规则格式转换为 Clash 规则格式
+              将 Surge 规则格式转换为 Clash 规则格式（rules:），并自动补前缀
 
               Args:
                   surge_lines (list[str]): Surge 规则行列表
-
               Returns:
-                  list[str]: Clash 格式规则行列表（带 payload:）
+                  list[str]: Clash 格式规则行列表（带 rules:）
               """
-              clash_lines = ["payload:"]
+              clash_lines = ["rules:"]
               for line in surge_lines:
                   line = line.strip()
                   if not line or line.startswith("#"):
                       continue
-                  if not line.startswith("- "):
-                      clash_lines.append(f"  - {line}")
-                  else:
-                      clash_lines.append(f"  {line}")
+                  processed = process_rule_line(line)
+                  clash_lines.append(f"  - {processed}")
               return clash_lines
 
           print(f"Current directory: {os.getcwd()}")
