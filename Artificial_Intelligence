@@ -1,30 +1,7 @@
-# 最后更新时间: 2025-05-06 23:08:40 (北京时间)
-# 从Clash自动同步 - 2025-05-06 23:08:40 (北京时间)
+# 最后更新时间: 2025-05-06 23:11:48 (北京时间)
+# 从Clash自动同步 - 2025-05-06 23:11:48 (北京时间)
 # 原始文件: Artificial_Intelligence
-DOMAIN-KEYWORD,microsoft
-DOMAIN-KEYWORD,windows
 DOMAIN-KEYWORD,openai
-DOMAIN-KEYWORD,bing
-DOMAIN-KEYWORD,office
-DOMAIN-KEYWORD,azure
-DOMAIN-KEYWORD,skype
-DOMAIN-SUFFIX,1drv.com
-DOMAIN-SUFFIX,live.com
-DOMAIN-SUFFIX,live.net
-DOMAIN-SUFFIX,hotmail.com
-DOMAIN-SUFFIX,outlook.com
-DOMAIN-SUFFIX,msn.com
-DOMAIN-SUFFIX,onedrive.com
-DOMAIN-SUFFIX,onenote.com
-DOMAIN-SUFFIX,sharepoint.com
-DOMAIN-SUFFIX,aka.ms
-DOMAIN-SUFFIX,msecnd.net
-DOMAIN-SUFFIX,msedge.net
-DOMAIN-SUFFIX,azureedge.net
-DOMAIN-SUFFIX,microsoftonline.com
-DOMAIN-SUFFIX,gfx.ms
-DOMAIN-SUFFIX,sfx.ms
-DOMAIN-SUFFIX,svc.ms
 DOMAIN-SUFFIX,chatgpt.com
 DOMAIN-SUFFIX,oaistatic.com
 DOMAIN-SUFFIX,oaiusercontent.com
@@ -36,9 +13,6 @@ DOMAIN-SUFFIX,cursor.com
 DOMAIN-SUFFIX,cursor.sh
 DOMAIN-SUFFIX,cursor-cdn.com
 DOMAIN-SUFFIX,cursorlist.com
-DOMAIN-SUFFIX,vscode-cdn.net
-DOMAIN-SUFFIX,vscode-unpkg.net
-DOMAIN-SUFFIX,visualstudio.com
 DOMAIN-SUFFIX,intercom.io
 DOMAIN-SUFFIX,intercomcdn.com
 DOMAIN-SUFFIX,unpkg.com
@@ -46,9 +20,11 @@ DOMAIN-SUFFIX,stripe.com
 DOMAIN-SUFFIX,stripecdn.com
 DOMAIN-SUFFIX,segment.io
 DOMAIN-SUFFIX,launchdarkly.com
-DOMAIN,officecdn-microsoft-com.akamaized.net
 DOMAIN,browser-intake-datadoghq.com
 DOMAIN,static.cloudflareinsights.com
+DOMAIN-SUFFIX,visualstudio.com
+DOMAIN-SUFFIX,vscode-cdn.net
+DOMAIN-SUFFIX,vscode-unpkg.net
 IP-CIDR,24.199.123.28/32
 IP-CIDR,64.23.132.171/32
 IP-ASN,20473
