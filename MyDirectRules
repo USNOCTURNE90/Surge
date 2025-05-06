@@ -1,4 +1,4 @@
-# 最后更新时间: 2025-05-07 07:57:07 (北京时间)
+# 最后更新时间: 2025-05-07 07:57:31 (北京时间)
 # 从Clash自动同步 - 2025-05-06 23:28:11 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,windows.com
@@ -14,7 +14,7 @@ DOMAIN-SUFFIX,hotmail.com
 DOMAIN-SUFFIX,outlook.com
 DOMAIN-SUFFIX,msn.com
 DOMAIN-SUFFIX,live.net
-live.com
+DOMAIN-SUFFIX,live.com
 DOMAIN-SUFFIX,gfx.ms
 DOMAIN-SUFFIX,svc.ms
 DOMAIN-SUFFIX,azurewebsites.net
