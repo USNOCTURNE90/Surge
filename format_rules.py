@@ -32,7 +32,7 @@ def process_rule_line(line, is_surge=True):
     # 检查是否已有前缀
     known_prefixes = ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]
     if any(line.startswith(prefix) for prefix in known_prefixes):
-        return line
+        return line if is_surge else f"- {line}"
         
     # 检查是否是域名（包含点）
     if "." in line:
@@ -117,6 +117,9 @@ try:
         with open(rule_file, "r", encoding="utf-8") as f:
             content = f.read()
         
+        # 检查文件是否已经有规则前缀
+        has_prefixes = any(prefix in content for prefix in ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"])
+        
         # 添加最后更新时间标记到文件内容
         current_time = get_china_time()
         content_lines = content.splitlines()
@@ -124,14 +127,48 @@ try:
         
         # 更新或添加最后更新时间注释
         time_comment_found = False
+        rules_section = False
+        
         for line in content_lines:
             if line.startswith("# 最后更新时间:"):
                 updated_lines.append(f"# 最后更新时间: {current_time} (北京时间)")
                 time_comment_found = True
+            elif line.strip() == "rules:" or line.strip() == "payload:":
+                rules_section = True
+                updated_lines.append(line)
+            elif rules_section and line.strip() and not line.startswith("#"):
+                # 处理规则部分
+                # 去除可能的前缀标记
+                if line.strip().startswith("  - "):
+                    rule_part = line.strip()[4:]
+                elif line.strip().startswith("- "):
+                    rule_part = line.strip()[2:]
+                else:
+                    rule_part = line.strip()
+                    
+                # 检查是否已有规则前缀
+                if not any(rule_part.startswith(prefix) for prefix in ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]):
+                    # 添加适当的规则前缀
+                    processed_line = process_rule_line(rule_part, is_surge=True)
+                    updated_lines.append(processed_line)
+                else:
+                    # 已有规则前缀，保持不变
+                    updated_lines.append(rule_part)
             else:
-                # 处理规则行，添加适当的前缀
-                processed_line = process_rule_line(line, is_surge=True)
-                updated_lines.append(processed_line)
+                # 处理非规则部分或注释
+                if line.strip() and not line.startswith("#") and not rules_section:
+                    # 可能是没有规则标记的普通规则
+                    # 检查是否已有规则前缀
+                    if not any(line.strip().startswith(prefix) for prefix in ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]):
+                        # 添加适当的规则前缀
+                        processed_line = process_rule_line(line.strip(), is_surge=True)
+                        updated_lines.append(processed_line)
+                    else:
+                        # 已有规则前缀，保持不变
+                        updated_lines.append(line)
+                else:
+                    # 注释或空行
+                    updated_lines.append(line)
         
         if not time_comment_found:
             # 在文件开头添加更新时间
@@ -145,7 +182,7 @@ try:
             with open(rule_file, "w", encoding="utf-8") as f:
                 f.write(updated_content)
             print(f"Updated rule file: {rule_file.name}")
-    
+      
     # 提交更改到当前仓库
     subprocess.run(["git", "add", "."], check=True)
     
@@ -171,6 +208,94 @@ try:
         print("Successfully updated current repo")
     else:
         print("No changes to commit in current repo")
+    
+    # 获取GitHub令牌
+    github_token = os.environ.get("GITHUB_TOKEN", "")
+    clash_repo = f"https://{github_token}@github.com/USNOCTURNE90/Clash.git"
+    
+    # 克隆Clash仓库
+    clash_dir = Path("Clash")
+    if clash_dir.exists():
+        import shutil
+        shutil.rmtree(clash_dir)
+    
+    print(f"Cloning Clash repo: {clash_repo}")
+    subprocess.run(["git", "clone", clash_repo, "Clash"], check=True)
+    
+    # 处理规则文件并同步到Clash仓库
+    for rule_file in rule_files:
+        with open(rule_file, "r", encoding="utf-8") as f:
+            content = f.read()
+        
+        # 转换为Clash格式
+        clash_rules = []
+        comment_lines = []
+        
+        # 提取注释和规则
+        for line in content.splitlines():
+            if line.startswith("#"):
+                comment_lines.append(line)
+            else:
+                # 处理规则行（转换为Clash格式）
+                processed_line = process_rule_line(line, is_surge=False)
+                if processed_line and not processed_line.startswith("#"):
+                    clash_rules.append(processed_line)
+        
+        # 创建Clash YAML格式内容
+        current_time = get_china_time()
+        clash_content = []
+        
+        # 添加Clash文件头
+        clash_content.append("payload:")
+        
+        # 添加注释（作为YAML注释）
+        for comment in comment_lines:
+            if not ("最后更新时间" in comment or "自动同步" in comment or "原始文件" in comment or "规则自动格式化" in comment):
+                clash_content.append(f"# {comment[2:].strip() if comment.startswith('# ') else comment}")
+        
+        # 添加同步信息
+        clash_content.append(f"# 从Surge自动同步 - {current_time} (北京时间)")
+        clash_content.append(f"# 原始文件: {rule_file.name}")
+        
+        # 添加规则
+        for rule in clash_rules:
+            clash_content.append(f"  {rule}")
+        
+        # 完整的Clash内容
+        clash_yaml = "\n".join(clash_content)
+        
+        # 写入Clash规则文件
+        clash_file = clash_dir / rule_file.name
+        with open(clash_file, "w", encoding="utf-8") as f:
+            f.write(clash_yaml)
+        
+        print(f"Synced rule file to Clash: {rule_file.name}")
+    
+    # 提交Clash仓库更改
+    subprocess.run(["git", "-C", "Clash", "add", "."], check=True)
+    
+    # 检查是否有更改
+    result = subprocess.run(
+        ["git", "-C", "Clash", "status", "--porcelain"],
+        capture_output=True,
+        text=True,
+        check=True
+    )
+    
+    if result.stdout.strip():
+        print("Changes found in Clash repo, committing...")
+        china_time = get_china_time()
+        commit_message = f"[AUTO_SYNC] 从Surge自动同步规则集 - {china_time} (北京时间)"
+        subprocess.run(
+            ["git", "-C", "Clash", "commit", "-m", commit_message],
+            check=True
+        )
+        
+        print("Pushing changes to Clash repo...")
+        subprocess.run(["git", "-C", "Clash", "push"], check=True)
+        print("Successfully synced rules to Clash repo")
+    else:
+        print("No changes to commit in Clash repo")
 
 except Exception as e:
     print(f"Error: {str(e)}")
