@@ -1,7 +1,7 @@
-# 最后更新时间: 2025-05-06 21:08:06 (北京时间)
+# 最后更新时间: 2025-05-06 21:08:53 (北京时间)
 # 从Clash自动同步 - 2025-05-06 18:51:04 (北京时间)
 # 原始文件: MyDirectRules
-ghproxy.ne
+DOMAIN-SUFFIX,ghproxy.ne
 DOMAIN-SUFFIX,steamchina.com
 DOMAIN-SUFFIX,steamcontent.com
 DOMAIN-SUFFIX,cm.steampowered.com
