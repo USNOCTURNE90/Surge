@@ -1,9 +1,9 @@
-# 最后更新时间: 2025-05-07 00:09:10 (北京时间)
+# 最后更新时间: 2025-05-07 00:20:24 (北京时间)
 # 从Clash自动同步 - 2025-05-06 23:28:11 (北京时间)
 # 原始文件: Financial
-myqcloud.com
-usmartsg.com
-47.242.186.255
+DOMAIN-SUFFIX,myqcloud.com
+DOMAIN-SUFFIX,usmartsg.com
+IP-CIDR,47.242.186.255/32
 DOMAIN-SUFFIX,openbb.co
 DOMAIN-SUFFIX,scorecardresearch.com
 DOMAIN-SUFFIX,guce.oath.com
