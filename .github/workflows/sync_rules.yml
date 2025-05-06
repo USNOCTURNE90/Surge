@@ -147,7 +147,7 @@ jobs:
                   try:
                       with open(file_path, "r", encoding="utf-8") as f:
                           content = f.read()
-                          if "DOMAIN" in content or "IP-CIDR" in content:
+                          if "DOMAIN" in content or "IP-CIDR" in content or "." in content:
                               rule_files.append(file_path)
                               print(f"Found rule file: {file_path.name}")
                   except Exception as e:
@@ -188,6 +188,9 @@ jobs:
                   with open(surge_file, "w", encoding="utf-8") as f:
                       f.write(updated_surge_content)
                   
+                  # 将更改推送回Surge仓库
+                  surge_changes = True
+                  
                   # 转换为Clash格式
                   clash_rules = ["rules:"]
                   for line in updated_surge_content.split("\n"):
@@ -213,31 +216,57 @@ jobs:
                   
                   print(f"Synced rule file: {surge_file.name}")
               
-              # 提交更改
+              # 提交Surge仓库的更改
+              print("Checking for changes in Surge repo...")
+              subprocess.run(["git", "add", "."], check=True)
+              
+              surge_result = subprocess.run(
+                  ["git", "status", "--porcelain"],
+                  capture_output=True,
+                  text=True,
+                  check=True
+              )
+              
+              if surge_result.stdout.strip():
+                  print("Changes found in Surge repo, committing...")
+                  china_time = get_china_time()
+                  surge_commit_message = f"[AUTO_FORMAT] 自动格式化规则集 - {china_time} (北京时间)"
+                  subprocess.run(
+                      ["git", "commit", "-m", surge_commit_message],
+                      check=True
+                  )
+                  
+                  print("Pushing changes to Surge repo...")
+                  subprocess.run(["git", "push"], check=True)
+                  print("Successfully updated Surge repo")
+              else:
+                  print("No changes to commit in Surge repo")
+              
+              # 提交Clash仓库的更改
+              print("Checking for changes in Clash repo...")
               subprocess.run(["git", "-C", "Clash", "add", "."], check=True)
               
-              # 检查是否有更改
-              result = subprocess.run(
+              clash_result = subprocess.run(
                   ["git", "-C", "Clash", "status", "--porcelain"],
                   capture_output=True,
                   text=True,
                   check=True
               )
               
-              if result.stdout.strip():
-                  print("Changes found, committing...")
+              if clash_result.stdout.strip():
+                  print("Changes found in Clash repo, committing...")
                   china_time = get_china_time()
-                  commit_message = f"[AUTO_SYNC] 从Surge自动同步规则集 - {china_time} (北京时间)"
+                  clash_commit_message = f"[AUTO_SYNC] 从Surge自动同步规则集 - {china_time} (北京时间)"
                   subprocess.run(
-                      ["git", "-C", "Clash", "commit", "-m", commit_message],
+                      ["git", "-C", "Clash", "commit", "-m", clash_commit_message],
                       check=True
                   )
                   
-                  print("Pushing changes...")
+                  print("Pushing changes to Clash repo...")
                   subprocess.run(["git", "-C", "Clash", "push"], check=True)
                   print("Successfully synced rules to Clash repo")
               else:
-                  print("No changes to commit")
+                  print("No changes to commit in Clash repo")
           
           except Exception as e:
               print(f"Error: {str(e)}")
