@@ -71,6 +71,7 @@ jobs:
           import logging
           import traceback
           from datetime import datetime, timedelta
+          import ipaddress
           
           # 配置日志
           logging.basicConfig(
@@ -84,6 +85,37 @@ jobs:
               utc_now = datetime.utcnow()
               china_time = utc_now + timedelta(hours=8)
               return china_time.strftime('%Y-%m-%d %H:%M:%S')
+          
+          # 检查和处理规则行
+          def process_rule_line(line, is_surge=True):
+              line = line.strip()
+              if not line or line.startswith("#"):
+                  return line
+              
+              # 检查是否已有前缀
+              known_prefixes = ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]
+              if any(line.startswith(prefix) for prefix in known_prefixes):
+                  return line
+                  
+              # 检查是否是域名（包含点）
+              if "." in line:
+                  try:
+                      # 检查是否是纯数字IP
+                      parts = line.split('.')
+                      if all(part.isdigit() for part in parts):
+                          # 尝试解析为IP地址
+                          ipaddress.ip_address(line)
+                          # 如果是有效IP，添加IP-CIDR前缀和/32
+                          return f"IP-CIDR,{line}/32" if is_surge else f"- IP-CIDR,{line}/32"
+                      else:
+                          # 是域名，添加DOMAIN-SUFFIX前缀
+                          return f"DOMAIN-SUFFIX,{line}" if is_surge else f"- DOMAIN-SUFFIX,{line}"
+                  except ValueError:
+                      # 不是有效IP，当作域名处理
+                      return f"DOMAIN-SUFFIX,{line}" if is_surge else f"- DOMAIN-SUFFIX,{line}"
+              else:
+                  # 没有点，作为进程名处理
+                  return f"PROCESS-NAME,{line}" if is_surge else f"- PROCESS-NAME,{line}"
           
           # 打印当前工作目录和内容
           print(f"Current directory: {os.getcwd()}")
@@ -143,7 +175,9 @@ jobs:
                           updated_surge_lines.append(f"# 最后更新时间: {current_time} (北京时间)")
                           time_comment_found = True
                       else:
-                          updated_surge_lines.append(line)
+                          # 处理规则行，添加适当的前缀
+                          processed_line = process_rule_line(line, is_surge=True)
+                          updated_surge_lines.append(processed_line)
                   
                   if not time_comment_found:
                       # 在文件开头添加更新时间
@@ -161,8 +195,13 @@ jobs:
                       if not line or line.startswith("#"):
                           continue
                       
+                      # 检查是否已经有前缀
                       if any(line.startswith(prefix) for prefix in ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]):
                           clash_rules.append(f"  - {line}")
+                      else:
+                          # 没有前缀，处理并添加
+                          processed_line = process_rule_line(line, is_surge=False)
+                          clash_rules.append(f"  {processed_line}")
                   
                   # 添加注释
                   clash_content = f"# 从Surge自动同步 - {current_time} (北京时间)\n# 原始文件: {surge_file.name}\n" + "\n".join(clash_rules)
