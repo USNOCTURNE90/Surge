@@ -1,7 +1,8 @@
-# 最后更新时间: 2025-05-06 23:19:09 (北京时间)
-# 从Clash自动同步 - 2025-05-06 23:19:09 (北京时间)
+# 最后更新时间: 2025-05-06 23:20:28 (北京时间)
+# 从Clash自动同步 - 2025-05-06 23:20:28 (北京时间)
 # 原始文件: Crypto
 DOMAIN-KEYWORD,binance
+DOMAIN-SUFFIX,bntrace.com
 DOMAIN-KEYWORD,bitget
 DOMAIN-KEYWORD,bnbstatic
 DOMAIN-KEYWORD,huobi
