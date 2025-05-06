@@ -32,7 +32,7 @@ def process_rule_line(line, is_surge=True):
     # 检查是否已有前缀
     known_prefixes = ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]
     if any(line.startswith(prefix) for prefix in known_prefixes):
-        return line if is_surge else f"- {line}"
+        return line
         
     # 检查是否是域名（包含点）
     if "." in line:
@@ -61,6 +61,7 @@ print(f"Directory contents: {os.listdir('.')}")
 try:
     # 设置目录
     root_dir = Path(".")
+
     
     # 要排除的文件和目录
     exclude_patterns = [
@@ -117,9 +118,6 @@ try:
         with open(rule_file, "r", encoding="utf-8") as f:
             content = f.read()
         
-        # 检查文件是否已经有规则前缀
-        has_prefixes = any(prefix in content for prefix in ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"])
-        
         # 添加最后更新时间标记到文件内容
         current_time = get_china_time()
         content_lines = content.splitlines()
@@ -127,52 +125,23 @@ try:
         
         # 更新或添加最后更新时间注释
         time_comment_found = False
-        rules_section = False
-        
         for line in content_lines:
             if line.startswith("# 最后更新时间:"):
                 updated_lines.append(f"# 最后更新时间: {current_time} (北京时间)")
                 time_comment_found = True
-            elif line.strip() == "rules:" or line.strip() == "payload:":
-                rules_section = True
-                updated_lines.append(line)
-            elif rules_section and line.strip() and not line.startswith("#"):
-                # 处理规则部分
-                # 去除可能的前缀标记
-                if line.strip().startswith("  - "):
-                    rule_part = line.strip()[4:]
-                elif line.strip().startswith("- "):
-                    rule_part = line.strip()[2:]
-                else:
-                    rule_part = line.strip()
-                    
-                # 检查是否已有规则前缀
-                if not any(rule_part.startswith(prefix) for prefix in ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]):
-                    # 添加适当的规则前缀
-                    processed_line = process_rule_line(rule_part, is_surge=True)
-                    updated_lines.append(processed_line)
-                else:
-                    # 已有规则前缀，保持不变
-                    updated_lines.append(rule_part)
             else:
-                # 处理非规则部分或注释
-                if line.strip() and not line.startswith("#") and not rules_section:
-                    # 可能是没有规则标记的普通规则
-                    # 检查是否已有规则前缀
-                    if not any(line.strip().startswith(prefix) for prefix in ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]):
-                        # 添加适当的规则前缀
-                        processed_line = process_rule_line(line.strip(), is_surge=True)
-                        updated_lines.append(processed_line)
-                    else:
-                        # 已有规则前缀，保持不变
-                        updated_lines.append(line)
-                else:
-                    # 注释或空行
-                    updated_lines.append(line)
+                # 处理规则行，添加适当的前缀
+                processed_line = process_rule_line(line, is_surge=True)
+                updated_lines.append(processed_line)
         
         if not time_comment_found:
             # 在文件开头添加更新时间
             updated_lines.insert(0, f"# 最后更新时间: {current_time} (北京时间)")
+
+
+
+
+
         
         # 更新文件内容
         updated_content = "\n".join(updated_lines)
@@ -182,8 +151,28 @@ try:
             with open(rule_file, "w", encoding="utf-8") as f:
                 f.write(updated_content)
             print(f"Updated rule file: {rule_file.name}")
-      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     # 提交更改到当前仓库
+
     subprocess.run(["git", "add", "."], check=True)
     
     # 检查是否有更改
@@ -206,9 +195,35 @@ try:
         print("Pushing changes to current repo...")
         subprocess.run(["git", "push"], check=True)
         print("Successfully updated current repo")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     else:
         print("No changes to commit in current repo")
-    
+
 except Exception as e:
     print(f"Error: {str(e)}")
     traceback.print_exc()
