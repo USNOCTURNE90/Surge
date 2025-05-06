@@ -1,6 +1,7 @@
-# 最后更新时间: 2025-05-06 21:21:50 (北京时间)
-# 从Clash自动同步 - 2025-05-06 21:21:50 (北京时间)
+# 最后更新时间: 2025-05-06 21:22:08 (北京时间)
+# 从Clash自动同步 - 2025-05-06 21:22:08 (北京时间)
 # 原始文件: USproxyRules
+DOMAIN-SUFFIX,azureedge.us
 DOMAIN-SUFFIX,browser-intake-us5-datadoghq.com
 DOMAIN-SUFFIX,cdn.honey.io
 DOMAIN-SUFFIX,i.honey-images.com
