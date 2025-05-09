@@ -29,8 +29,8 @@ DOMAIN-SUFFIX,stripe.com
 DOMAIN-SUFFIX,stripecdn.com
 DOMAIN-SUFFIX,segment.io
 DOMAIN-SUFFIX,launchdarkly.com
-DOMAIN,browser-intake-datadoghq.com
-DOMAIN,static.cloudflareinsights.com
+DOMAIN-SUFFIX,browser-intake-datadoghq.com
+DOMAIN-SUFFIX,static.cloudflareinsights.com
 DOMAIN-SUFFIX,visualstudio.com
 DOMAIN-SUFFIX,vscode-cdn.net
 DOMAIN-SUFFIX,vscode-unpkg.net
