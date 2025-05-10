@@ -1,10 +1,11 @@
-# 最后更新时间: 2025-05-10 20:21:26 (北京时间)
-# 从Clash自动同步 - 2025-05-10 20:21:26 (北京时间)
+# 最后更新时间: 2025-05-10 23:47:10 (北京时间)
+# 从Clash自动同步 - 2025-05-10 23:47:10 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,ibllc.com.cn
 DOMAIN-SUFFIX,windows.com
 DOMAIN-SUFFIX,doh.pub
 DOMAIN-SUFFIX,windows.com
+DOMAIN-SUFFIX,wow-backup-1251007209.cos.ap-shanghai.myqcloud.com
 DOMAIN-SUFFIX,azure.com
 IP-CIDR,52.139.169.119/32
 DOMAIN-SUFFIX,s.rsg.sc
