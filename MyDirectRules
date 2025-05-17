@@ -1,5 +1,5 @@
-# 最后更新时间: 2025-05-11 23:09:48 (北京时间)
-# 从Clash自动同步 - 2025-05-11 23:09:48 (北京时间)
+# 最后更新时间: 2025-05-17 14:02:19 (北京时间)
+# 从Clash自动同步 - 2025-05-17 14:02:19 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,ibllc.com.cn
 DOMAIN-SUFFIX,windows.com
@@ -93,6 +93,8 @@ DOMAIN-SUFFIX,msftconnecttest.com
 DOMAIN-SUFFIX,msftncsi.com
 DOMAIN-SUFFIX,msn.cn
 DOMAIN-SUFFIX,storage.msn.com
+PROCESS-NAME,Battle.net.exe
+PROCESS-NAME,Wow.exe
 DOMAIN-SUFFIX,assets.immersivetranslate.cn
 DOMAIN-SUFFIX,asus.com
 DOMAIN-SUFFIX,asusrouter.com
