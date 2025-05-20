@@ -1,6 +1,10 @@
 # 最后更新时间: 2025-05-20 11:49:18 (北京时间)
 # 从Clash自动同步 - 2025-05-17 14:02:19 (北京时间)
 # 原始文件: MyDirectRules
+DOMAIN-SUFFIX,iam.e-govt.cn,DIRECT // Added for: iam.e-govt.cn:8901
+DOMAIN-SUFFIX,mztapp.fujian.gov.cn,DIRECT // Added for: mztapp.fujian.gov.cn:8702
+DOMAIN-SUFFIX,www.fujian.gov.cn,DIRECT // Added for: www.fujian.gov.cn:443
+DOMAIN-SUFFIX,zwfw.fujian.gov.cn,DIRECT // Added for: http://zwfw.fujian.gov.cn/province-dept/index?type=2&siteUnid=A37F92E54E1EEC5D5ADF7EA036C3A97B&randomNum=0.02521985676685823
 DOMAIN-SUFFIX,ibllc.com.cn
 DOMAIN-SUFFIX,windows.com
 DOMAIN-SUFFIX,doh.pub
