@@ -2,9 +2,7 @@
 # 从Clash自动同步 - 2025-05-17 14:02:19 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,iam.e-govt.cn
-DOMAIN-SUFFIX,mztapp.fujian.gov.cn
-DOMAIN-SUFFIX,www.fujian.gov.cn
-DOMAIN-SUFFIX,zwfw.fujian.gov.cn
+DOMAIN-SUFFIX,fujian.gov.cn
 DOMAIN-SUFFIX,ibllc.com.cn
 DOMAIN-SUFFIX,windows.com
 DOMAIN-SUFFIX,doh.pub
