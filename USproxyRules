@@ -1,6 +1,9 @@
 # 最后更新时间: 2025-06-08 16:44:31 (北京时间)
 # 从Clash自动同步 - 2025-06-07 22:25:31 (北京时间)
 # 原始文件: USproxyRules
+us.etrade.com
+chase.com
+vanguard.com
 DOMAIN-SUFFIX,azureedge.us
 DOMAIN-SUFFIX,browser-intake-us5-datadoghq.com
 DOMAIN-SUFFIX,cdn.honey.io
