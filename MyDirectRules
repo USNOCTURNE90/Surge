@@ -1,7 +1,8 @@
-# 最后更新时间: 2025-06-26 11:39:57 (北京时间)
-# 从Clash自动同步 - 2025-06-25 22:47:01 (北京时间)
+# 最后更新时间: 2025-06-26 21:52:20 (北京时间)
+# 从Clash自动同步 - 2025-06-26 21:52:20 (北京时间)
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,bblmw.com
+DOMAIN-SUFFIX,bambu-lab.com
 DOMAIN-SUFFIX,gstore.val.manlaxy.com
 DOMAIN-SUFFIX,st.dl.eccdnx.com
 DOMAIN-SUFFIX,dl.steam.clngaa.com
