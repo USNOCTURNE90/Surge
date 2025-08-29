@@ -1,6 +1,7 @@
 # 最后更新时间: 2025-08-29 11:02:22 (北京时间)
 # 从Clash自动同步 - 2025-07-30 23:17:18 (北京时间)
 # 原始文件: USproxyRules
+DOMAIN-SUFFIX,truthsocial.com
 DOMAIN-SUFFIX,us.etrade.com
 DOMAIN-SUFFIX,chase.com
 DOMAIN-SUFFIX,vanguard.com
