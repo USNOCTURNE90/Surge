@@ -1,6 +1,9 @@
 # 最后更新时间: 2025-08-29 11:11:28 (北京时间)
 # 从Clash自动同步 - 2025-07-30 23:17:18 (北京时间)
 # 原始文件: MyDirectRules
+api.doupay.com
+ecombdapi.com
+byteimg.com
 DOMAIN-SUFFIX,dn2r0q8ek3r7o.cloudfront.net
 DOMAIN-SUFFIX,fcdc6d61a.yrpfkl.xyz
 DOMAIN-SUFFIX,bblmw.com
