@@ -1,6 +1,8 @@
 # 最后更新时间: 2025-11-17 00:25:33 (北京时间)
 # 从Clash自动同步 - 2025-11-17 00:25:33 (北京时间)
 # 原始文件: MyDirectRules
+stun.voipstunt.com
+stun.voiparound.com
 DOMAIN-SUFFIX,amemv.com
 IP-CIDR,163.181.77.215/32
 IP-CIDR,163.181.77.216/32
