@@ -1,8 +1,8 @@
-# 最后更新时间: 2025-12-28 13:13:47 (北京时间)
+# 最后更新时间: 2025-12-28 19:05:57 (北京时间)
 # 从Clash自动同步 - 2025-12-28 13:13:47 (北京时间)
 # 原始文件: USproxyRules
-tktn.be
-hcaptcha.com
+DOMAIN-SUFFIX,tktn.be
+DOMAIN-SUFFIX,hcaptcha.com
 
 
 
