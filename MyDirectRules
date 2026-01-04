@@ -1,6 +1,7 @@
 # 最后更新时间: 2025-12-30 11:32:46 (北京时间)
 # 从Clash自动同步 - 2025-12-30 07:56:42 (北京时间)
 # 原始文件: MyDirectRules
+
 DOMAIN-SUFFIX,shuidichou.com
 DOMAIN-SUFFIX,aaplimg.com
 DOMAIN-SUFFIX,apple.com
@@ -153,3 +154,4 @@ DOMAIN-SUFFIX,asuscomm.com
 PROCESS-NAME,PlatformWebBrowser.exe
 PROCESS-NAME,LeagueClient.exe
 PROCESS-NAME,SC2_x64.exe
+OR, ((PROTOCOL, UDP), (DEST-PORT, 10000-20000))
