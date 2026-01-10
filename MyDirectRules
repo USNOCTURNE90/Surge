@@ -1,8 +1,8 @@
 # 最后更新时间: 2026-01-04 16:38:52 (北京时间)
 # 从Clash自动同步 - 2025-12-30 07:56:42 (北京时间)
 # 原始文件: MyDirectRules
-DOMAIN-KEYWORD, tencent
-DOMAIN-KEYWORD, mxdl
+DOMAIN-KEYWORD,tencent
+DOMAIN-KEYWORD,mxdl
 DOMAIN-SUFFIX,shuidichou.com
 DOMAIN-SUFFIX,aaplimg.com
 DOMAIN-SUFFIX,apple.com
