@@ -1,6 +1,8 @@
 # 最后更新时间: 2026-01-10 15:45:38 (北京时间)
 # 从Clash自动同步 - 2025-12-30 07:56:42 (北京时间)
 # 原始文件: MyProxyRules
+1.1.1.1/32
+1.0.0.1/32
 IP-CIDR,17.248.152.0/24
 DOMAIN-SUFFIX,icloud-content.com
 DOMAIN,testflight.apple.com
