@@ -41,9 +41,8 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
-          git config --global http.postBuffer 524288000
 
-      - name: 1. 格式化并同步多平台规则
+      - name: 格式化并同步多仓库
         if: steps.check_commit.outputs.skip == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -84,19 +83,20 @@ jobs:
 
           token = os.environ.get("GITHUB_TOKEN")
           root = Path(".")
-          excludes = ['.git', '.github', 'Clash_Repo', 'SB_Repo', 'LICENSE', 'README.md']
+          excludes = ['.git', '.github', 'Clash_Tmp', 'SingBox_Tmp', 'LICENSE', 'README.md']
           
-          files = [f for f in root.glob('*') if f.is_file() and f.name not in excludes and f.suffix not in ['.py', '.yml', '.yaml', '.md']]
+          # 获取规则文件（排除掉文件夹和特定系统文件）
+          files = [f for f in root.glob('*') if f.is_file() and f.name not in excludes and f.suffix not in ['.py', '.yml', '.yaml', '.md', '.txt']]
           
-          # 清理并克隆
-          for d in ["Clash_Repo", "SB_Repo"]:
+          # 清理工作目录并克隆
+          for d in ["Clash_Tmp", "SingBox_Temp"]:
               if os.path.exists(d): shutil.rmtree(d)
 
           c_url = f"https://x-access-token:{token}@github.com/USNOCTURNE90/Clash.git"
           s_url = f"https://x-access-token:{token}@github.com/USNOCTURNE90/Sing-Box.git"
           
-          subprocess.run(["git", "clone", c_url, "Clash_Repo"], check=True)
-          subprocess.run(["git", "clone", s_url, "SB_Repo"], check=True)
+          subprocess.run(["git", "clone", c_url, "Clash_Tmp"], check=True)
+          subprocess.run(["git", "clone", s_url, "SingBox_Temp"], check=True)
 
           for f_path in files:
               with open(f_path, "r", encoding="utf-8") as f:
@@ -109,27 +109,30 @@ jobs:
               with open(f_path, "w", encoding="utf-8") as f:
                   f.write("\n".join(new_lines))
               
-              # Clash
+              # Clash (无后缀同步)
               clash_data = [f"# 最后更新时间: {get_time()}", "rules:"]
               for nl in new_lines:
                   if nl and not nl.startswith("#"): clash_data.append(f"  - {nl}")
-              with open(Path("Clash_Repo") / f_path.name, "w", encoding="utf-8") as f:
+              with open(Path("Clash_Tmp") / f_path.name, "w", encoding="utf-8") as f:
                   f.write("\n".join(clash_data))
               
-              # Sing-Box
+              # Sing-Box (保持原名无后缀)
               sb_data = to_sb(new_lines)
               if sb_data:
-                  with open(Path("SB_Repo") / f"{f_path.name}.json", "w", encoding="utf-8") as f:
+                  with open(Path("SingBox_Temp") / f_path.name, "w", encoding="utf-8") as f:
                       json.dump(sb_data, f, indent=2, ensure_ascii=False)
 
           def push_repo(path, msg):
               subprocess.run(["git", "-C", path, "add", "."], check=True)
-              if subprocess.run(["git", "-C", path, "status", "--porcelain"], capture_output=True, text=True).stdout.strip():
+              status = subprocess.run(["git", "-C", path, "status", "--porcelain"], capture_output=True, text=True).stdout
+              if status.strip():
+                  subprocess.run(["git", "-C", path, "config", "user.name", "GitHub Actions Bot"], check=True)
+                  subprocess.run(["git", "-C", path, "config", "user.email", "actions@github.com"], check=True)
                   subprocess.run(["git", "-C", path, "commit", "-m", msg], check=True)
                   subprocess.run(["git", "-C", path, "push"], check=True)
 
           push_repo(".", f"[AUTO_FORMAT] {get_time()}")
-          push_repo("Clash_Repo", f"[AUTO_SYNC] Clash {get_time()}")
-          push_repo("SB_Repo", f"[AUTO_SYNC] Sing-Box {get_time()}")
+          push_repo("Clash_Tmp", f"[AUTO_SYNC] Clash {get_time()}")
+          push_repo("SingBox_Temp", f"[AUTO_SYNC] Sing-Box {get_time()}")
           EOF
           python3 full_sync.py
