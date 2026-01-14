@@ -1,5 +1,6 @@
-# 最后更新时间: 2026-01-14 22:19:39 (北京时间)
-# Apple
+# 最后更新时间: 2026-01-14 22:20:05 (北京时间)
+# 从Clash自动同步 - 2026-01-14 22:20:05 (北京时间)
+# 原始文件: MyProxyRules
 IP-CIDR,17.248.152.0/24
 DOMAIN-SUFFIX,icloud-content.com
 DOMAIN,testflight.apple.com
@@ -32,7 +33,6 @@ DOMAIN,hls-amt.itunes.apple.com
 DOMAIN,play-edge.itunes.apple.com
 DOMAIN,tv.applemusic.com
 DOMAIN,uts-api.itunes.apple.com
-# Social
 DOMAIN-SUFFIX,signal.org
 DOMAIN-SUFFIX,whispersystems.org
 DOMAIN-SUFFIX,textsecure-service.whispersystems.org
@@ -60,7 +60,6 @@ DOMAIN-SUFFIX,tumblr.com
 DOMAIN-KEYWORD,discord
 DOMAIN-KEYWORD,mastodon
 DOMAIN-KEYWORD,techhub.social
-# Development
 DOMAIN-SUFFIX,notion.so
 DOMAIN-SUFFIX,notion-static.com
 DOMAIN-SUFFIX,notionusercontent.com
@@ -81,7 +80,6 @@ DOMAIN-SUFFIX,obsproject.com
 DOMAIN-KEYWORD,docker
 DOMAIN-KEYWORD,davinciresolve
 PROCESS-NAME,obs64.exe
-# AI
 DOMAIN-SUFFIX,character.ai
 DOMAIN-SUFFIX,perplexity.ai
 DOMAIN-SUFFIX,coze.com
@@ -92,7 +90,6 @@ DOMAIN-SUFFIX,prowritingaid.com
 DOMAIN-SUFFIX,wordtune.com
 DOMAIN-SUFFIX,quillbot.com
 DOMAIN-SUFFIX,grammarly.com
-# News
 DOMAIN-SUFFIX,medium.com
 DOMAIN-SUFFIX,nytimes.com
 DOMAIN-SUFFIX,bbc.com
@@ -108,7 +105,6 @@ DOMAIN-SUFFIX,kagi.com
 DOMAIN-SUFFIX,archive.org
 DOMAIN-SUFFIX,archive.is
 DOMAIN-KEYWORD,blogspot
-# Resources
 DOMAIN-SUFFIX,thepiratebay.org
 DOMAIN-SUFFIX,nyaa.si
 DOMAIN-SUFFIX,dropbox.com
@@ -123,7 +119,6 @@ DOMAIN-SUFFIX,z-library.se
 DOMAIN-SUFFIX,annas-archive.org
 DOMAIN-KEYWORD,sci-hub
 DOMAIN-KEYWORD,dropbox
-# Finance
 DOMAIN-SUFFIX,aicoin.com
 DOMAIN-SUFFIX,aimoon.com
 DOMAIN-SUFFIX,aex.com
@@ -135,7 +130,6 @@ DOMAIN-SUFFIX,cryptocompare.com
 DOMAIN-KEYWORD,quote
 DOMAIN-KEYWORD,stocks
 DOMAIN-KEYWORD,market
-# Security
 DOMAIN-SUFFIX,cloudflare-dns.com
 DOMAIN-SUFFIX,cloudflare.com
 DOMAIN-SUFFIX,amazontrust.com
@@ -152,7 +146,6 @@ DOMAIN-SUFFIX,surfshark.com
 DOMAIN-SUFFIX,ipleak.net
 DOMAIN-SUFFIX,whoer.net
 PROCESS-NAME,AdguardSvc.exe
-# Entertainment
 DOMAIN-SUFFIX,ubisoft.com
 DOMAIN-SUFFIX,ubi.com
 DOMAIN-SUFFIX,majsoul.union-game.com

@@ -1,5 +1,6 @@
-# 最后更新时间: 2026-01-14 22:19:39 (北京时间)
-# Apple
+# 最后更新时间: 2026-01-14 22:20:05 (北京时间)
+# 从Clash自动同步 - 2026-01-14 22:20:05 (北京时间)
+# 原始文件: MyDirectRules
 DOMAIN-SUFFIX,aaplimg.com
 DOMAIN-SUFFIX,apple.com
 DOMAIN-SUFFIX,apple.cn
@@ -11,7 +12,6 @@ DOMAIN-SUFFIX,itunes.com
 DOMAIN-SUFFIX,me.com
 DOMAIN-SUFFIX,mzstatic.com
 DOMAIN,edge-076.xasha1.icloud-content.com.cn
-# Microsoft
 DOMAIN-KEYWORD,office
 DOMAIN-KEYWORD,skype
 DOMAIN-SUFFIX,windows.com
@@ -43,12 +43,10 @@ DOMAIN-SUFFIX,msftauth.cn
 DOMAIN-SUFFIX,msftncsi.com
 DOMAIN-SUFFIX,msn.cn
 DOMAIN-SUFFIX,storage.msn.com
-# Bing
 DOMAIN-SUFFIX,bingapis.com
 DOMAIN-SUFFIX,bing.com
 DOMAIN-SUFFIX,bingapis.cn
 DOMAIN-SUFFIX,bing.com.cn
-# Gaming
 DOMAIN-SUFFIX,s.rsg.sc
 DOMAIN-SUFFIX,rockstargames.com
 DOMAIN-SUFFIX,battle.net
@@ -73,7 +71,6 @@ PROCESS-NAME,Wow.exe
 PROCESS-NAME,PlatformWebBrowser.exe
 PROCESS-NAME,LeagueClient.exe
 PROCESS-NAME,SC2_x64.exe
-# Domestic
 DOMAIN-KEYWORD,tencent
 DOMAIN-KEYWORD,mxdl
 DOMAIN-SUFFIX,shuidichou.com
@@ -97,7 +94,6 @@ DOMAIN-SUFFIX,report.url.cn
 DOMAIN-SUFFIX,status-ipv6.jpush.cn
 DOMAIN-SUFFIX,micode.cn
 DOMAIN-SUFFIX,micode.net
-# Others
 DOMAIN-SUFFIX,stun.voipstunt.com
 DOMAIN-SUFFIX,stun.voiparound.com
 DOMAIN-SUFFIX,cdn.primehelix.co
@@ -139,7 +135,6 @@ DOMAIN-SUFFIX,asus.com
 DOMAIN-SUFFIX,asusrouter.com
 DOMAIN-SUFFIX,assoc-amazon.cn
 DOMAIN-SUFFIX,asuscomm.com
-# IP Section
 IP-ASN,714
 IP-ASN,6185
 IP-CIDR,163.181.77.215/32
@@ -156,5 +151,4 @@ IP-CIDR,101.47.81.229/32
 IP-CIDR,129.227.71.37/32
 IP-CIDR,52.139.169.119/32
 IP-CIDR,103.36.24.14/32
-# Logic Rule
 PROCESS-NAME,OR,((PROTOCOL,UDP),(DEST-PORT,10000-20000))
