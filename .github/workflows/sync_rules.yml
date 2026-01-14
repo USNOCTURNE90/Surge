@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.PAT }}
           fetch-depth: 2
@@ -32,23 +32,24 @@ jobs:
 
       - name: Set up Python
         if: steps.check_commit.outputs.skip == 'false'
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.10'
 
       - name: Configure Git
         if: steps.check_commit.outputs.skip == 'false'
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
+          git config --global http.postBuffer 524288000
 
-      - name: 1. 格式化并同步 Surge & Clash
+      - name: 1. 格式化并同步多平台规则
         if: steps.check_commit.outputs.skip == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
           cat > full_sync.py << 'EOF'
-          import os, re, subprocess, json, ipaddress
+          import os, re, subprocess, json, ipaddress, shutil
           from pathlib import Path
           from datetime import datetime, timedelta
 
@@ -81,58 +82,52 @@ jobs:
               act = {k: v for k, v in rd.items() if v}
               return {"version": 1, "rules": [act]} if act else None
 
-          # 初始化
           token = os.environ.get("GITHUB_TOKEN")
           root = Path(".")
-          # 排除列表
           excludes = ['.git', '.github', 'Clash_Repo', 'SB_Repo', 'LICENSE', 'README.md']
           
-          # 获取所有规则文件
-          files = [f for f in root.glob('*') if f.is_file() and f.name not in excludes and f.suffix not in ['.py', '.yml', '.yaml']]
+          files = [f for f in root.glob('*') if f.is_file() and f.name not in excludes and f.suffix not in ['.py', '.yml', '.yaml', '.md']]
           
-          # 同步 Clash
-          c_repo = f"https://{token}@github.com/USNOCTURNE90/Clash.git"
-          subprocess.run(["git", "clone", c_repo, "Clash_Repo"], check=True)
+          # 清理并克隆
+          for d in ["Clash_Repo", "SB_Repo"]:
+              if os.path.exists(d): shutil.rmtree(d)
+
+          c_url = f"https://x-access-token:{token}@github.com/USNOCTURNE90/Clash.git"
+          s_url = f"https://x-access-token:{token}@github.com/USNOCTURNE90/Sing-Box.git"
           
-          # 同步 Sing-Box
-          s_repo = f"https://{token}@github.com/USNOCTURNE90/Sing-Box.git"
-          subprocess.run(["git", "clone", s_repo, "SB_Repo"], check=True)
+          subprocess.run(["git", "clone", c_url, "Clash_Repo"], check=True)
+          subprocess.run(["git", "clone", s_url, "SB_Repo"], check=True)
 
           for f_path in files:
               with open(f_path, "r", encoding="utf-8") as f:
                   raw_lines = f.readlines()
               
-              # 1. 更新原文件内容 (Format)
+              # Surge Format
               new_lines = [f"# 最后更新时间: {get_time()} (北京时间)"]
               for l in raw_lines:
                   if not l.startswith("# 最后更新时间:"): new_lines.append(process_line(l))
               with open(f_path, "w", encoding="utf-8") as f:
                   f.write("\n".join(new_lines))
               
-              # 2. 生成 Clash 文件
+              # Clash
               clash_data = [f"# 最后更新时间: {get_time()}", "rules:"]
               for nl in new_lines:
                   if nl and not nl.startswith("#"): clash_data.append(f"  - {nl}")
               with open(Path("Clash_Repo") / f_path.name, "w", encoding="utf-8") as f:
                   f.write("\n".join(clash_data))
               
-              # 3. 生成 Sing-Box 文件
+              # Sing-Box
               sb_data = to_sb(new_lines)
               if sb_data:
                   with open(Path("SB_Repo") / f"{f_path.name}.json", "w", encoding="utf-8") as f:
                       json.dump(sb_data, f, indent=2, ensure_ascii=False)
 
-          # 提交更改
           def push_repo(path, msg):
               subprocess.run(["git", "-C", path, "add", "."], check=True)
-              res = subprocess.run(["git", "-C", path, "status", "--porcelain"], capture_output=True, text=True).stdout
-              if res.strip():
-                  subprocess.run(["git", "-C", path, "config", "user.name", "GitHub Actions Bot"], check=True)
-                  subprocess.run(["git", "-C", path, "config", "user.email", "actions@github.com"], check=True)
+              if subprocess.run(["git", "-C", path, "status", "--porcelain"], capture_output=True, text=True).stdout.strip():
                   subprocess.run(["git", "-C", path, "commit", "-m", msg], check=True)
                   subprocess.run(["git", "-C", path, "push"], check=True)
 
-          # 执行推送
           push_repo(".", f"[AUTO_FORMAT] {get_time()}")
           push_repo("Clash_Repo", f"[AUTO_SYNC] Clash {get_time()}")
           push_repo("SB_Repo", f"[AUTO_SYNC] Sing-Box {get_time()}")
