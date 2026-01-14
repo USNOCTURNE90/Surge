@@ -49,26 +49,25 @@ jobs:
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
 
-      - name: Create and run format script
+      - name: 1. 自动格式化 Surge 规则
         if: steps.check_commit.outputs.skip == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
           cat > format_rules.py << 'EOF'
           #!/usr/bin/env python3
-          import os, re, subprocess, ipaddress, logging, traceback
+          import os, re, subprocess, ipaddress
           from pathlib import Path
           from datetime import datetime, timedelta
 
-          logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
           def get_china_time():
               return (datetime.utcnow() + timedelta(hours=8)).strftime('%Y-%m-%d %H:%M:%S')
 
-          def process_rule_line(line, is_surge=True):
+          def process_rule_line(line):
               line = line.strip()
               if not line or line.startswith("#"): return line
               known_prefixes = ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]
-              if any(line.startswith(prefix) for prefix in known_prefixes): return line
+              if any(line.upper().startswith(prefix) for prefix in known_prefixes): return line
               if "." in line:
                   try:
                       parts = line.split('.')
@@ -79,40 +78,39 @@ jobs:
                   except: return f"DOMAIN-SUFFIX,{line}"
               return f"PROCESS-NAME,{line}"
 
-          try:
-              root_dir = Path(".")
-              rule_files = [f for f in root_dir.glob('*') if f.is_file() and not f.name.startswith('.') and f.suffix not in ['.py', '.yml', '.yaml', '.md']]
-              for rule_file in rule_files:
-                  with open(rule_file, "r", encoding="utf-8") as f:
-                      content = f.read()
-                  current_time = get_china_time()
-                  updated_lines = [f"# 最后更新时间: {current_time} (北京时间)"]
-                  for line in content.splitlines():
-                      if not line.startswith("# 最后更新时间:"):
-                          updated_lines.append(process_rule_line(line))
-                  updated_content = "\n".join(updated_lines)
-                  if content != updated_content:
-                      with open(rule_file, "w", encoding="utf-8") as f:
-                          f.write(updated_content)
-              
+          root_dir = Path(".")
+          rule_files = [f for f in root_dir.glob('*') if f.is_file() and not f.name.startswith('.') and f.suffix not in ['.py', '.yml', '.yaml', '.md', '.txt']]
+          
+          changed = False
+          for rule_file in rule_files:
+              with open(rule_file, "r", encoding="utf-8") as f:
+                  content = f.read()
+              current_time = get_china_time()
+              updated_lines = [f"# 最后更新时间: {current_time} (北京时间)"]
+              for line in content.splitlines():
+                  if not line.startswith("# 最后更新时间:"):
+                      updated_lines.append(process_rule_line(line))
+              updated_content = "\n".join(updated_lines)
+              if content != updated_content:
+                  with open(rule_file, "w", encoding="utf-8") as f:
+                      f.write(updated_content)
+                  changed = True
+          
+          if changed:
               subprocess.run(["git", "add", "."], check=True)
-              if subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True).stdout.strip():
-                  subprocess.run(["git", "commit", "-m", f"[AUTO_FORMAT] {get_china_time()}"], check=True)
-                  subprocess.run(["git", "push"], check=True)
-          except Exception as e:
-              traceback.print_exc()
-              exit(1)
+              subprocess.run(["git", "commit", "-m", f"[AUTO_FORMAT] {get_china_time()}"], check=True)
+              subprocess.run(["git", "push"], check=True)
           EOF
           python3 format_rules.py
 
-      - name: Sync to Clash
+      - name: 2. 同步到 Clash 仓库
         if: steps.check_commit.outputs.skip == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
           cat > sync_to_clash.py << 'EOF'
           #!/usr/bin/env python3
-          import os, subprocess, ipaddress, re
+          import os, subprocess
           from pathlib import Path
           from datetime import datetime, timedelta
 
@@ -120,13 +118,13 @@ jobs:
           
           github_token = os.environ.get("GITHUB_TOKEN", "")
           clash_repo = f"https://{github_token}@github.com/USNOCTURNE90/Clash.git"
-          clash_dir = Path("Clash")
+          clash_dir = Path("Clash_Temp")
           if clash_dir.exists():
               import shutil
               shutil.rmtree(clash_dir)
-          subprocess.run(["git", "clone", clash_repo, "Clash"], check=True)
+          subprocess.run(["git", "clone", clash_repo, str(clash_dir)], check=True)
 
-          rule_files = [f for f in Path(".").glob('*') if f.is_file() and not f.name.startswith('.') and f.suffix not in ['.py', '.yml', '.yaml', '.md', '.txt'] and "Clash" not in str(f)]
+          rule_files = [f for f in Path(".").glob('*') if f.is_file() and not f.name.startswith('.') and f.suffix not in ['.py', '.yml', '.yaml', '.md', '.txt']]
           
           for surge_file in rule_files:
               with open(surge_file, "r", encoding="utf-8") as f:
@@ -139,14 +137,14 @@ jobs:
               with open(clash_dir / surge_file.name, "w", encoding="utf-8") as f:
                   f.write("\n".join(clash_content))
 
-          subprocess.run(["git", "-C", "Clash", "add", "."], check=True)
-          if subprocess.run(["git", "-C", "Clash", "status", "--porcelain"], capture_output=True, text=True).stdout.strip():
-              subprocess.run(["git", "-C", "Clash", "commit", "-m", f"[AUTO_SYNC] {get_china_time()}"], check=True)
-              subprocess.run(["git", "-C", "Clash", "push"], check=True)
+          subprocess.run(["git", "-C", str(clash_dir), "add", "."], check=True)
+          if subprocess.run(["git", "-C", str(clash_dir), "status", "--porcelain"], capture_output=True, text=True).stdout.strip():
+              subprocess.run(["git", "-C", str(clash_dir), "commit", "-m", f"[AUTO_SYNC] Clash - {get_china_time()}"], check=True)
+              subprocess.run(["git", "-C", str(clash_dir), "push"], check=True)
           EOF
           python3 sync_to_clash.py
 
-      - name: Sync to Sing-Box
+      - name: 3. 同步到 Sing-Box 仓库 (严格转换模式)
         if: steps.check_commit.outputs.skip == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -162,42 +160,47 @@ jobs:
           def parse_surge_to_singbox(lines):
               rules_dict = {"domain":[], "domain_suffix":[], "domain_keyword":[], "ip_cidr":[], "ip_asn":[], "process_name":[]}
               valid_prefixes = {"DOMAIN":"domain", "DOMAIN-SUFFIX":"domain_suffix", "DOMAIN-KEYWORD":"domain_keyword", "IP-CIDR":"ip_cidr", "IP-CIDR6":"ip_cidr", "IP-ASN":"ip_asn", "PROCESS-NAME":"process_name"}
+              count = 0
               for line in lines:
                   line = line.strip()
                   if not line or line.startswith("#"): continue
-                  matched = False
-                  for prefix, key in valid_prefixes.items():
-                      if line.upper().startswith(prefix + ","):
-                          parts = line.split(',')
-                          if len(parts) >= 2:
-                              rules_dict[key].append(parts[1].strip())
-                              matched = True
-                          break
-                  if not matched:
-                      if re.match(r"^\d+\.\d+\.\d+\.\d+(/\d+)?$", line): rules_dict["ip_cidr"].append(line if "/" in line else f"{line}/32")
-                      elif "." in line and not any(c in line for c in [":", "/", " "]): rules_dict["domain_suffix"].append(line)
+                  parts = line.split(',')
+                  prefix = parts[0].upper()
+                  if prefix in valid_prefixes and len(parts) >= 2:
+                      rules_dict[valid_prefixes[prefix]].append(parts[1].strip())
+                      count += 1
+                  elif re.match(r"^\d+\.\d+\.\d+\.\d+(/\d+)?$", line):
+                      rules_dict["ip_cidr"].append(line if "/" in line else f"{line}/32")
+                      count += 1
+                  elif "." in line and not any(c in line for c in [":", "/", " "]):
+                      rules_dict["domain_suffix"].append(line)
+                      count += 1
               active_rules = {k: v for k, v in rules_dict.items() if v}
-              return {"version": 1, "rules": [active_rules]} if active_rules else None
+              return ({"version": 1, "rules": [active_rules]} if active_rules else None), count
 
           github_token = os.environ.get("GITHUB_TOKEN", "")
           sb_repo_url = f"https://{github_token}@github.com/USNOCTURNE90/Sing-Box.git"
-          sb_dir = Path("SingBoxRepo")
+          sb_dir = Path("SingBox_Temp")
           if sb_dir.exists():
               import shutil
               shutil.rmtree(sb_dir)
           subprocess.run(["git", "clone", sb_repo_url, str(sb_dir)], check=True)
 
-          for file in Path(".").glob('*'):
-              if file.is_file() and not file.name.startswith('.') and file.suffix not in ['.py', '.yml', '.yaml', '.md'] and "Clash" not in str(file) and "SingBox" not in str(file):
-                  with open(file, "r", encoding="utf-8") as f:
-                      sb_data = parse_surge_to_singbox(f.readlines())
-                  if sb_data:
-                      with open(sb_dir / f"{file.name}.json", "w", encoding="utf-8") as f:
-                          json.dump(sb_data, f, indent=2, ensure_ascii=False)
+          rule_files = [f for f in Path(".").glob('*') if f.is_file() and not f.name.startswith('.') and f.suffix not in ['.py', '.yml', '.yaml', '.md', '.txt']]
+          
+          processed = 0
+          for file in rule_files:
+              with open(file, "r", encoding="utf-8") as f:
+                  sb_data, rule_num = parse_surge_to_singbox(f.readlines())
+              if sb_data:
+                  with open(sb_dir / f"{file.name}.json", "w", encoding="utf-8") as f:
+                      json.dump(sb_data, f, indent=2, ensure_ascii=False)
+                  processed += 1
 
-          subprocess.run(["git", "-C", str(sb_dir), "add", "."], check=True)
-          if subprocess.run(["git", "-C", str(sb_dir), "status", "--porcelain"], capture_output=True, text=True).stdout.strip():
-              subprocess.run(["git", "-C", str(sb_dir), "commit", "-m", f"[AUTO_SYNC] {get_china_time()}"], check=True)
-              subprocess.run(["git", "-C", str(sb_dir), "push"], check=True)
+          if processed > 0:
+              subprocess.run(["git", "-C", str(sb_dir), "add", "."], check=True)
+              if subprocess.run(["git", "-C", str(sb_dir), "status", "--porcelain"], capture_output=True, text=True).stdout.strip():
+                  subprocess.run(["git", "-C", str(sb_dir), "commit", "-m", f"[AUTO_SYNC] Sing-Box - {get_china_time()}"], check=True)
+                  subprocess.run(["git", "-C", str(sb_dir), "push"], check=True)
           EOF
           python3 sync_to_singbox.py
