@@ -486,3 +486,119 @@ jobs:
           python sync_to_clash.py
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
+          - name: Sync and Convert to Sing-Box (Strict Mode)
+        if: steps.check_commit.outputs.skip == 'false'
+        run: |
+          cat > sync_to_singbox.py << 'EOF'
+          #!/usr/bin/env python3
+          import os, json, re, subprocess
+          from pathlib import Path
+          from datetime import datetime, timedelta
+
+          def get_china_time():
+              return (datetime.utcnow() + timedelta(hours=8)).strftime('%Y-%m-%d %H:%M:%S')
+
+          def parse_surge_to_singbox(lines):
+              """
+              严格解析 Surge 规则：只保留 sing-box 规则集支持的字段。
+              支持列表：DOMAIN, DOMAIN-SUFFIX, DOMAIN-KEYWORD, IP-CIDR, IP-ASN, PROCESS-NAME
+              """
+              rules_dict = {
+                  "domain": [],
+                  "domain_suffix": [],
+                  "domain_keyword": [],
+                  "ip_cidr": [],
+                  "ip_asn": [],
+                  "process_name": []
+              }
+              
+              # sing-box rule-set 明确支持的关键词映射
+              valid_prefixes = {
+                  "DOMAIN": "domain",
+                  "DOMAIN-SUFFIX": "domain_suffix",
+                  "DOMAIN-KEYWORD": "domain_keyword",
+                  "IP-CIDR": "ip_cidr",
+                  "IP-CIDR6": "ip_cidr",
+                  "IP-ASN": "ip_asn",
+                  "PROCESS-NAME": "process_name"
+              }
+
+              for line in lines:
+                  line = line.strip()
+                  if not line or line.startswith("#"): continue
+                  
+                  # 识别头部
+                  upper_line = line.upper()
+                  matched = False
+                  
+                  for prefix, key in valid_prefixes.items():
+                      if upper_line.startswith(prefix + ","):
+                          # 提取值并去除可能存在的策略后缀 (如 ,DIRECT)
+                          parts = line.split(',')
+                          if len(parts) >= 2:
+                              val = parts[1].strip()
+                              rules_dict[key].append(val)
+                              matched = True
+                          break
+                  
+                  # 如果没有前缀，进行智能识别（仅限域名和IP）
+                  if not matched:
+                      if re.match(r"^\d+\.\d+\.\d+\.\d+(/\d+)?$", line):
+                          rules_dict["ip_cidr"].append(line if "/" in line else f"{line}/32")
+                      elif "." in line and not any(c in line for c in [":", "/", " "]):
+                          rules_dict["domain_suffix"].append(line)
+
+              # 过滤掉不支持的规则（如 USER-AGENT, URL-REGEX 等会因不匹配 valid_prefixes 被丢弃）
+              active_rules = {k: v for k, v in rules_dict.items() if v}
+              
+              return {
+                  "version": 1,
+                  "rules": [active_rules]
+              } if active_rules else None
+
+          # --- 仓库操作逻辑 ---
+          github_token = os.environ.get("GITHUB_TOKEN", "")
+          sb_repo_url = f"https://{github_token}@github.com/USNOCTURNE90/Sing-Box.git"
+          sb_dir = Path("Sing-Box-Repo")
+          
+          if sb_dir.exists():
+              import shutil
+              shutil.rmtree(sb_dir)
+          
+          subprocess.run(["git", "clone", sb_repo_url, str(sb_dir)], check=True)
+
+          root_dir = Path(".")
+          exclude_list = ['.git', '.github', 'Clash', 'Sing-Box-Repo', 'LICENSE', 'README.md']
+          
+          for file in root_dir.glob('*'):
+              if file.name in exclude_list or file.suffix in ['.py', '.yml', '.yaml'] or file.is_dir():
+                  continue
+              
+              with open(file, "r", encoding="utf-8") as f:
+                  content = f.readlines()
+              
+              sb_json_data = parse_surge_to_singbox(content)
+              
+              if sb_json_data:
+                  target_file = sb_dir / f"{file.name}.json"
+                  with open(target_file, "w", encoding="utf-8") as f:
+                      json.dump(sb_json_data, f, indent=2, ensure_ascii=False)
+                  print(f"✅ Converted: {file.name}")
+              else:
+                  print(f"⚠️ Skipped (No compatible rules): {file.name}")
+
+          # 推送逻辑
+          subprocess.run(["git", "-C", str(sb_dir), "add", "."], check=True)
+          status = subprocess.run(["git", "-C", str(sb_dir), "status", "--porcelain"], capture_output=True, text=True).stdout
+          
+          if status.strip():
+              china_time = get_china_time()
+              subprocess.run(["git", "-C", str(sb_dir), "config", "user.name", "GitHub Actions Bot"], check=True)
+              subprocess.run(["git", "-C", str(sb_dir), "config", "user.email", "actions@github.com"], check=True)
+              subprocess.run(["git", "-C", str(sb_dir), "commit", "-m", f"[AUTO_SYNC] Strict Mode Sync - {china_time}"], check=True)
+              subprocess.run(["git", "-C", str(sb_dir), "push"], check=True)
+          EOF
+          
+          python3 sync_to_singbox.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
