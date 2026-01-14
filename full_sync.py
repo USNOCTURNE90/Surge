@@ -33,40 +33,41 @@ def to_sb(lines):
 
 token = os.environ.get("GITHUB_TOKEN")
 root = Path(".")
-excludes = ['.git', '.github', 'Clash_Tmp', 'SingBox_Tmp', 'LICENSE', 'README.md']
+excludes = ['.git', '.github', 'Clash_Tmp', 'SingBox_Temp', 'LICENSE', 'README.md']
 
-# 获取规则文件（排除掉文件夹和特定系统文件）
+# 针对无后缀文件进行筛选
 files = [f for f in root.glob('*') if f.is_file() and f.name not in excludes and f.suffix not in ['.py', '.yml', '.yaml', '.md', '.txt']]
 
-# 清理工作目录并克隆
-for d in ["Clash_Tmp", "SingBox_Temp"]:
+# 清理工作目录
+for d in ["Clash_Temp", "SingBox_Temp"]:
     if os.path.exists(d): shutil.rmtree(d)
 
+# 使用标准鉴权方式
 c_url = f"https://x-access-token:{token}@github.com/USNOCTURNE90/Clash.git"
 s_url = f"https://x-access-token:{token}@github.com/USNOCTURNE90/Sing-Box.git"
 
-subprocess.run(["git", "clone", c_url, "Clash_Tmp"], check=True)
+subprocess.run(["git", "clone", c_url, "Clash_Temp"], check=True)
 subprocess.run(["git", "clone", s_url, "SingBox_Temp"], check=True)
 
 for f_path in files:
     with open(f_path, "r", encoding="utf-8") as f:
         raw_lines = f.readlines()
     
-    # Surge Format
+    # 更新 Surge 原文件
     new_lines = [f"# 最后更新时间: {get_time()} (北京时间)"]
     for l in raw_lines:
         if not l.startswith("# 最后更新时间:"): new_lines.append(process_line(l))
     with open(f_path, "w", encoding="utf-8") as f:
         f.write("\n".join(new_lines))
     
-    # Clash (无后缀同步)
+    # 同步 Clash
     clash_data = [f"# 最后更新时间: {get_time()}", "rules:"]
     for nl in new_lines:
         if nl and not nl.startswith("#"): clash_data.append(f"  - {nl}")
-    with open(Path("Clash_Tmp") / f_path.name, "w", encoding="utf-8") as f:
+    with open(Path("Clash_Temp") / f_path.name, "w", encoding="utf-8") as f:
         f.write("\n".join(clash_data))
     
-    # Sing-Box (保持原名无后缀)
+    # 同步 Sing-Box
     sb_data = to_sb(new_lines)
     if sb_data:
         with open(Path("SingBox_Temp") / f_path.name, "w", encoding="utf-8") as f:
@@ -82,5 +83,5 @@ def push_repo(path, msg):
         subprocess.run(["git", "-C", path, "push"], check=True)
 
 push_repo(".", f"[AUTO_FORMAT] {get_time()}")
-push_repo("Clash_Tmp", f"[AUTO_SYNC] Clash {get_time()}")
+push_repo("Clash_Temp", f"[AUTO_SYNC] Clash {get_time()}")
 push_repo("SingBox_Temp", f"[AUTO_SYNC] Sing-Box {get_time()}")
