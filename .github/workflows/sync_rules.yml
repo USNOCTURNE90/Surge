@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           token: ${{ secrets.PAT }}
           fetch-depth: 2
@@ -25,115 +25,464 @@ jobs:
         run: |
           COMMIT_MSG=$(git log -1 --pretty=%B)
           if [[ $COMMIT_MSG == *"[AUTO_SYNC]"* || $COMMIT_MSG == *"[AUTO_FORMAT]"* ]]; then
+            echo "Skipping workflow as this is an automated sync commit"
             echo "skip=true" >> $GITHUB_OUTPUT
           else
+            echo "Proceeding with sync"
             echo "skip=false" >> $GITHUB_OUTPUT
           fi
-
+          
       - name: Set up Python
         if: steps.check_commit.outputs.skip == 'false'
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.x'
 
+      - name: Install dependencies
+        if: steps.check_commit.outputs.skip == 'false'
+        run: |
+          python -m pip install --upgrade pip
+          
       - name: Configure Git
         if: steps.check_commit.outputs.skip == 'false'
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
-
-      - name: 同步 Surge, Clash 与 Sing-Box
-        if: steps.check_commit.outputs.skip == 'false'
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-        run: |
-          cat > full_sync.py << 'EOF'
-          import os, re, subprocess, json, ipaddress, shutil
-          from pathlib import Path
-          from datetime import datetime, timedelta
-
-          def get_time(): return (datetime.utcnow() + timedelta(hours=8)).strftime('%Y-%m-%d %H:%M:%S')
           
-          def process_line(line):
+      - name: Debug environment
+        if: steps.check_commit.outputs.skip == 'false'
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Directory contents:"
+          ls -la
+          
+      - name: Create and run format script
+        if: steps.check_commit.outputs.skip == 'false'
+        run: |
+          cat > format_rules.py << 'EOF'
+          #!/usr/bin/env python3
+
+          import os
+          import re
+          import time
+          import subprocess
+          from pathlib import Path
+          import logging
+          import traceback
+          from datetime import datetime, timedelta
+          import ipaddress
+          
+          # 配置日志
+          logging.basicConfig(
+              level=logging.INFO,
+              format="%(asctime)s - %(levelname)s - %(message)s"
+          )
+          logger = logging.getLogger(__name__)
+          
+          # 获取中国时间
+          def get_china_time():
+              utc_now = datetime.utcnow()
+              china_time = utc_now + timedelta(hours=8)
+              return china_time.strftime('%Y-%m-%d %H:%M:%S')
+          
+          # 检查和处理规则行
+          def process_rule_line(line, is_surge=True):
               line = line.strip()
-              if not line or line.startswith("#"): return line
-              prefixes = ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]
-              if any(line.upper().startswith(p) for p in prefixes): return line
+              if not line or line.startswith("#"):
+                  return line
+              
+              # 检查是否已有前缀
+              known_prefixes = ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]
+              if any(line.startswith(prefix) for prefix in known_prefixes):
+                  return line
+                  
+              # 检查是否是域名（包含点）
               if "." in line:
                   try:
+                      # 检查是否是纯数字IP
                       parts = line.split('.')
-                      if all(p.isdigit() for p in parts): return f"IP-CIDR,{line}/32"
-                      return f"DOMAIN-SUFFIX,{line}"
-                  except: return f"DOMAIN-SUFFIX,{line}"
-              return f"PROCESS-NAME,{line}"
-
-          def to_sb(lines):
-              rd = {"domain":[], "domain_suffix":[], "domain_keyword":[], "ip_cidr":[], "ip_asn":[], "process_name":[]}
-              vp = {"DOMAIN":"domain", "DOMAIN-SUFFIX":"domain_suffix", "DOMAIN-KEYWORD":"domain_keyword", "IP-CIDR":"ip_cidr", "IP-CIDR6":"ip_cidr", "IP-ASN":"ip_asn", "PROCESS-NAME":"process_name"}
-              for l in lines:
-                  l = l.strip()
-                  if not l or l.startswith("#"): continue
-                  ps = l.split(',')
-                  px = ps[0].upper()
-                  if px in vp and len(ps) >= 2: rd[vp[px]].append(ps[1].strip())
-                  elif re.match(r"^\d+\.\d+\.\d+\.\d+(/\d+)?$", l): rd["ip_cidr"].append(l if "/" in l else f"{l}/32")
-                  elif "." in l and not any(c in l for c in [":", "/", " "]): rd["domain_suffix"].append(l)
-              act = {k: v for k, v in rd.items() if v}
-              return {"version": 1, "rules": [act]} if act else None
-
-          token = os.environ.get("GITHUB_TOKEN")
-          root = Path(".")
-          excludes = ['.git', '.github', 'Clash_Tmp', 'SingBox_Temp', 'LICENSE', 'README.md']
+                      if all(part.isdigit() for part in parts):
+                          # 尝试解析为IP地址
+                          ipaddress.ip_address(line)
+                          # 如果是有效IP，添加IP-CIDR前缀和/32
+                          return f"IP-CIDR,{line}/32" if is_surge else f"- IP-CIDR,{line}/32"
+                      else:
+                          # 是域名，添加DOMAIN-SUFFIX前缀
+                          return f"DOMAIN-SUFFIX,{line}" if is_surge else f"- DOMAIN-SUFFIX,{line}"
+                  except ValueError:
+                      # 不是有效IP，当作域名处理
+                      return f"DOMAIN-SUFFIX,{line}" if is_surge else f"- DOMAIN-SUFFIX,{line}"
+              else:
+                  # 没有点，作为进程名处理
+                  return f"PROCESS-NAME,{line}" if is_surge else f"- PROCESS-NAME,{line}"
           
-          # 针对无后缀文件进行筛选
-          files = [f for f in root.glob('*') if f.is_file() and f.name not in excludes and f.suffix not in ['.py', '.yml', '.yaml', '.md', '.txt']]
+          # 打印当前工作目录和内容
+          print(f"Current directory: {os.getcwd()}")
+          print(f"Directory contents: {os.listdir('.')}")
           
-          # 清理工作目录
-          for d in ["Clash_Temp", "SingBox_Temp"]:
-              if os.path.exists(d): shutil.rmtree(d)
+          try:
+              # 设置目录
+              root_dir = Path(".")
 
-          # 使用标准鉴权方式
-          c_url = f"https://x-access-token:{token}@github.com/USNOCTURNE90/Clash.git"
-          s_url = f"https://x-access-token:{token}@github.com/USNOCTURNE90/Sing-Box.git"
+              
+              # 要排除的文件和目录
+              exclude_patterns = [
+                  '.git', '.github', 'Clash', '*.yml', '*.yaml', '*.py', '*.md', 
+                  '.gitignore', 'LICENSE', 'README*'
+              ]
+              
+              def should_exclude(path):
+                  """判断文件是否应被排除处理"""
+                  path_str = str(path)
+                  
+                  # 排除目录
+                  if path.is_dir():
+                      return True
+                      
+                  # 排除隐藏文件
+                  if path.name.startswith('.'):
+                      return True
+                      
+                  # 排除工作流和脚本文件
+                  for pattern in exclude_patterns:
+                      if '*' in pattern:
+                          suffix = pattern.replace('*', '')
+                          if path_str.endswith(suffix):
+                              return True
+                      elif pattern in path_str:
+                          return True
+                  
+                  return False
+              
+              # 查找规则文件
+              rule_files = []
+              for file_path in root_dir.glob('*'):
+                  if should_exclude(file_path):
+                      print(f"Skipping excluded file: {file_path}")
+                      continue
+                  
+                  try:
+                      with open(file_path, "r", encoding="utf-8") as f:
+                          content = f.read()
+                          if "DOMAIN" in content or "IP-CIDR" in content or "." in content:
+                              rule_files.append(file_path)
+                              print(f"Found rule file: {file_path.name}")
+                  except Exception as e:
+                      print(f"Error reading {file_path.name}: {str(e)}")
+              
+              if not rule_files:
+                  print("No rule files found!")
+                  print(f"All files: {[f.name for f in root_dir.glob('*') if not should_exclude(f)]}")
+                  exit(1)
+              
+              # 处理规则文件
+              for rule_file in rule_files:
+                  with open(rule_file, "r", encoding="utf-8") as f:
+                      content = f.read()
+                  
+                  # 添加最后更新时间标记到文件内容
+                  current_time = get_china_time()
+                  content_lines = content.splitlines()
+                  updated_lines = []
+                  
+                  # 更新或添加最后更新时间注释
+                  time_comment_found = False
+                  for line in content_lines:
+                      if line.startswith("# 最后更新时间:"):
+                          updated_lines.append(f"# 最后更新时间: {current_time} (北京时间)")
+                          time_comment_found = True
+                      else:
+                          # 处理规则行，添加适当的前缀
+                          processed_line = process_rule_line(line, is_surge=True)
+                          updated_lines.append(processed_line)
+                  
+                  if not time_comment_found:
+                      # 在文件开头添加更新时间
+                      updated_lines.insert(0, f"# 最后更新时间: {current_time} (北京时间)")
+
+
+
+
+
+                  
+                  # 更新文件内容
+                  updated_content = "\n".join(updated_lines)
+                  
+                  # 只有当内容有变化时才写入文件
+                  if content != updated_content:
+                      with open(rule_file, "w", encoding="utf-8") as f:
+                          f.write(updated_content)
+                      print(f"Updated rule file: {rule_file.name}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              
+              # 提交更改到当前仓库
+
+              subprocess.run(["git", "add", "."], check=True)
+              
+              # 检查是否有更改
+              result = subprocess.run(
+                  ["git", "status", "--porcelain"],
+                  capture_output=True,
+                  text=True,
+                  check=True
+              )
+              
+              if result.stdout.strip():
+                  print("Changes found in current repo, committing...")
+                  china_time = get_china_time()
+                  commit_message = f"[AUTO_FORMAT] 自动格式化规则集 - {china_time} (北京时间)"
+                  subprocess.run(
+                      ["git", "commit", "-m", commit_message],
+                      check=True
+                  )
+                  
+                  print("Pushing changes to current repo...")
+                  subprocess.run(["git", "push"], check=True)
+                  print("Successfully updated current repo")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              else:
+                  print("No changes to commit in current repo")
           
-          subprocess.run(["git", "clone", c_url, "Clash_Temp"], check=True)
-          subprocess.run(["git", "clone", s_url, "SingBox_Temp"], check=True)
-
-          for f_path in files:
-              with open(f_path, "r", encoding="utf-8") as f:
-                  raw_lines = f.readlines()
-              
-              # 更新 Surge 原文件
-              new_lines = [f"# 最后更新时间: {get_time()} (北京时间)"]
-              for l in raw_lines:
-                  if not l.startswith("# 最后更新时间:"): new_lines.append(process_line(l))
-              with open(f_path, "w", encoding="utf-8") as f:
-                  f.write("\n".join(new_lines))
-              
-              # 同步 Clash
-              clash_data = [f"# 最后更新时间: {get_time()}", "rules:"]
-              for nl in new_lines:
-                  if nl and not nl.startswith("#"): clash_data.append(f"  - {nl}")
-              with open(Path("Clash_Temp") / f_path.name, "w", encoding="utf-8") as f:
-                  f.write("\n".join(clash_data))
-              
-              # 同步 Sing-Box
-              sb_data = to_sb(new_lines)
-              if sb_data:
-                  with open(Path("SingBox_Temp") / f_path.name, "w", encoding="utf-8") as f:
-                      json.dump(sb_data, f, indent=2, ensure_ascii=False)
-
-          def push_repo(path, msg):
-              subprocess.run(["git", "-C", path, "add", "."], check=True)
-              status = subprocess.run(["git", "-C", path, "status", "--porcelain"], capture_output=True, text=True).stdout
-              if status.strip():
-                  subprocess.run(["git", "-C", path, "config", "user.name", "GitHub Actions Bot"], check=True)
-                  subprocess.run(["git", "-C", path, "config", "user.email", "actions@github.com"], check=True)
-                  subprocess.run(["git", "-C", path, "commit", "-m", msg], check=True)
-                  subprocess.run(["git", "-C", path, "push"], check=True)
-
-          push_repo(".", f"[AUTO_FORMAT] {get_time()}")
-          push_repo("Clash_Temp", f"[AUTO_SYNC] Clash {get_time()}")
-          push_repo("SingBox_Temp", f"[AUTO_SYNC] Sing-Box {get_time()}")
+          except Exception as e:
+              print(f"Error: {str(e)}")
+              traceback.print_exc()
+              exit(1)
           EOF
-          python3 full_sync.py
+          
+          chmod +x format_rules.py
+          python format_rules.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+
+      - name: Create and run sync script
+        if: steps.check_commit.outputs.skip == 'false'
+        run: |
+          cat > sync_to_clash.py << 'EOF'
+          #!/usr/bin/env python3
+
+          import os
+          import subprocess
+          from pathlib import Path
+          import logging
+          import traceback
+          from datetime import datetime, timedelta
+          import ipaddress
+          import re
+
+          # 配置日志
+          logging.basicConfig(
+              level=logging.INFO,
+              format="%(asctime)s - %(levelname)s - %(message)s"
+          )
+          logger = logging.getLogger(__name__)
+
+          def get_china_time():
+              """
+              获取当前中国时间字符串
+              """
+              utc_now = datetime.utcnow()
+              china_time = utc_now + timedelta(hours=8)
+              return china_time.strftime('%Y-%m-%d %H:%M:%S')
+
+          def process_rule_line(line):
+              """
+              自动为规则行添加合适前缀：
+              - 纯数字且带点（IP）：加 IP-CIDR, 并补 /32
+              - 带点的英文名（域名）：加 DOMAIN-SUFFIX,
+              - 无点纯英文：加 PROCESS-NAME,
+              - 已有前缀则保持不变
+
+              Args:
+                  line (str): 原始规则行
+              Returns:
+                  str: 带前缀的规则行
+              """
+              line = line.strip()
+              if not line or line.startswith("#"):
+                  return line
+              known_prefixes = ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]
+              if any(line.startswith(prefix) for prefix in known_prefixes):
+                  return line
+              # 判断是否为IP
+              if "." in line:
+                  parts = line.split('.')
+                  if all(part.isdigit() for part in parts):
+                      try:
+                          ipaddress.ip_address(line)
+                          return f"IP-CIDR,{line}/32"
+                      except Exception:
+                          pass
+                  # 判断是否为域名（带点且不是纯数字）
+                  if re.match(r"^[A-Za-z0-9.-]+$", line):
+                      return f"DOMAIN-SUFFIX,{line}"
+                  # 其他情况默认返回原文
+                  return line
+              else:
+                  # 无点且为纯英文
+                  if re.match(r"^[A-Za-z0-9_-]+$", line):
+                      return f"PROCESS-NAME,{line}"
+                  return line
+
+          def convert_to_clash_format(surge_lines):
+              """
+              将 Surge 规则格式转换为 Clash 规则格式（rules:），并自动补前缀
+
+              Args:
+                  surge_lines (list[str]): Surge 规则行列表
+              Returns:
+                  list[str]: Clash 格式规则行列表（带 rules:）
+              """
+              clash_lines = ["rules:"]
+              for line in surge_lines:
+                  line = line.strip()
+                  if not line or line.startswith("#"):
+                      continue
+                  processed = process_rule_line(line)
+                  clash_lines.append(f"  - {processed}")
+              return clash_lines
+
+          print(f"Current directory: {os.getcwd()}")
+          print(f"Directory contents: {os.listdir('.')}")
+
+          try:
+              root_dir = Path(".")
+              exclude_patterns = [
+                  '.git', '.github', 'Clash', '*.yml', '*.yaml', '*.py', '*.md',
+                  '.gitignore', 'LICENSE', 'README*'
+              ]
+              def should_exclude(path):
+                  path_str = str(path)
+                  if path.is_dir():
+                      return True
+                  if path.name.startswith('.'):
+                      return True
+                  for pattern in exclude_patterns:
+                      if '*' in pattern:
+                          suffix = pattern.replace('*', '')
+                          if path_str.endswith(suffix):
+                              return True
+                      elif pattern in path_str:
+                          return True
+                  return False
+
+              # 查找规则文件
+              rule_files = []
+              for file_path in root_dir.glob('*'):
+                  if should_exclude(file_path):
+                      print(f"Skipping excluded file: {file_path}")
+                      continue
+                  try:
+                      with open(file_path, "r", encoding="utf-8") as f:
+                          content = f.read()
+                          if "DOMAIN" in content or "IP-CIDR" in content or "." in content:
+                              rule_files.append(file_path)
+                              print(f"Found rule file: {file_path.name}")
+                  except Exception as e:
+                      print(f"Error reading {file_path.name}: {str(e)}")
+
+              if not rule_files:
+                  print("No rule files found!")
+                  print(f"All files: {[f.name for f in root_dir.glob('*') if not should_exclude(f)]}")
+                  exit(1)
+
+              # 获取GitHub令牌
+              github_token = os.environ.get("GITHUB_TOKEN", "")
+              clash_repo = f"https://{github_token}@github.com/USNOCTURNE90/Clash.git"
+
+              # 克隆Clash仓库
+              clash_dir = Path("Clash")
+              if clash_dir.exists():
+                  import shutil
+                  shutil.rmtree(clash_dir)
+              print(f"Cloning Clash repo: {clash_repo}")
+              subprocess.run(["git", "clone", clash_repo, "Clash"], check=True)
+
+              # 处理规则文件并同步到Clash仓库
+              for surge_file in rule_files:
+                  with open(surge_file, "r", encoding="utf-8") as f:
+                      surge_content = f.read()
+                  surge_lines = surge_content.splitlines()
+                  clash_lines = convert_to_clash_format(surge_lines)
+                  current_time = get_china_time()
+                  clash_content = f"# 最后更新时间: {current_time} (北京时间)\n" + "\n".join(clash_lines)
+                  clash_file = clash_dir / surge_file.name
+                  with open(clash_file, "w", encoding="utf-8") as f:
+                      f.write(clash_content)
+                  print(f"Synced rule file to Clash: {surge_file.name}")
+
+              # 提交Clash仓库更改
+              subprocess.run(["git", "-C", "Clash", "add", "."], check=True)
+              result = subprocess.run(
+                  ["git", "-C", "Clash", "status", "--porcelain"],
+                  capture_output=True,
+                  text=True,
+                  check=True
+              )
+              if result.stdout.strip():
+                  print("Changes found in Clash repo, committing...")
+                  china_time = get_china_time()
+                  commit_message = f"[AUTO_SYNC] 从Surge自动同步规则集 - {china_time} (北京时间)"
+                  subprocess.run(
+                      ["git", "-C", "Clash", "commit", "-m", commit_message],
+                      check=True
+                  )
+                  print("Pushing changes to Clash repo...")
+                  subprocess.run(["git", "-C", "Clash", "push"], check=True)
+                  print("Successfully synced rules to Clash repo")
+              else:
+                  print("No changes to commit in Clash repo")
+
+          except Exception as e:
+              print(f"Error: {str(e)}")
+              traceback.print_exc()
+              exit(1)
+          EOF
+
+          chmod +x sync_to_clash.py
+          python sync_to_clash.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
