@@ -1,6 +1,11 @@
-# 最后更新时间: 2026-01-14 22:20:05 (北京时间)
-# 从Clash自动同步 - 2026-01-14 22:20:05 (北京时间)
-# 原始文件: MyDirectRules
+[Rule]
+IP-CIDR, 192.168.0.0/16
+IP-CIDR, 10.0.0.0/8
+IP-CIDR, 172.16.0.0/12
+IP-CIDR, 127.0.0.0/8
+IP-CIDR, 169.254.0.0/16
+IP-CIDR6, fe80::/10
+DOMAIN-SUFFIX, local
 DOMAIN-SUFFIX,aaplimg.com
 DOMAIN-SUFFIX,apple.com
 DOMAIN-SUFFIX,apple.cn
