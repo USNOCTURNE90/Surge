@@ -1,6 +1,6 @@
-# 最后更新时间: 2026-01-31 10:06:32 (北京时间)
+# 最后更新时间: 2026-02-10 23:44:32 (北京时间)
 # 从Clash自动同步 - 2026-01-14 22:20:05 (北京时间)
-people.apple.com
+DOMAIN-SUFFIX,people.apple.com
 IP-CIDR,17.248.152.0/24
 DOMAIN-SUFFIX,icloud-content.com
 DOMAIN,testflight.apple.com
