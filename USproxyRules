@@ -1,6 +1,11 @@
 # 最后更新时间: 2026-02-10 23:44:32 (北京时间)
 # 从Clash自动同步 - 2026-01-14 22:20:05 (北京时间)
 # 原始文件: USproxyRules
+DOMAIN-SUFFIX,paypal.com
+DOMAIN-SUFFIX,paypal.me
+DOMAIN-SUFFIX,paypal-mktg.com
+DOMAIN-SUFFIX,paypalobjects.com
+DOMAIN-SUFFIX,api.sprig.com
 DOMAIN-SUFFIX,tktn.be
 DOMAIN-SUFFIX,hcaptcha.com
 DOMAIN-SUFFIX,mixpanel.com
