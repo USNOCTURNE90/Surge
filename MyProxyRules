@@ -1,5 +1,6 @@
-# 最后更新时间: 2026-02-14 22:41:30 (北京时间)
-# 从Clash自动同步 - 2026-01-14 22:20:05 (北京时间)
+# 最后更新时间: 2026-02-14 22:41:57 (北京时间)
+# 从Clash自动同步 - 2026-02-14 22:41:57 (北京时间)
+# 原始文件: MyProxyRules
 DOMAIN-KEYWORD,adobe
 DOMAIN-SUFFIX,adobe.com
 DOMAIN-SUFFIX,adobe.io
@@ -28,7 +29,6 @@ DOMAIN-SUFFIX,sign.new
 DOMAIN-SUFFIX,bam.nr-data.net
 DOMAIN-SUFFIX,payments.braintree-api.com
 DOMAIN-SUFFIX,cc-ext-prod-pkgs.s3.amazonaws.com
-
 DOMAIN-SUFFIX,raw.githubusercontent.com
 DOMAIN-SUFFIX,download.clashverge.dev
 DOMAIN-SUFFIX,rust-lang.org
@@ -75,7 +75,6 @@ DOMAIN-SUFFIX,repo.new
 DOMAIN-SUFFIX,thegithubshop.com
 DOMAIN-KEYWORD,github
 DOMAIN-SUFFIX,default.exp-tas.com
-
 DOMAIN-SUFFIX,people.apple.com
 IP-CIDR,17.248.152.0/24
 DOMAIN-SUFFIX,icloud-content.com

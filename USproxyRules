@@ -1,5 +1,5 @@
-# 最后更新时间: 2026-02-14 22:41:30 (北京时间)
-# 从Clash自动同步 - 2026-01-14 22:20:05 (北京时间)
+# 最后更新时间: 2026-02-14 22:41:57 (北京时间)
+# 从Clash自动同步 - 2026-02-14 22:41:57 (北京时间)
 # 原始文件: USproxyRules
 DOMAIN-KEYWORD,youtube
 DOMAIN-KEYWORD,youtubego
@@ -84,7 +84,6 @@ PROCESS-NAME,com.google.android.gms
 PROCESS-NAME,com.google.android.gsf
 PROCESS-NAME,com.google.android.play.games
 PROCESS-NAME,BackupandSync
-
 DOMAIN-SUFFIX,paypal.com
 DOMAIN-SUFFIX,paypal.me
 DOMAIN-SUFFIX,paypal-mktg.com
