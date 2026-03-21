@@ -1,7 +1,4 @@
 # 最后更新时间: 2026-02-27 18:34:25 (北京时间)
-# 从Clash自动同步 - 2026-02-14 22:43:04 (北京时间)
-# 原始文件: USproxyRules
-#tiktok
 DOMAIN,lf16-effectcdn.byteeffecttos-g.com
 DOMAIN,lf16-pkgcdn.pitaya-clientai.com
 DOMAIN,p16-tiktokcdn-com.akamaized.net
