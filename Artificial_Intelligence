@@ -18,7 +18,7 @@ DOMAIN-SUFFIX,oaistatic.com
 DOMAIN-SUFFIX,oaiusercontent.com
 DOMAIN-SUFFIX,anthropic.ai
 DOMAIN-SUFFIX,anthropic.com
-DOMAIN-SUFFIX,claude.ai
+DOMAIN-KEYWORD,claude
 DOMAIN-SUFFIX,claudeusercontent.com
 DOMAIN-SUFFIX,cursor.com
 DOMAIN-SUFFIX,cursor.sh
