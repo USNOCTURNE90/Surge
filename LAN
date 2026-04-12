@@ -1,4 +1,4 @@
-# 最后更新时间: 2026-04-13 00:11:00 (北京时间)
+# 最后更新时间: 2026-04-13 00:12:41 (北京时间)
 # 从Clash自动同步
 # 原始文件: LAN
 IP-CIDR,127.0.0.0/8
@@ -41,6 +41,3 @@ DOMAIN-SUFFIX,apple-mobileme.com
 DOMAIN-SUFFIX,icloud.com.cn
 PROCESS-NAME,trustd
 PROCESS-NAME,netbiosd
-DOMAIN-SUFFIX,codex-e2e-test.example
-IP-CIDR,198.51.100.42/32
-PROCESS-NAME,CodexTestProcess
