@@ -1,4 +1,6 @@
-# 最后更新时间: 2026-04-08 21:00:36 (北京时间)
+# 最后更新时间: 2026-04-13 00:08:42 (北京时间)
+# 从Clash自动同步
+# 原始文件: USproxyRules
 DOMAIN,lf16-effectcdn.byteeffecttos-g.com
 DOMAIN,lf16-pkgcdn.pitaya-clientai.com
 DOMAIN,p16-tiktokcdn-com.akamaized.net
@@ -27,7 +29,6 @@ DOMAIN-KEYWORD,-tiktokcdn-com
 DOMAIN-KEYWORD,musical.ly
 DOMAIN-KEYWORD,tiktok
 PROCESS-NAME,com.zhiliaoapp.musically
-#Youtube
 DOMAIN-KEYWORD,youtube
 DOMAIN-KEYWORD,youtubego
 DOMAIN-SUFFIX,youtu.be
@@ -48,7 +49,6 @@ DOMAIN-SUFFIX,youtubei.googleapis.com
 DOMAIN-SUFFIX,youtubeembeddedplayer.googleapis.com
 IP-CIDR,172.110.32.0/21
 IP-CIDR,216.73.80.0/20
-#googleUS
 DOMAIN-KEYWORD,appspot
 DOMAIN-KEYWORD,blogspot
 DOMAIN-KEYWORD,gmail

@@ -1,7 +1,6 @@
-# 最后更新时间: 2026-04-08 21:00:36 (北京时间)
-# 从Clash自动同步 - 2026-02-14 22:43:04 (北京时间)
+# 最后更新时间: 2026-04-13 00:08:42 (北京时间)
+# 从Clash自动同步
 # 原始文件: MyProxyRules
-#steam
 DOMAIN-SUFFIX,steampowered.com
 DOMAIN-SUFFIX,steamcommunity.com
 DOMAIN-SUFFIX,steamstatic.com
@@ -12,7 +11,6 @@ DOMAIN-SUFFIX,steamcloud-tyo.s3.dualstack.ap-northeast-1.amazonaws.com
 DOMAIN-SUFFIX,r11.o.lencr.org
 DOMAIN-SUFFIX,steam-chat.com
 IP-CIDR,45.207.10.185/24
-#twitter
 DOMAIN-KEYWORD,twitter
 DOMAIN-SUFFIX,t.co
 DOMAIN-SUFFIX,twimg.com
@@ -31,7 +29,6 @@ IP-CIDR,199.96.56.0/21
 IP-CIDR,202.160.128.0/22
 IP-CIDR,209.237.192.0/19
 IP-CIDR,69.195.160.0/19
-#Facebook
 DOMAIN-KEYWORD,facebook
 DOMAIN-KEYWORD,fbcdn
 DOMAIN-KEYWORD,whatsapp
@@ -92,7 +89,6 @@ IP-CIDR,119.235.224.0/24
 IP-CIDR,119.235.232.0/24
 IP-CIDR,119.235.236.0/23
 IP-ASN,32934
-#adobe
 DOMAIN-KEYWORD,adobe
 DOMAIN-SUFFIX,adobe.com
 DOMAIN-SUFFIX,adobe.io
