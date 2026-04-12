@@ -1,230 +1,160 @@
 #!/usr/bin/env python3
 
+import ipaddress
 import os
-import re
-import time
 import subprocess
-from pathlib import Path
-import logging
 import traceback
 from datetime import datetime, timedelta
-import ipaddress
+from pathlib import Path
 
-# 配置日志
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
+KNOWN_PREFIXES = (
+    "DOMAIN-SUFFIX,",
+    "DOMAIN-KEYWORD,",
+    "DOMAIN,",
+    "IP-CIDR,",
+    "IP-ASN,",
+    "PROCESS-NAME,",
 )
-logger = logging.getLogger(__name__)
+TIMESTAMP_PREFIX = "# 最后更新时间:"
 
-# 获取中国时间
+
 def get_china_time():
     utc_now = datetime.utcnow()
     china_time = utc_now + timedelta(hours=8)
-    return china_time.strftime('%Y-%m-%d %H:%M:%S')
+    return china_time.strftime("%Y-%m-%d %H:%M:%S")
 
-# 检查和处理规则行
-def process_rule_line(line, is_surge=True):
+
+def normalize_rule_line(line):
     line = line.strip()
     if not line or line.startswith("#"):
         return line
-    
-    # 检查是否已有前缀
-    known_prefixes = ["DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,", "DOMAIN,", "IP-CIDR,", "IP-ASN,", "PROCESS-NAME,"]
-    if any(line.startswith(prefix) for prefix in known_prefixes):
-        return line
-        
-    # 检查是否是域名（包含点）
-    if "." in line:
-        try:
-            # 检查是否是纯数字IP
-            parts = line.split('.')
-            if all(part.isdigit() for part in parts):
-                # 尝试解析为IP地址
-                ipaddress.ip_address(line)
-                # 如果是有效IP，添加IP-CIDR前缀和/32
-                return f"IP-CIDR,{line}/32" if is_surge else f"- IP-CIDR,{line}/32"
-            else:
-                # 是域名，添加DOMAIN-SUFFIX前缀
-                return f"DOMAIN-SUFFIX,{line}" if is_surge else f"- DOMAIN-SUFFIX,{line}"
-        except ValueError:
-            # 不是有效IP，当作域名处理
-            return f"DOMAIN-SUFFIX,{line}" if is_surge else f"- DOMAIN-SUFFIX,{line}"
-    else:
-        # 没有点，作为进程名处理
-        return f"PROCESS-NAME,{line}" if is_surge else f"- PROCESS-NAME,{line}"
 
-# 打印当前工作目录和内容
+    if any(line.startswith(prefix) for prefix in KNOWN_PREFIXES):
+        return line
+
+    try:
+        network = ipaddress.ip_network(line, strict=False)
+        if isinstance(network, ipaddress.IPv4Network):
+            return f"IP-CIDR,{network.with_prefixlen}"
+        return line
+    except ValueError:
+        pass
+
+    try:
+        address = ipaddress.ip_address(line)
+        if isinstance(address, ipaddress.IPv4Address):
+            return f"IP-CIDR,{address}/32"
+        return line
+    except ValueError:
+        pass
+
+    if "." in line and "," not in line and " " not in line:
+        return f"DOMAIN-SUFFIX,{line}"
+
+    if "." not in line and "," not in line and " " not in line:
+        return f"PROCESS-NAME,{line}"
+
+    return line
+
+
+def should_exclude(path):
+    if path.is_dir() or path.name.startswith("."):
+        return True
+
+    excluded_names = {".gitignore", "LICENSE", "format_rules.py"}
+    excluded_suffixes = {".yml", ".yaml", ".py", ".md"}
+    if path.name in excluded_names:
+        return True
+    if path.name.startswith("README"):
+        return True
+    if path.suffix in excluded_suffixes:
+        return True
+    return False
+
+
+def strip_timestamp(lines):
+    return [line for line in lines if not line.startswith(TIMESTAMP_PREFIX)]
+
+
+def build_updated_lines(content):
+    current_time = get_china_time()
+    content_lines = content.splitlines()
+    body_lines = []
+
+    for line in content_lines:
+        if line.startswith(TIMESTAMP_PREFIX):
+            continue
+        body_lines.append(normalize_rule_line(line))
+
+    updated_lines = [f"# 最后更新时间: {current_time} (北京时间)", *body_lines]
+
+    if strip_timestamp(updated_lines) == strip_timestamp(content_lines):
+        return None
+    return updated_lines
+
+
 print(f"Current directory: {os.getcwd()}")
 print(f"Directory contents: {os.listdir('.')}")
 
 try:
-    # 设置目录
     root_dir = Path(".")
-
-    
-    # 要排除的文件和目录
-    exclude_patterns = [
-        '.git', '.github', 'Clash', '*.yml', '*.yaml', '*.py', '*.md', 
-        '.gitignore', 'LICENSE', 'README*'
-    ]
-    
-    def should_exclude(path):
-        """判断文件是否应被排除处理"""
-        path_str = str(path)
-        
-        # 排除目录
-        if path.is_dir():
-            return True
-            
-        # 排除隐藏文件
-        if path.name.startswith('.'):
-            return True
-            
-        # 排除工作流和脚本文件
-        for pattern in exclude_patterns:
-            if '*' in pattern:
-                suffix = pattern.replace('*', '')
-                if path_str.endswith(suffix):
-                    return True
-            elif pattern in path_str:
-                return True
-        
-        return False
-    
-    # 查找规则文件
     rule_files = []
-    for file_path in root_dir.glob('*'):
+
+    for file_path in root_dir.glob("*"):
         if should_exclude(file_path):
             print(f"Skipping excluded file: {file_path}")
             continue
-        
+
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                content = f.read()
-                if "DOMAIN" in content or "IP-CIDR" in content or "." in content:
-                    rule_files.append(file_path)
-                    print(f"Found rule file: {file_path.name}")
-        except Exception as e:
-            print(f"Error reading {file_path.name}: {str(e)}")
-    
+            content = file_path.read_text(encoding="utf-8")
+            if any(marker in content for marker in ("DOMAIN", "IP-CIDR", ".")):
+                rule_files.append(file_path)
+                print(f"Found rule file: {file_path.name}")
+        except Exception as exc:
+            print(f"Error reading {file_path.name}: {exc}")
+
     if not rule_files:
         print("No rule files found!")
         print(f"All files: {[f.name for f in root_dir.glob('*') if not should_exclude(f)]}")
-        exit(1)
-    
-    # 处理规则文件
+        raise SystemExit(1)
+
+    changed_files = []
     for rule_file in rule_files:
-        with open(rule_file, "r", encoding="utf-8") as f:
-            content = f.read()
-        
-        # 添加最后更新时间标记到文件内容
-        current_time = get_china_time()
-        content_lines = content.splitlines()
-        updated_lines = []
-        
-        # 更新或添加最后更新时间注释
-        time_comment_found = False
-        for line in content_lines:
-            if line.startswith("# 最后更新时间:"):
-                updated_lines.append(f"# 最后更新时间: {current_time} (北京时间)")
-                time_comment_found = True
-            else:
-                # 处理规则行，添加适当的前缀
-                processed_line = process_rule_line(line, is_surge=True)
-                updated_lines.append(processed_line)
-        
-        if not time_comment_found:
-            # 在文件开头添加更新时间
-            updated_lines.insert(0, f"# 最后更新时间: {current_time} (北京时间)")
+        content = rule_file.read_text(encoding="utf-8")
+        updated_lines = build_updated_lines(content)
+        if updated_lines is None:
+            continue
 
+        rule_file.write_text("\n".join(updated_lines), encoding="utf-8")
+        changed_files.append(rule_file.name)
+        print(f"Updated rule file: {rule_file.name}")
 
+    if not changed_files:
+        print("No substantive rule changes detected in current repo")
+        raise SystemExit(0)
 
+    subprocess.run(["git", "add", "--", *changed_files], check=True)
 
-
-        
-        # 更新文件内容
-        updated_content = "\n".join(updated_lines)
-        
-        # 只有当内容有变化时才写入文件
-        if content != updated_content:
-            with open(rule_file, "w", encoding="utf-8") as f:
-                f.write(updated_content)
-            print(f"Updated rule file: {rule_file.name}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    # 提交更改到当前仓库
-
-    subprocess.run(["git", "add", "."], check=True)
-    
-    # 检查是否有更改
     result = subprocess.run(
-        ["git", "status", "--porcelain"],
+        ["git", "status", "--porcelain", "--", *changed_files],
         capture_output=True,
         text=True,
-        check=True
+        check=True,
     )
-    
-    if result.stdout.strip():
-        print("Changes found in current repo, committing...")
-        china_time = get_china_time()
-        commit_message = f"[AUTO_FORMAT] 自动格式化规则集 - {china_time} (北京时间)"
-        subprocess.run(
-            ["git", "commit", "-m", commit_message],
-            check=True
-        )
-        
-        print("Pushing changes to current repo...")
-        subprocess.run(["git", "push"], check=True)
-        print("Successfully updated current repo")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    else:
+    if not result.stdout.strip():
         print("No changes to commit in current repo")
+        raise SystemExit(0)
 
-except Exception as e:
-    print(f"Error: {str(e)}")
+    print("Changes found in current repo, committing...")
+    commit_message = f"[AUTO_FORMAT] 自动格式化规则集 - {get_china_time()} (北京时间)"
+    subprocess.run(["git", "commit", "-m", commit_message], check=True)
+
+    print("Pushing changes to current repo...")
+    subprocess.run(["git", "push"], check=True)
+    print("Successfully updated current repo")
+
+except Exception as exc:
+    print(f"Error: {exc}")
     traceback.print_exc()
-    exit(1)
+    raise SystemExit(1)
