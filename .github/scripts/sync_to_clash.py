@@ -1,6 +1,5 @@
 import os
 import re
-import json
 import shutil
 import subprocess
 from pathlib import Path
@@ -16,19 +15,13 @@ RULE_PREFIXES = (
     "PROCESS-NAME,",
 )
 
-STATE_PATH = Path(".github/sync_state/deletions_to_clash.json")
-
 
 def bj_tz():
     return timezone(timedelta(hours=8))
 
 
-def now():
-    return datetime.now(bj_tz())
-
-
 def now_str():
-    return now().strftime("%Y-%m-%d %H:%M:%S (北京时间)")
+    return datetime.now(bj_tz()).strftime("%Y-%m-%d %H:%M:%S (北京时间)")
 
 
 def normalize(line):
@@ -36,6 +29,12 @@ def normalize(line):
 
     if not line or line.startswith("#"):
         return None
+
+    if line in {"rules:", "payload:"}:
+        return None
+
+    if line.startswith("- "):
+        line = line[2:].strip()
 
     if line.startswith(RULE_PREFIXES):
         return line
@@ -49,30 +48,22 @@ def normalize(line):
     return line
 
 
-state = {}
-if STATE_PATH.exists():
-    try:
-        state = json.loads(STATE_PATH.read_text(encoding="utf-8"))
-    except:
-        pass
-
-
-repo = Path("clash_repo")
+repo = Path("surge_repo")
 if repo.exists():
     shutil.rmtree(repo)
 
 subprocess.run([
     "git", "clone",
     f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git",
-    "clash_repo"
+    "surge_repo"
 ], check=True)
 
 subprocess.run([
-    "git", "-C", "clash_repo", "checkout", os.environ["TARGET_BRANCH"]
+    "git", "-C", "surge_repo", "checkout", os.environ["TARGET_BRANCH"]
 ], check=True)
 
-
-changed = False
+changed_local = False
+changed_remote = False
 
 for p in Path(".").iterdir():
     if (
@@ -83,31 +74,50 @@ for p in Path(".").iterdir():
         continue
 
     lines = []
-
     for raw in p.read_text(encoding="utf-8").splitlines():
         n = normalize(raw)
         if n:
             lines.append(n)
 
-    output = (
+    # 先把 Clash 本地文件格式化成标准 rules 样式
+    local_output = (
         f"# 最后更新时间: {now_str()}\n"
-        "# 从Surge自动同步\n"
+        "# 从Clash自动同步\n"
         f"# 原始文件: {p.name}\n"
         "rules:\n"
         + "\n".join(f"  - {x}" for x in lines)
         + "\n"
     )
 
+    old_local = p.read_text(encoding="utf-8")
+    if old_local != local_output:
+        p.write_text(local_output, encoding="utf-8")
+        changed_local = True
+
+    # 再生成 Surge 版本
+    remote_output = (
+        f"# 最后更新时间: {now_str()}\n"
+        "# 从Clash自动同步\n"
+        f"# 原始文件: {p.name}\n"
+        + "\n".join(lines)
+        + "\n"
+    )
+
     target = repo / p.name
+    if not target.exists() or target.read_text(encoding="utf-8") != remote_output:
+        target.write_text(remote_output, encoding="utf-8")
+        changed_remote = True
 
-    if not target.exists() or target.read_text(encoding="utf-8") != output:
-        target.write_text(output, encoding="utf-8")
-        changed = True
+if changed_local:
+    subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
+    subprocess.run(["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], check=True)
+    subprocess.run(["git", "add", "."], check=True)
+    subprocess.run(["git", "commit", "-m", f"[AUTO_SYNC] 本地格式化 Clash 规则集 - {now_str()}"], check=True)
+    subprocess.run(["git", "push"], check=True)
 
-
-if changed:
-    subprocess.run(["git", "-C", "clash_repo", "config", "user.name", "github-actions[bot]"], check=True)
-    subprocess.run(["git", "-C", "clash_repo", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], check=True)
-    subprocess.run(["git", "-C", "clash_repo", "add", "."], check=True)
-    subprocess.run(["git", "-C", "clash_repo", "commit", "-m", f"[AUTO_SYNC] 从Surge自动同步规则集 - {now_str()}"], check=True)
-    subprocess.run(["git", "-C", "clash_repo", "push"], check=True)
+if changed_remote:
+    subprocess.run(["git", "-C", "surge_repo", "config", "user.name", "github-actions[bot]"], check=True)
+    subprocess.run(["git", "-C", "surge_repo", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], check=True)
+    subprocess.run(["git", "-C", "surge_repo", "add", "."], check=True)
+    subprocess.run(["git", "-C", "surge_repo", "commit", "-m", f"[AUTO_SYNC] 从Clash自动同步规则集 - {now_str()}"], check=True)
+    subprocess.run(["git", "-C", "surge_repo", "push"], check=True)
