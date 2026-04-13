@@ -12,18 +12,15 @@ jobs:
   sync:
     if: ${{ github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[AUTO_SYNC]') }}
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Surge repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Run Surge to Clash sync
+      - name: Sync to Clash
         env:
           TARGET_REPO: USNOCTURNE90/Clash
           TARGET_BRANCH: main
