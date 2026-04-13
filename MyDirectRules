@@ -1,6 +1,7 @@
-# 最后更新时间: 2026-04-14 01:09:37 (北京时间)
+# 最后更新时间: 2026-04-14 01:12:44 (北京时间)
 # 从Clash自动同步
 # 原始文件: MyDirectRules
+IP-CIDR,1.2.3.3/32
 DOMAIN-SUFFIX,uc.cmd
 DOMAIN-SUFFIX,fbsbx.com
 DOMAIN-SUFFIX,mhitpoker.com
