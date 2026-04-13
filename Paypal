@@ -1,8 +1,9 @@
-# 最后更新时间: 2026-04-14 02:17:47 (北京时间)
+# 最后更新时间: 2026-04-14 02:33:20 (北京时间)
 # 从Clash自动同步
 # 原始文件: Paypal
-DOMAIN-SUFFIX,paypal.com
-DOMAIN-SUFFIX,paypal.me
-DOMAIN-SUFFIX,paypal-mktg.com
-DOMAIN-SUFFIX,paypalobjects.com
-DOMAIN-SUFFIX,api.sprig.com
+rules:
+  - DOMAIN-SUFFIX,paypal.com
+  - DOMAIN-SUFFIX,paypal.me
+  - DOMAIN-SUFFIX,paypal-mktg.com
+  - DOMAIN-SUFFIX,paypalobjects.com
+  - DOMAIN-SUFFIX,api.sprig.com
