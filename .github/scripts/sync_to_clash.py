@@ -27,10 +27,25 @@ def now_str():
     return datetime.now(bj_tz()).strftime("%Y-%m-%d %H:%M:%S (北京时间)")
 
 
+def should_ignore_header(line: str) -> bool:
+    prefixes = (
+        "# 最后更新时间:",
+        "# 从Surge自动同步",
+        "# 从Surge自动标准化",
+        "# 从Clash自动同步",
+        "# 从Clash自动标准化",
+        "# 原始文件:",
+    )
+    return line.startswith(prefixes)
+
+
 def normalize(line: str):
     line = line.strip()
 
-    if not line or line.startswith("#"):
+    if not line:
+        return None
+
+    if line.startswith("#"):
         return None
 
     if line in {"rules:", "payload:"}:
@@ -41,6 +56,9 @@ def normalize(line: str):
 
     if " #" in line:
         line = line.split(" #", 1)[0].strip()
+
+    if not line:
+        return None
 
     if line.startswith(RULE_PREFIXES):
         return line
@@ -64,6 +82,22 @@ def normalize(line: str):
         return f"DOMAIN-SUFFIX,{line}"
 
     return line
+
+
+def parse_rules_from_file(path: Path):
+    rules = []
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        raw = raw.strip()
+        if not raw:
+            continue
+        if raw.startswith("#"):
+            if should_ignore_header(raw):
+                continue
+            continue
+        n = normalize(raw)
+        if n:
+            rules.append(n)
+    return rules
 
 
 repo = Path("clash_repo")
@@ -95,13 +129,9 @@ for p in Path(".").iterdir():
     ):
         continue
 
-    rules = []
-    for raw in p.read_text(encoding="utf-8").splitlines():
-        n = normalize(raw)
-        if n:
-            rules.append(n)
+    rules = parse_rules_from_file(p)
 
-    # 先格式化 Surge 本地文件
+    # Surge 本地标准化为纯文本规则
     local_output = (
         f"# 最后更新时间: {now_str()}\n"
         "# 从Surge自动标准化\n"
@@ -115,13 +145,13 @@ for p in Path(".").iterdir():
         p.write_text(local_output, encoding="utf-8")
         changed_local = True
 
-    # 再同步到 Clash YAML
+    # Clash 远端输出为合法 YAML
     remote_output = (
         f"# 最后更新时间: {now_str()}\n"
         "# 从Surge自动同步\n"
         f"# 原始文件: {p.name}\n"
         "rules:\n"
-        + "\n".join(f"  - {x}" for x in rules)
+        + "\n".join(f"  - {rule}" for rule in rules)
         + "\n"
     )
 
@@ -143,6 +173,16 @@ if changed_local:
         ["git", "commit", "-m", f"[AUTO_SYNC] 本地格式化 Surge 规则集 - {now_str()}"],
         check=True,
     )
+    subprocess.run(
+        [
+            "git",
+            "remote",
+            "set-url",
+            "origin",
+            f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/USNOCTURNE90/Surge.git",
+        ],
+        check=True,
+    )
     subprocess.run(["git", "push"], check=True)
 
 if changed_remote:
@@ -154,6 +194,18 @@ if changed_remote:
     subprocess.run(["git", "-C", "clash_repo", "add", "."], check=True)
     subprocess.run(
         ["git", "-C", "clash_repo", "commit", "-m", f"[AUTO_SYNC] 从Surge自动同步规则集 - {now_str()}"],
+        check=True,
+    )
+    subprocess.run(
+        [
+            "git",
+            "-C",
+            "clash_repo",
+            "remote",
+            "set-url",
+            "origin",
+            f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git",
+        ],
         check=True,
     )
     subprocess.run(["git", "-C", "clash_repo", "push"], check=True)
