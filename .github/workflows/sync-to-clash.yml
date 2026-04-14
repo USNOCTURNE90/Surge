@@ -5,8 +5,13 @@ on:
     branches:
       - Surge
     paths-ignore:
-      - '.github/**'
+      - ".github/workflows/**"
+      - ".github/scripts/**"
   workflow_dispatch:
+
+concurrency:
+  group: sync-surge-to-clash
+  cancel-in-progress: true
 
 jobs:
   sync:
@@ -14,15 +19,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Surge repo
+        uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          fetch-depth: 1
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
-      - name: Sync to Clash
+      - name: Run Surge to Clash sync
         env:
           TARGET_REPO: USNOCTURNE90/Clash
           TARGET_BRANCH: main
