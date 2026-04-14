@@ -1,8 +1,8 @@
 # 双向同步生成（标准输出）
 # 规则集: Alipay
 IP-CIDR,22.2.2.2/32
-fdfs
-123123123
+PROCESS-NAME,fdfs
+PROCESS-NAME,123123123
 DOMAIN-SUFFIX,23.23.32
 DOMAIN-SUFFIX,alipay-corp.com
 DOMAIN-SUFFIX,alipay-eco.com
