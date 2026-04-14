@@ -2,7 +2,6 @@
 # 从Clash自动同步
 # 原始文件: Alipay
 123.123.123.123
-2.2.2.2
 DOMAIN-SUFFIX,alipay-corp.com
 DOMAIN-SUFFIX,alipay-eco.com
 DOMAIN-SUFFIX,alipay-inc.com
