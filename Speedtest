@@ -1,6 +1,5 @@
-# 最后更新时间: 2026-04-14 11:29:49 (北京时间)
-# 从Clash自动同步
-# 原始文件: Speedtest
+# 双向同步生成（标准输出）
+# 规则集: Speedtest
 DOMAIN-KEYWORD,speedtest
 DOMAIN-SUFFIX,peedtest-net.mk.de
 DOMAIN-SUFFIX,speedtest.rt.ru
@@ -91,8 +90,6 @@ DOMAIN-SUFFIX,peedtest.cogeco.ca
 DOMAIN-SUFFIX,peedtest.dynet.net
 DOMAIN-SUFFIX,peedtest.ams1.edgoo.net
 DOMAIN-SUFFIX,peedtest.lon1.edgoo.net
-DOMAIN-SUFFIX,h1.chtm.hinet.net
-DOMAIN-SUFFIX,c1.chtm.hinet.net
 DOMAIN-SUFFIX,h1.chtm.hinet.net
 DOMAIN-SUFFIX,c1.chtm.hinet.net
 DOMAIN-SUFFIX,n1.chtm.hinet.net
@@ -681,7 +678,6 @@ DOMAIN-SUFFIX,s-speedtest.homeplus.net.tw
 DOMAIN-SUFFIX,c-speedtest.homeplus.net.tw
 DOMAIN-SUFFIX,n-speedtest.homeplus.net.tw
 DOMAIN-SUFFIX,p-speedtest.homeplus.net.tw
-DOMAIN-SUFFIX,d-speedtest.homeplus.net.tw
 DOMAIN-SUFFIX,tp-speedtest.homeplus.net.tw
 DOMAIN-SUFFIX,ky-speedtest.homeplus.net.tw
 DOMAIN-SUFFIX,peedtest-nl.hyperfilter.com
