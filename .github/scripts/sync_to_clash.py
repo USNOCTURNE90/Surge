@@ -1,4 +1,5 @@
 import ipaddress
+import json
 import os
 import re
 import shutil
@@ -17,14 +18,28 @@ RULE_PREFIXES = (
 )
 
 EXCLUDED_SUFFIXES = {".py", ".yml", ".yaml", ".json", ".md"}
+STATE_DIR = Path(".github/sync_state")
+PENDING_FILE = STATE_DIR / "pending_deletions.json"
 
 
 def bj_tz():
     return timezone(timedelta(hours=8))
 
 
+def now_dt():
+    return datetime.now(bj_tz())
+
+
 def now_str():
-    return datetime.now(bj_tz()).strftime("%Y-%m-%d %H:%M:%S (北京时间)")
+    return now_dt().strftime("%Y-%m-%d %H:%M:%S (北京时间)")
+
+
+def now_iso():
+    return now_dt().isoformat()
+
+
+def run(cmd, cwd=None):
+    subprocess.run(cmd, check=True, cwd=cwd)
 
 
 def should_ignore_header(line: str) -> bool:
@@ -63,7 +78,6 @@ def normalize(line: str):
     if line.startswith(RULE_PREFIXES):
         return line
 
-    # 纯 IPv4 / CIDR / no-resolve
     m = re.fullmatch(
         r"([^,/]+)(?:/(\d{1,2}))?(?:,(no-resolve))?",
         line,
@@ -79,11 +93,9 @@ def normalize(line: str):
         except ValueError:
             pass
 
-    # 含点 → DOMAIN-SUFFIX
     if "." in line:
         return f"DOMAIN-SUFFIX,{line}"
 
-    # 不含点 → PROCESS-NAME
     return f"PROCESS-NAME,{line}"
 
 
@@ -103,26 +115,58 @@ def parse_rules_from_file(path: Path):
     return rules
 
 
+def ensure_state():
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    if not PENDING_FILE.exists():
+        PENDING_FILE.write_text("[]\n", encoding="utf-8")
+
+
+def load_pending():
+    ensure_state()
+    try:
+        return json.loads(PENDING_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+
+def save_pending(items):
+    ensure_state()
+    PENDING_FILE.write_text(
+        json.dumps(items, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def fix_current_repo_remote():
+    token = os.environ["GITHUB_TOKEN"]
+    run(
+        [
+            "git",
+            "remote",
+            "set-url",
+            "origin",
+            f"https://x-access-token:{token}@github.com/USNOCTURNE90/Surge.git",
+        ]
+    )
+
+
 repo = Path("clash_repo")
 if repo.exists():
     shutil.rmtree(repo)
 
-subprocess.run(
+run(
     [
         "git",
         "clone",
         f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git",
         "clash_repo",
-    ],
-    check=True,
+    ]
 )
-subprocess.run(
-    ["git", "-C", "clash_repo", "checkout", os.environ["TARGET_BRANCH"]],
-    check=True,
-)
+run(["git", "-C", "clash_repo", "checkout", os.environ["TARGET_BRANCH"]])
 
 changed_local = False
 changed_remote = False
+source_names = set()
 
 for p in Path(".").iterdir():
     if (
@@ -132,9 +176,9 @@ for p in Path(".").iterdir():
     ):
         continue
 
+    source_names.add(p.name)
     rules = parse_rules_from_file(p)
 
-    # Surge 本地标准化为纯文本规则
     local_output = (
         f"# 最后更新时间: {now_str()}\n"
         "# 从Surge自动标准化\n"
@@ -148,7 +192,6 @@ for p in Path(".").iterdir():
         p.write_text(local_output, encoding="utf-8")
         changed_local = True
 
-    # Clash 远端输出为合法 YAML
     remote_output = (
         f"# 最后更新时间: {now_str()}\n"
         "# 从Surge自动同步\n"
@@ -165,41 +208,53 @@ for p in Path(".").iterdir():
         target.write_text(remote_output, encoding="utf-8")
         changed_remote = True
 
+# 记录整文件删除任务（只登记，不立即删对端）
+ensure_state()
+pending = load_pending()
+
+target_existing = set()
+for rp in repo.iterdir():
+    if (
+        rp.is_file()
+        and not rp.name.startswith(".")
+        and rp.suffix not in EXCLUDED_SUFFIXES
+    ):
+        target_existing.add(rp.name)
+
+for name in sorted(target_existing - source_names):
+    already = any(
+        x.get("repo") == "Surge"
+        and x.get("target_repo") == "Clash"
+        and x.get("filename") == name
+        for x in pending
+    )
+    if not already:
+        pending.append(
+            {
+                "repo": "Surge",
+                "target_repo": "Clash",
+                "filename": name,
+                "requested_at": now_iso(),
+            }
+        )
+        changed_local = True
+
+save_pending(pending)
+
 if changed_local:
-    subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
-    subprocess.run(
-        ["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"],
-        check=True,
-    )
-    subprocess.run(["git", "add", "."], check=True)
-    subprocess.run(
-        ["git", "commit", "-m", f"[AUTO_SYNC] 本地格式化 Surge 规则集 - {now_str()}"],
-        check=True,
-    )
-    subprocess.run(
-        [
-            "git",
-            "remote",
-            "set-url",
-            "origin",
-            f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/USNOCTURNE90/Surge.git",
-        ],
-        check=True,
-    )
-    subprocess.run(["git", "push"], check=True)
+    run(["git", "config", "user.name", "github-actions[bot]"])
+    run(["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"])
+    fix_current_repo_remote()
+    run(["git", "add", "."])
+    status = subprocess.run(["git", "diff", "--cached", "--quiet"])
+    if status.returncode != 0:
+        run(["git", "commit", "-m", f"[AUTO_SYNC] 本地格式化 Surge 规则集 - {now_str()}"])
+        run(["git", "push"])
 
 if changed_remote:
-    subprocess.run(["git", "-C", "clash_repo", "config", "user.name", "github-actions[bot]"], check=True)
-    subprocess.run(
-        ["git", "-C", "clash_repo", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"],
-        check=True,
-    )
-    subprocess.run(["git", "-C", "clash_repo", "add", "."], check=True)
-    subprocess.run(
-        ["git", "-C", "clash_repo", "commit", "-m", f"[AUTO_SYNC] 从Surge自动同步规则集 - {now_str()}"],
-        check=True,
-    )
-    subprocess.run(
+    run(["git", "-C", "clash_repo", "config", "user.name", "github-actions[bot]"])
+    run(["git", "-C", "clash_repo", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"])
+    run(
         [
             "git",
             "-C",
@@ -208,7 +263,10 @@ if changed_remote:
             "set-url",
             "origin",
             f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git",
-        ],
-        check=True,
+        ]
     )
-    subprocess.run(["git", "-C", "clash_repo", "push"], check=True)
+    run(["git", "-C", "clash_repo", "add", "."])
+    status = subprocess.run(["git", "-C", "clash_repo", "diff", "--cached", "--quiet"])
+    if status.returncode != 0:
+        run(["git", "-C", "clash_repo", "commit", "-m", f"[AUTO_SYNC] 从Surge自动同步规则集 - {now_str()}"])
+        run(["git", "-C", "clash_repo", "push"])
