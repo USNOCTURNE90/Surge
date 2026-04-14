@@ -2,7 +2,6 @@
 # 规则集: Alipay
 IP-CIDR,22.2.2.2/32
 DOMAIN-SUFFIX,23.23.32
-fadsfs
 DOMAIN-SUFFIX,alipay-corp.com
 DOMAIN-SUFFIX,alipay-eco.com
 DOMAIN-SUFFIX,alipay-inc.com
