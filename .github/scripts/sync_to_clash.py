@@ -81,7 +81,7 @@ def normalize(line: str):
     if "." in line:
         return f"DOMAIN-SUFFIX,{line}"
 
-    return line
+    return f"PROCESS-NAME,{line}"
 
 
 def parse_rules_from_file(path: Path):
@@ -131,7 +131,6 @@ for p in Path(".").iterdir():
 
     rules = parse_rules_from_file(p)
 
-    # Surge 本地标准化为纯文本规则
     local_output = (
         f"# 最后更新时间: {now_str()}\n"
         "# 从Surge自动标准化\n"
@@ -145,7 +144,6 @@ for p in Path(".").iterdir():
         p.write_text(local_output, encoding="utf-8")
         changed_local = True
 
-    # Clash 远端输出为合法 YAML
     remote_output = (
         f"# 最后更新时间: {now_str()}\n"
         "# 从Surge自动同步\n"
