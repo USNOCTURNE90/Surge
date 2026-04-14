@@ -63,6 +63,7 @@ def normalize(line: str):
     if line.startswith(RULE_PREFIXES):
         return line
 
+    # 纯 IPv4 / CIDR / no-resolve
     m = re.fullmatch(
         r"([^,/]+)(?:/(\d{1,2}))?(?:,(no-resolve))?",
         line,
@@ -78,9 +79,11 @@ def normalize(line: str):
         except ValueError:
             pass
 
+    # 含点 → DOMAIN-SUFFIX
     if "." in line:
         return f"DOMAIN-SUFFIX,{line}"
 
+    # 不含点 → PROCESS-NAME
     return f"PROCESS-NAME,{line}"
 
 
@@ -131,6 +134,7 @@ for p in Path(".").iterdir():
 
     rules = parse_rules_from_file(p)
 
+    # Surge 本地标准化为纯文本规则
     local_output = (
         f"# 最后更新时间: {now_str()}\n"
         "# 从Surge自动标准化\n"
@@ -144,6 +148,7 @@ for p in Path(".").iterdir():
         p.write_text(local_output, encoding="utf-8")
         changed_local = True
 
+    # Clash 远端输出为合法 YAML
     remote_output = (
         f"# 最后更新时间: {now_str()}\n"
         "# 从Surge自动同步\n"
