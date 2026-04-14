@@ -1,8 +1,6 @@
 # 最后更新时间: 2026-04-14 10:38:27 (北京时间)
 # 从Surge自动标准化
 # 原始文件: Alipay
-DOMAIN-SUFFIX,jakal.com
-IP-CIDR,1.1.1.1/32
 DOMAIN-SUFFIX,su.com
 DOMAIN-SUFFIX,alipay-corp.com
 DOMAIN-SUFFIX,alipay-eco.com
