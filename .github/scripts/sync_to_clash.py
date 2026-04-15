@@ -22,6 +22,8 @@ STATE_DIR = Path('.github/sync_state')
 PENDING_FILE = STATE_DIR / 'pending_deletions.json'
 PENDING_MARKER = '# ⏳ 此文件已在 Surge 中删除，将于'
 
+CN_PUNCT = str.maketrans('，。、；：', ',.,;:')
+
 def bj_tz():
     return timezone(timedelta(hours=8))
 
@@ -55,6 +57,7 @@ def should_ignore_header(line: str) -> bool:
 
 def normalize(line: str):
     line = line.strip()
+    line = line.translate(CN_PUNCT)
     if not line:
         return None
     if line.startswith('#'):
@@ -131,9 +134,12 @@ run(['git', '-C', 'clash_repo', 'checkout', os.environ['TARGET_BRANCH']])
 ensure_state()
 pending = load_pending()
 
+# 只对已确认写入标记的条目，检查用户是否删除了标记行
 cancelled = set()
 for item in list(pending):
     if item.get('repo') != 'Surge' or item.get('target_repo') != 'Clash':
+        continue
+    if not item.get('marker_written'):
         continue
     filename = item['filename']
     target = repo / filename
@@ -142,7 +148,11 @@ for item in list(pending):
         if not content.startswith(PENDING_MARKER):
             cancelled.add(filename)
 
-pending = [x for x in pending if not (x.get('repo') == 'Surge' and x.get('target_repo') == 'Clash' and x.get('filename') in cancelled)]
+pending = [x for x in pending if not (
+    x.get('repo') == 'Surge' and
+    x.get('target_repo') == 'Clash' and
+    x.get('filename') in cancelled
+)]
 
 changed_local = False
 changed_remote = False
@@ -168,7 +178,12 @@ for p in Path('.').iterdir():
         p.write_text(local_output, encoding='utf-8')
         changed_local = True
 
-    in_pending = any(x.get('repo') == 'Surge' and x.get('target_repo') == 'Clash' and x.get('filename') == p.name for x in pending)
+    in_pending = any(
+        x.get('repo') == 'Surge' and
+        x.get('target_repo') == 'Clash' and
+        x.get('filename') == p.name
+        for x in pending
+    )
     if in_pending:
         continue
 
@@ -193,18 +208,46 @@ for rp in repo.iterdir():
         target_existing.add(rp.name)
 
 for name in sorted(target_existing - source_names):
-    already = any(x.get('repo') == 'Surge' and x.get('target_repo') == 'Clash' and x.get('filename') == name for x in pending)
+    already = any(
+        x.get('repo') == 'Surge' and
+        x.get('target_repo') == 'Clash' and
+        x.get('filename') == name
+        for x in pending
+    )
     if not already:
         requested_iso = now_iso()
-        pending.append({'repo': 'Surge', 'target_repo': 'Clash', 'filename': name, 'requested_at': requested_iso})
         target = repo / name
+        marker_written = False
         if target.exists():
             old_content = target.read_text(encoding='utf-8')
             marker_line = f'{PENDING_MARKER} {delete_at_str(requested_iso)} 自动删除 — 删除本行立即取消删除并恢复文件\n'
             if not old_content.startswith(PENDING_MARKER):
                 target.write_text(marker_line + old_content, encoding='utf-8')
                 changed_remote = True
+                marker_written = True
+        pending.append({
+            'repo': 'Surge',
+            'target_repo': 'Clash',
+            'filename': name,
+            'requested_at': requested_iso,
+            'marker_written': marker_written,
+        })
         changed_local = True
+    else:
+        for item in pending:
+            if (item.get('repo') == 'Surge' and
+                item.get('target_repo') == 'Clash' and
+                item.get('filename') == name and
+                not item.get('marker_written')):
+                target = repo / name
+                if target.exists():
+                    old_content = target.read_text(encoding='utf-8')
+                    marker_line = f'{PENDING_MARKER} {delete_at_str(item["requested_at"])} 自动删除 — 删除本行立即取消删除并恢复文件\n'
+                    if not old_content.startswith(PENDING_MARKER):
+                        target.write_text(marker_line + old_content, encoding='utf-8')
+                        changed_remote = True
+                        item['marker_written'] = True
+                        changed_local = True
 
 save_pending(pending)
 
