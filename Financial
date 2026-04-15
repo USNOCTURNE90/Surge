@@ -1,4 +1,4 @@
-# 最后更新时间: 2026-04-15 16:31:19 (北京时间)
+# 最后更新时间: 2026-04-15 16:33:12 (北京时间)
 # 从Clash自动同步
 # 原始文件: Financial
 DOMAIN-SUFFIX,alipay-corp.com
@@ -75,11 +75,8 @@ DOMAIN-SUFFIX,ibroker.com
 DOMAIN-SUFFIX,ib-api.com
 DOMAIN-SUFFIX,ibgapi.com
 DOMAIN-SUFFIX,ibkraml.com
-DOMAIN-SUFFIX,interactivebrokers.*
 DOMAIN-SUFFIX,ibkrmobile.com
 DOMAIN-SUFFIX,ibllc.com
-DOMAIN-SUFFIX,ibroker.*
-DOMAIN-SUFFIX,ibbroker.*
 IP-CIDR,104.20.8.0/22
 IP-CIDR,169.62.208.0/20
 IP-CIDR,207.228.232.0/24
