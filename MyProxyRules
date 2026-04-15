@@ -1,4 +1,4 @@
-# 最后更新时间: 2026-04-15 16:25:28 (北京时间)
+# 最后更新时间: 2026-04-15 16:27:07 (北京时间)
 # 从Clash自动同步
 # 原始文件: MyProxyRules
 DOMAIN-SUFFIX,steampowered.com
@@ -283,7 +283,6 @@ DOMAIN-SUFFIX,aex.com
 DOMAIN-SUFFIX,kraken.com
 DOMAIN-SUFFIX,nicehash.com
 DOMAIN-SUFFIX,etherscan.io
-DOMAIN-SUFFIX,cryptocompare.com
 DOMAIN-KEYWORD,quote
 DOMAIN-KEYWORD,stocks
 DOMAIN-KEYWORD,market
