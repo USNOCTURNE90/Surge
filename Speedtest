@@ -1,5 +1,6 @@
-# 双向同步生成（标准输出）
-# 规则集: Speedtest
+# 最后更新时间: 2026-04-15 13:09:46 (北京时间)
+# 从Surge自动标准化
+# 原始文件: Speedtest
 DOMAIN-KEYWORD,speedtest
 DOMAIN-SUFFIX,peedtest-net.mk.de
 DOMAIN-SUFFIX,speedtest.rt.ru
