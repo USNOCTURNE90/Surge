@@ -7,6 +7,7 @@ from pathlib import Path
 
 STATE_DIR = Path('.github/sync_state')
 PENDING_FILE = STATE_DIR / 'pending_deletions.json'
+PENDING_MARKER = '# ⏳ 此文件已在 Surge 中删除，将于'
 
 def bj_tz():
     return timezone(timedelta(hours=8))
@@ -65,6 +66,12 @@ for item in pending:
     filename = item['filename']
     target = repo / filename
     if not target.exists():
+        continue
+
+    # 确认文件顶部还有待删除标记才删除（防止用户已取消）
+    content = target.read_text(encoding='utf-8')
+    if not content.startswith(PENDING_MARKER):
+        remaining.append(item)
         continue
 
     target.unlink()
