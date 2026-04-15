@@ -1,16 +1,1 @@
-[
-  {
-    "repo": "Surge",
-    "target_repo": "Clash",
-    "filename": "sss",
-    "requested_at": "2026-04-15T13:51:33.583663+08:00",
-    "marker_written": true
-  },
-  {
-    "repo": "Surge",
-    "target_repo": "Clash",
-    "filename": "testrules",
-    "requested_at": "2026-04-15T13:52:32.728566+08:00",
-    "marker_written": true
-  }
-]
+[]
