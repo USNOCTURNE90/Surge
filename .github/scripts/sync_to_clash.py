@@ -64,8 +64,7 @@ def normalize(line: str):
     if line.startswith(RULE_PREFIXES):
         return line
 
-    m = re.fullmatch(r'([^,/]+)(?:/(
-  {1,2})?(?:,(no-resolve))?', line, re.IGNORECASE)
+    m = re.fullmatch(r'([^,/]+)(?:/([0-9]{1,2}))?(?:,(no-resolve))?', line, re.IGNORECASE)
     if m:
         raw_ip = m.group(1)
         mask = m.group(2)
@@ -191,7 +190,7 @@ if changed_local:
 if changed_remote:
     run(['git', '-C', 'clash_repo', 'config', 'user.name', 'github-actions[bot]'])
     run(['git', '-C', 'clash_repo', 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'])
-    run(['git', '-C', 'clash_repo', 'remote', 'set-url', 'origin', f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git"]
+    run(['git', '-C', 'clash_repo', 'remote', 'set-url', 'origin', f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git"])
     run(['git', '-C', 'clash_repo', 'add', '.'])
     status = subprocess.run(['git', '-C', 'clash_repo', 'diff', '--cached', '--quiet'])
     if status.returncode != 0:
