@@ -1,4 +1,4 @@
-# 最后更新时间: 2026-04-15 16:16:13 (北京时间)
+# 最后更新时间: 2026-04-15 16:19:43 (北京时间)
 # 从Clash自动同步
 # 原始文件: MyDirectRules
 IP-CIDR,155.102.175.142/32
@@ -92,7 +92,6 @@ DOMAIN-SUFFIX,shuidichou.com
 DOMAIN-SUFFIX,amemv.com
 DOMAIN-SUFFIX,dl.istoreos.com
 DOMAIN-SUFFIX,zjcdn.com
-DOMAIN-SUFFIX,snssdk.com
 DOMAIN-SUFFIX,douyinpic.com
 DOMAIN-SUFFIX,bytegecko.com
 DOMAIN-SUFFIX,api.doupay.com
