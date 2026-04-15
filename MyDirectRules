@@ -1,5 +1,5 @@
-# 最后更新时间: 2026-04-15 16:13:30 (北京时间)
-# 从Surge自动标准化
+# 最后更新时间: 2026-04-15 16:16:13 (北京时间)
+# 从Clash自动同步
 # 原始文件: MyDirectRules
 IP-CIDR,155.102.175.142/32
 IP-CIDR,155.102.181.182/32
@@ -122,11 +122,11 @@ DOMAIN-SUFFIX,st.dl.eccdnx.com
 DOMAIN-SUFFIX,dl.steam.clngaa.com
 DOMAIN-SUFFIX,xz.pphimalayanrt.com
 DOMAIN-SUFFIX,ocsp.comodoca.com
-DOMAIN-SUFFIX,fonts.ne
+DOMAIN-SUFFIX,fonts.net
 DOMAIN-SUFFIX,bazaarvoice.com
 DOMAIN-SUFFIX,static-ecst.licdn.com
 DOMAIN-SUFFIX,amazontrust.com
-DOMAIN-SUFFIX,ghproxy.ne
+DOMAIN-SUFFIX,ghproxy.net
 DOMAIN-SUFFIX,splashtop.com
 DOMAIN-SUFFIX,some.url
 DOMAIN-SUFFIX,crl3.digicert.com
