@@ -20,6 +20,7 @@ RULE_PREFIXES = (
 EXCLUDED_SUFFIXES = {'.py', '.yml', '.yaml', '.json', '.md'}
 STATE_DIR = Path('.github/sync_state')
 PENDING_FILE = STATE_DIR / 'pending_deletions.json'
+PENDING_MARKER = '# ⏳ 此文件已在 Surge 中删除，将于'
 
 def bj_tz():
     return timezone(timedelta(hours=8))
@@ -33,6 +34,10 @@ def now_str():
 def now_iso():
     return now_dt().isoformat()
 
+def delete_at_str(requested_iso: str) -> str:
+    dt = datetime.fromisoformat(requested_iso) + timedelta(minutes=5)
+    return dt.strftime('%Y-%m-%d %H:%M:%S (北京时间)')
+
 def run(cmd, cwd=None):
     subprocess.run(cmd, check=True, cwd=cwd)
 
@@ -44,6 +49,7 @@ def should_ignore_header(line: str) -> bool:
         '# 从Clash自动同步',
         '# 从Clash自动标准化',
         '# 原始文件:',
+        PENDING_MARKER,
     )
     return line.startswith(prefixes)
 
@@ -122,6 +128,22 @@ if repo.exists():
 run(['git', 'clone', f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git", 'clash_repo'])
 run(['git', '-C', 'clash_repo', 'checkout', os.environ['TARGET_BRANCH']])
 
+ensure_state()
+pending = load_pending()
+
+cancelled = set()
+for item in list(pending):
+    if item.get('repo') != 'Surge' or item.get('target_repo') != 'Clash':
+        continue
+    filename = item['filename']
+    target = repo / filename
+    if target.exists():
+        content = target.read_text(encoding='utf-8')
+        if not content.startswith(PENDING_MARKER):
+            cancelled.add(filename)
+
+pending = [x for x in pending if not (x.get('repo') == 'Surge' and x.get('target_repo') == 'Clash' and x.get('filename') in cancelled)]
+
 changed_local = False
 changed_remote = False
 source_names = set()
@@ -146,6 +168,10 @@ for p in Path('.').iterdir():
         p.write_text(local_output, encoding='utf-8')
         changed_local = True
 
+    in_pending = any(x.get('repo') == 'Surge' and x.get('target_repo') == 'Clash' and x.get('filename') == p.name for x in pending)
+    if in_pending:
+        continue
+
     remote_output = (
         f'# 最后更新时间: {now_str()}\n'
         '# 从Surge自动同步\n'
@@ -161,9 +187,6 @@ for p in Path('.').iterdir():
         target.write_text(remote_output, encoding='utf-8')
         changed_remote = True
 
-ensure_state()
-pending = load_pending()
-
 target_existing = set()
 for rp in repo.iterdir():
     if rp.is_file() and not rp.name.startswith('.') and rp.suffix not in EXCLUDED_SUFFIXES:
@@ -172,7 +195,15 @@ for rp in repo.iterdir():
 for name in sorted(target_existing - source_names):
     already = any(x.get('repo') == 'Surge' and x.get('target_repo') == 'Clash' and x.get('filename') == name for x in pending)
     if not already:
-        pending.append({'repo': 'Surge', 'target_repo': 'Clash', 'filename': name, 'requested_at': now_iso()})
+        requested_iso = now_iso()
+        pending.append({'repo': 'Surge', 'target_repo': 'Clash', 'filename': name, 'requested_at': requested_iso})
+        target = repo / name
+        if target.exists():
+            old_content = target.read_text(encoding='utf-8')
+            marker_line = f'{PENDING_MARKER} {delete_at_str(requested_iso)} 自动删除 — 删除本行立即取消删除并恢复文件\n'
+            if not old_content.startswith(PENDING_MARKER):
+                target.write_text(marker_line + old_content, encoding='utf-8')
+                changed_remote = True
         changed_local = True
 
 save_pending(pending)
