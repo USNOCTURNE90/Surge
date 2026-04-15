@@ -1,4 +1,4 @@
-# 最后更新时间: 2026-04-15 16:19:43 (北京时间)
+# 最后更新时间: 2026-04-15 16:21:23 (北京时间)
 # 从Clash自动同步
 # 原始文件: MyProxyRules
 DOMAIN-SUFFIX,steampowered.com
@@ -235,7 +235,6 @@ DOMAIN-SUFFIX,travis-ci.com
 DOMAIN-SUFFIX,sublimetext.com
 DOMAIN-SUFFIX,sublimehq.com
 DOMAIN-SUFFIX,blackmagicdesign.com
-DOMAIN-SUFFIX,obsproject.com
 DOMAIN-KEYWORD,docker
 DOMAIN-KEYWORD,davinciresolve
 PROCESS-NAME,obs64.exe
