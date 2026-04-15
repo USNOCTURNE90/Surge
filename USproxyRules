@@ -1,4 +1,4 @@
-# 最后更新时间: 2026-04-15 15:56:46 (北京时间)
+# 最后更新时间: 2026-04-15 16:04:41 (北京时间)
 # 从Surge自动标准化
 # 原始文件: USproxyRules
 DOMAIN,lf16-effectcdn.byteeffecttos-g.com
@@ -54,7 +54,6 @@ DOMAIN-KEYWORD,blogspot
 DOMAIN-KEYWORD,gmail
 DOMAIN-KEYWORD,google
 DOMAIN-KEYWORD,recaptcha
-#谷歌核心服务域名
 DOMAIN-SUFFIX,googleapis.com
 DOMAIN-SUFFIX,googleusercontent.com
 DOMAIN-SUFFIX,googledrive.com
@@ -62,7 +61,6 @@ DOMAIN-SUFFIX,gstatic.com
 DOMAIN-SUFFIX,gvt1.com
 DOMAIN-SUFFIX,gvt2.com
 DOMAIN-SUFFIX,1e100.net
-#谷歌广告与分析服务
 DOMAIN-SUFFIX,google-analytics.com
 DOMAIN-SUFFIX,doubleclick.net
 DOMAIN-SUFFIX,googlesyndication.com
@@ -70,7 +68,6 @@ DOMAIN-SUFFIX,googleadservices.com
 DOMAIN-SUFFIX,googletagmanager.com
 DOMAIN-SUFFIX,googletagservices.com
 DOMAIN-SUFFIX,app-measurement.com
-#谷歌常用服务
 DOMAIN-SUFFIX,chrome.com
 DOMAIN-SUFFIX,chromium.org
 DOMAIN-SUFFIX,android.com
@@ -80,7 +77,6 @@ DOMAIN-SUFFIX,firebaseapp.com
 DOMAIN-SUFFIX,waze.com
 DOMAIN-SUFFIX,nest.com
 DOMAIN-SUFFIX,waymo.com
-#其他重要谷歌服务
 DOMAIN-SUFFIX,abc.xyz
 DOMAIN-SUFFIX,admob.com
 DOMAIN-SUFFIX,ampproject.org
@@ -93,7 +89,6 @@ DOMAIN-SUFFIX,flutter.dev
 DOMAIN-SUFFIX,go.dev
 DOMAIN-SUFFIX,golang.org
 DOMAIN-SUFFIX,schema.org
-#特定功能服务
 DOMAIN-SUFFIX,gmail.com
 DOMAIN-SUFFIX,recaptcha.net
 DOMAIN-SUFFIX,googleapis-cn.com
@@ -104,7 +99,6 @@ DOMAIN-SUFFIX,fi.google.com
 PROCESS-NAME,谷歌IP地址段
 IP-CIDR,173.194.0.0/16
 IP-CIDR,74.125.0.0/16
-#安卓谷歌应用进程
 PROCESS-NAME,com.android.vending
 PROCESS-NAME,com.google.android.gms
 PROCESS-NAME,com.google.android.gsf
