@@ -1,6 +1,9 @@
 # 最后更新时间: 2026-04-18 22:20:43 (北京时间)
 # 从Surge自动标准化
 # 原始文件: USproxyRules
+slackhq.com
+slack.com
+slack-edge.com
 DOMAIN-SUFFIX,usnocturne90.us
 DOMAIN-SUFFIX,cloudflare-dns.com
 DOMAIN-SUFFIX,cloudflare.com
