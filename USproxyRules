@@ -2,6 +2,7 @@
 # 从Surge自动标准化
 # 原始文件: USproxyRules
 DOMAIN-SUFFIX,slackhq.com
+slackb.com
 DOMAIN-SUFFIX,slack.com
 DOMAIN-SUFFIX,slack-edge.com
 DOMAIN-SUFFIX,usnocturne90.us
