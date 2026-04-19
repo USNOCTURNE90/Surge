@@ -1,6 +1,3 @@
-# 最后更新时间: 2026-04-19 23:38:07 (北京时间)
-# 从Surge自动标准化
-# 原始文件: Crypto
 DOMAIN-SUFFIX,byapps.net
 DOMAIN-SUFFIX,bybit.biz
 DOMAIN-SUFFIX,byabcde.com
@@ -22,11 +19,8 @@ DOMAIN-KEYWORD,okx
 DOMAIN-KEYWORD,saasexch
 DOMAIN-KEYWORD,trustwallet
 DOMAIN-SUFFIX,d3sknckuh1o9tg.cloudfront.net
-DOMAIN-SUFFIX,binanceapi.com
-DOMAIN-SUFFIX,binancecnt.com
 DOMAIN-SUFFIX,bybit.com
 DOMAIN-SUFFIX,bybit-exchange.github.io
-DOMAIN-SUFFIX,bybit.ada.support
 DOMAIN-SUFFIX,bybit-global.com
 DOMAIN-SUFFIX,byapis.com
 DOMAIN-SUFFIX,bycbe.com
@@ -38,12 +32,9 @@ DOMAIN-SUFFIX,bybit-help-center-prod-ac4de1465648.herokuapp.com
 DOMAIN-SUFFIX,affiliates.bybit.cloud
 DOMAIN-SUFFIX,announcements.bybit-global.com
 DOMAIN-SUFFIX,announcements.bybit.cloud
-DOMAIN-SUFFIX,okex.com
-DOMAIN-SUFFIX,oklink.com
 DOMAIN-SUFFIX,okx-dns.com
 DOMAIN-SUFFIX,okx-dns1.com
 DOMAIN-SUFFIX,okx-dns2.com
-DOMAIN-SUFFIX,okx.com
 DOMAIN-SUFFIX,hbabit.com
 DOMAIN-SUFFIX,hbfile.net
 DOMAIN-SUFFIX,htx.com
@@ -59,12 +50,10 @@ DOMAIN-SUFFIX,gateio.live
 DOMAIN-SUFFIX,gateio.services
 DOMAIN-SUFFIX,gate.ac
 DOMAIN-SUFFIX,gate.io
-DOMAIN-SUFFIX,bitget-2.ada.support
 DOMAIN-SUFFIX,bitgetapp.com
 DOMAIN-SUFFIX,bitgetapps.com
 DOMAIN-SUFFIX,bitgetimg.com
 DOMAIN-SUFFIX,bgportable.com
-DOMAIN-SUFFIX,appapi.bgportable.com
 DOMAIN-SUFFIX,appapi.bitget.com
 DOMAIN-SUFFIX,walletconnect.com
 DOMAIN-SUFFIX,onekey.zendesk.com
@@ -72,7 +61,6 @@ DOMAIN-SUFFIX,onekey-asset.com
 DOMAIN-SUFFIX,onekey.so
 DOMAIN-SUFFIX,onekeycn.com
 DOMAIN-SUFFIX,metamask.io
-DOMAIN-SUFFIX,trustwallet.com
 DOMAIN-SUFFIX,wise.com
 DOMAIN-SUFFIX,wisecoin.com
 DOMAIN-SUFFIX,wiseid.com
@@ -143,6 +131,7 @@ DOMAIN-SUFFIX,wyndlabs.ai
 DOMAIN-SUFFIX,theblock.co
 DOMAIN-SUFFIX,defillama.com
 DOMAIN-SUFFIX,fundingrates.xyz
+
 DOMAIN-SUFFIX,bitbank.cc
 DOMAIN-SUFFIX,bitflyer.com
 DOMAIN-SUFFIX,bitflyer.jp
