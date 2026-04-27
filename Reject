@@ -2,3 +2,9 @@
 # 从Surge自动标准化
 # 原始文件: Reject
 DOMAIN,msmp.abchina.com.cn
+DOMAIN-KEYWORD,binance
+DOMAIN-KEYWORD,binancezh
+DOMAIN-SUFFIX,bnbstatic.com
+DOMAIN-SUFFIX,bncstatic.com
+DOMAIN-SUFFIX,bntrace.com
+DOMAIN-SUFFIX,bnbchain.org
