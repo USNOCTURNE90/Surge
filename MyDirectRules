@@ -7,6 +7,7 @@ DOMAIN-SUFFIX,nip.io
 DOMAIN,api.smoot.apple.com
 DOMAIN,captive.apple.com
 DOMAIN,xp.apple.com
+DOMAIN-SUFFIX,icloud-content.com.cn
 DOMAIN,configuration.apple.com
 DOMAIN,guzzoni.apple.com
 DOMAIN,smp-device-content.apple.com
