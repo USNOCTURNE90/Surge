@@ -1,6 +1,11 @@
 # 最后更新时间: 2026-05-02 22:36:09 (北京时间)
 # 从Surge自动标准化
 # 原始文件: USproxyRules
+push.apple.com
+courier-push-apple.com.akadns.net
+init*.push-apple.com.akadns.net
+init*.push.apple.com
+init-p01md.apple.com
 DOMAIN,cloudflare-dns.com
 DOMAIN,dns.google
 IP-CIDR,1.1.1.1/32
