@@ -2,8 +2,8 @@ import ipaddress
 import json
 import os
 import re
-import shutil
 import subprocess
+import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -135,12 +135,11 @@ def fix_current_repo_remote():
     token = os.environ['GITHUB_TOKEN']
     run(['git', 'remote', 'set-url', 'origin', f'https://x-access-token:{token}@github.com/USNOCTURNE90/Surge.git'])
 
-repo = Path('clash_repo')
-if repo.exists():
-    shutil.rmtree(repo)
+target_checkout = tempfile.TemporaryDirectory(prefix='clash_repo_')
+repo = Path(target_checkout.name) / 'repo'
 
-run(['git', 'clone', f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git", 'clash_repo'])
-run(['git', '-C', 'clash_repo', 'checkout', os.environ['TARGET_BRANCH']])
+run(['git', 'clone', f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git", str(repo)])
+run(['git', '-C', str(repo), 'checkout', os.environ['TARGET_BRANCH']])
 
 ensure_state()
 pending = load_pending()
@@ -273,11 +272,11 @@ if changed_local:
         run(['git', 'push'])
 
 if changed_remote:
-    run(['git', '-C', 'clash_repo', 'config', 'user.name', 'github-actions[bot]'])
-    run(['git', '-C', 'clash_repo', 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'])
-    run(['git', '-C', 'clash_repo', 'remote', 'set-url', 'origin', f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git"])
-    run(['git', '-C', 'clash_repo', 'add', '.'])
-    status = subprocess.run(['git', '-C', 'clash_repo', 'diff', '--cached', '--quiet'])
+    run(['git', '-C', str(repo), 'config', 'user.name', 'github-actions[bot]'])
+    run(['git', '-C', str(repo), 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'])
+    run(['git', '-C', str(repo), 'remote', 'set-url', 'origin', f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git"])
+    run(['git', '-C', str(repo), 'add', '.'])
+    status = subprocess.run(['git', '-C', str(repo), 'diff', '--cached', '--quiet'])
     if status.returncode != 0:
-        run(['git', '-C', 'clash_repo', 'commit', '-m', f'[AUTO_SYNC] 从Surge自动同步规则集 - {now_str()}'])
-        run(['git', '-C', 'clash_repo', 'push'])
+        run(['git', '-C', str(repo), 'commit', '-m', f'[AUTO_SYNC] 从Surge自动同步规则集 - {now_str()}'])
+        run(['git', '-C', str(repo), 'push'])

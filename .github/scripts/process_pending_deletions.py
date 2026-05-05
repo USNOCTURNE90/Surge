@@ -1,7 +1,7 @@
 import json
 import os
-import shutil
 import subprocess
+import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -37,16 +37,15 @@ def save_pending(items):
     ensure_state()
     PENDING_FILE.write_text(json.dumps(items, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
-repo = Path('clash_repo')
-if repo.exists():
-    shutil.rmtree(repo)
+target_checkout = tempfile.TemporaryDirectory(prefix='clash_repo_')
+repo = Path(target_checkout.name) / 'repo'
 
 run([
     'git', 'clone',
     f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git",
-    'clash_repo'
+    str(repo)
 ])
-run(['git', '-C', 'clash_repo', 'checkout', os.environ['TARGET_BRANCH']])
+run(['git', '-C', str(repo), 'checkout', os.environ['TARGET_BRANCH']])
 
 pending = load_pending()
 remaining = []
@@ -78,14 +77,14 @@ for item in pending:
     changed_remote = True
 
 if changed_remote:
-    run(['git', '-C', 'clash_repo', 'config', 'user.name', 'github-actions[bot]'])
-    run(['git', '-C', 'clash_repo', 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'])
-    run(['git', '-C', 'clash_repo', 'remote', 'set-url', 'origin', f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git"])
-    run(['git', '-C', 'clash_repo', 'add', '.'])
-    status = subprocess.run(['git', '-C', 'clash_repo', 'diff', '--cached', '--quiet'])
+    run(['git', '-C', str(repo), 'config', 'user.name', 'github-actions[bot]'])
+    run(['git', '-C', str(repo), 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'])
+    run(['git', '-C', str(repo), 'remote', 'set-url', 'origin', f"https://x-access-token:{os.environ['GITHUB_TOKEN']}@github.com/{os.environ['TARGET_REPO']}.git"])
+    run(['git', '-C', str(repo), 'add', '.'])
+    status = subprocess.run(['git', '-C', str(repo), 'diff', '--cached', '--quiet'])
     if status.returncode != 0:
-        run(['git', '-C', 'clash_repo', 'commit', '-m', f"[AUTO_SYNC] 处理来自Surge的延迟删除 - {now_str()}"])
-        run(['git', '-C', 'clash_repo', 'push'])
+        run(['git', '-C', str(repo), 'commit', '-m', f"[AUTO_SYNC] 处理来自Surge的延迟删除 - {now_str()}"])
+        run(['git', '-C', str(repo), 'push'])
 
 if pending != remaining:
     save_pending(remaining)
