@@ -1,4 +1,4 @@
-# 最后更新时间: 2026-05-26 11:17:54 (北京时间)
+# 最后更新时间: 2026-05-26 11:20:31 (北京时间)
 # 从Clash自动同步
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,teslamotors.com
@@ -80,10 +80,6 @@ DOMAIN-SUFFIX,msftauth.cn
 DOMAIN-SUFFIX,msftncsi.com
 DOMAIN-SUFFIX,msn.cn
 DOMAIN-SUFFIX,storage.msn.com
-DOMAIN-SUFFIX,bingapis.com
-DOMAIN-SUFFIX,bing.com
-DOMAIN-SUFFIX,bingapis.cn
-DOMAIN-SUFFIX,bing.com.cn
 DOMAIN-SUFFIX,s.rsg.sc
 DOMAIN-SUFFIX,rockstargames.com
 DOMAIN-SUFFIX,battle.net
