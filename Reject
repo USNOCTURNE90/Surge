@@ -8,3 +8,4 @@ DOMAIN-SUFFIX,bnbstatic.com
 DOMAIN-SUFFIX,bncstatic.com
 DOMAIN-SUFFIX,bntrace.com
 DOMAIN-SUFFIX,bnbchain.org
+PROCESS-NAME,com.eagleyun.sase
