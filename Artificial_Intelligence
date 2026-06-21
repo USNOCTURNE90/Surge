@@ -1,8 +1,10 @@
-# 最后更新时间: 2026-06-12 11:16:52 (北京时间)
+# 最后更新时间: 2026-06-21 10:41:27 (北京时间)
 # 从Surge自动标准化
 # 原始文件: Artificial_Intelligence
 DOMAIN-KEYWORD,openai
+DOMAIN-SUFFIX,openai.com
 DOMAIN-SUFFIX,workos.com
+DOMAIN-SUFFIX,workoscdn.com
 DOMAIN-SUFFIX,chronosphere.io
 DOMAIN-SUFFIX,x.ai
 DOMAIN-SUFFIX,imgix.net
@@ -16,6 +18,11 @@ DOMAIN-SUFFIX,todesktop.com
 DOMAIN-SUFFIX,chatgpt.com
 DOMAIN-SUFFIX,oaistatic.com
 DOMAIN-SUFFIX,oaiusercontent.com
+DOMAIN-SUFFIX,oaistatsig.com
+DOMAIN-SUFFIX,openaimerge.com
+DOMAIN-SUFFIX,ct.sendgrid.net
+DOMAIN-SUFFIX,ingest.sentry.io
+DOMAIN,challenges.cloudflare.com
 DOMAIN-SUFFIX,anthropic.ai
 DOMAIN-SUFFIX,anthropic.com
 DOMAIN-SUFFIX,claudeusercontent.com
