@@ -42,6 +42,11 @@ DOMAIN-SUFFIX,icloud-content.com
 DOMAIN,testflight.apple.com
 DOMAIN-SUFFIX,appsto.re
 DOMAIN-SUFFIX,smoot.apple.com
+DOMAIN,guzzoni.apple.com
+DOMAIN,apple-relay.cloudflare.com
+DOMAIN,apple-relay.fastly-edge.com
+DOMAIN,cp4.cloudflare.com
+DOMAIN,apple-relay.apple.com
 DOMAIN,amp-api.podcasts.apple.com
 DOMAIN,beta.music.apple.com
 DOMAIN,books.itunes.apple.com
