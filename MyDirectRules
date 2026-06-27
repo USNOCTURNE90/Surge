@@ -5,13 +5,11 @@ DOMAIN-SUFFIX,teslamotors.com
 DOMAIN,router.asus.com
 DOMAIN,router.synology.com
 DOMAIN-SUFFIX,nip.io
-DOMAIN,api.smoot.apple.com
 DOMAIN,captive.apple.com
 DOMAIN,xp.apple.com
 DOMAIN-SUFFIX,icloud-content.com
 DOMAIN-SUFFIX,icloud-content.com.cn
 DOMAIN,configuration.apple.com
-DOMAIN,guzzoni.apple.com
 DOMAIN,smp-device-content.apple.com
 DOMAIN-SUFFIX,ess.apple.com
 DOMAIN-SUFFIX,push-apple.com.akadns.net
