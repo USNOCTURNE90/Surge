@@ -1,6 +1,7 @@
 # 最后更新时间: 2026-06-27 20:16:25 (北京时间)
 # 从Surge自动标准化
 # 原始文件: MyDirectRules
+oray.net
 DOMAIN-SUFFIX,teslamotors.com
 DOMAIN,router.asus.com
 DOMAIN,router.synology.com
