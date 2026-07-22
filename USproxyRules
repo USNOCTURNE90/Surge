@@ -1,6 +1,7 @@
 # 最后更新时间: 2026-07-20 00:08:53 (北京时间)
 # 从Surge自动标准化
 # 原始文件: USproxyRules
+linkedin.com
 DOMAIN-SUFFIX,crashlytics.com
 DOMAIN,cloudflare-dns.com
 DOMAIN,dns.google
