@@ -1,6 +1,7 @@
 # 最后更新时间: 2026-07-31 20:31:42 (北京时间)
 # 从Surge自动标准化
 # 原始文件: USproxyRules
+fbsbx.com
 DOMAIN-SUFFIX,linkedin.com
 DOMAIN-SUFFIX,crashlytics.com
 DOMAIN,cloudflare-dns.com
