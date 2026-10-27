@@ -1,5 +1,5 @@
-# 最后更新时间: 2026-10-03 16:39:03 (北京时间)
-# 从Surge自动标准化
+# 最后更新时间: 2026-10-27 16:58:17 (北京时间)
+# 从Clash自动同步
 # 原始文件: MyDirectRules
 DOMAIN-SUFFIX,djicdn.com
 DOMAIN-SUFFIX,dji.com
@@ -187,3 +187,4 @@ IP-CIDR,52.139.169.119/32
 IP-CIDR,103.36.24.14/32
 PROCESS-NAME,AND,((PROTOCOL,UDP),(DEST-PORT,10000-20000))
 PROCESS-NAME,com.eagleyun.sase.helper
+PROCESS-NAME,GameViewerServer.exe
