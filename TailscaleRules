@@ -1,0 +1,2 @@
+# Tailscale 专用域名；在主配置绑定到 Tailscale 策略
+DOMAIN-SUFFIX,asuscomm.com

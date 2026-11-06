@@ -188,3 +188,10 @@ IP-CIDR,103.36.24.14/32
 PROCESS-NAME,AND,((PROTOCOL,UDP),(DEST-PORT,10000-20000))
 PROCESS-NAME,com.eagleyun.sase.helper
 PROCESS-NAME,GameViewerServer.exe
+
+# 从 iPhone 单条直连规则迁入
+DOMAIN-SUFFIX,dbankcdn.com
+DOMAIN-SUFFIX,huawei.com
+DOMAIN-SUFFIX,dbankcloud.com
+DOMAIN-SUFFIX,feishu.cn
+DOMAIN-SUFFIX,zijieapi.com
