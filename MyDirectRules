@@ -1,6 +1,7 @@
 # 最后更新时间: 2026-11-06 22:41:49 (北京时间)
 # 从Surge自动标准化
 # 原始文件: MyDirectRules
+baidu.com
 DOMAIN-SUFFIX,djicdn.com
 DOMAIN-SUFFIX,dji.com
 DOMAIN-SUFFIX,djiservice.org
