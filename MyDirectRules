@@ -195,3 +195,7 @@ DOMAIN-SUFFIX,huawei.com
 DOMAIN-SUFFIX,dbankcloud.com
 DOMAIN-SUFFIX,feishu.cn
 DOMAIN-SUFFIX,zijieapi.com
+
+# 网易爆米花：截图中误走代理的请求
+DOMAIN,ip.filmly.netease.com
+DOMAIN,alist-node1.yunmove.com
