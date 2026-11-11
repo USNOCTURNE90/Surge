@@ -2,6 +2,7 @@
 # 从Surge自动标准化
 # 原始文件: USproxyRules
 PROCESS-NAME,Claude
+PROCESS-NAME,Claude code
 DOMAIN-SUFFIX,fbsbx.com
 DOMAIN-SUFFIX,linkedin.com
 DOMAIN-SUFFIX,crashlytics.com
