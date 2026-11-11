@@ -121,7 +121,6 @@ DOMAIN-SUFFIX,gstatic-cn.com
 DOMAIN-SUFFIX,firebase.studio
 DOMAIN-SUFFIX,cloud.gist.build
 DOMAIN-SUFFIX,fi.google.com
-PROCESS-NAME,谷歌IP地址段
 IP-CIDR,173.194.0.0/16
 IP-CIDR,74.125.0.0/16
 PROCESS-NAME,com.android.vending
