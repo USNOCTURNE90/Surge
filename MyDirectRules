@@ -198,3 +198,24 @@ DOMAIN-SUFFIX,zijieapi.com
 # 网易爆米花：截图中误走代理的请求
 DOMAIN-SUFFIX,netease.com
 DOMAIN-SUFFIX,yunmove.com
+# 剪映（VideoFusion / CapCut 国内版）：客户端与素材、特效、AI 模型包下载
+DOMAIN-SUFFIX,vlabstatic.com
+DOMAIN-SUFFIX,bytedance.com
+DOMAIN-SUFFIX,bytedance.net
+DOMAIN-SUFFIX,bytecdn.cn
+DOMAIN-SUFFIX,bytecdn.com
+DOMAIN-SUFFIX,byteacctimg.com
+DOMAIN-SUFFIX,snssdk.com
+DOMAIN-SUFFIX,pstatp.com
+DOMAIN-SUFFIX,pglstatp-toutiao.com
+DOMAIN-SUFFIX,bytednsdoc.com
+DOMAIN-SUFFIX,douyinstatic.com
+DOMAIN-SUFFIX,bdurl.net
+DOMAIN-SUFFIX,ulikecam.com
+DOMAIN-SUFFIX,jianying.com
+DOMAIN-SUFFIX,capcut.cn
+DOMAIN-SUFFIX,volccdn.com
+DOMAIN-SUFFIX,volces.com
+DOMAIN-SUFFIX,volcengine.com
+PROCESS-NAME,VideoFusion-macOS
+PROCESS-NAME,JianyingPro
